@@ -1,5 +1,7 @@
 <?php
 
+use Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 
 class SetupCountriesTable extends Migration {
@@ -12,9 +14,9 @@ class SetupCountriesTable extends Migration {
 	public function up()
 	{
 		// Creates the users table
-		Schema::create(\Config::get('countries.table_name'), function($table)
+		Schema::create(Config::get('countries.table_name'), function($table)
 		{
-		    $table->integer('id')->unsigned()->index();
+		    $table->id();
 		    $table->string('capital', 255)->nullable();
 		    $table->string('citizenship', 255)->nullable();
 		    $table->string('country_code', 3)->default('');
@@ -33,7 +35,6 @@ class SetupCountriesTable extends Migration {
 		    $table->string('calling_code', 3)->nullable();
 		    $table->string('flag', 6)->nullable();
 
-		    $table->primary('id');
 		});
 	}
 
