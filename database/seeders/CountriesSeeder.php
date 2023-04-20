@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Config;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Webpatser\Countries\Countries;
 
 class CountriesSeeder extends Seeder {
@@ -22,7 +22,7 @@ class CountriesSeeder extends Seeder {
         //Get all of the countries
         $countries = (new Countries())->getList();
         foreach ($countries as $countryId => $country){
-            DB::table(\Config::get('countries.table_name'))->insert(array(
+            DB::table(Config::get('countries.table_name'))->insert(array(
                 'id' => $countryId,
                 'capital' => ((isset($country['capital'])) ? $country['capital'] : null),
                 'citizenship' => ((isset($country['citizenship'])) ? $country['citizenship'] : null),
