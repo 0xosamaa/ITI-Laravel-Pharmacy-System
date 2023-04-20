@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('admins/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('admins/plugins/summernote/summernote-bs4.min.css') }}">
+    @yield('extra-css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -122,7 +123,8 @@
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                        <span class="float-right text-sm text-muted"><i
+                                                class="fas fa-star"></i></span>
                                     </h3>
                                     <p class="text-sm">I got your message bro</p>
                                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
@@ -245,23 +247,26 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.dashboard') }}" class="nav-link active">
+                                    <a href="{{ route('admin.dashboard') }}"
+                                        class="nav-link @if (Route::is('admin.dashboard')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard v1</p>
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.roles.index') }}"
+                                        class="nav-link @if (Route::is('admin.roles.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v2</p>
+                                        <p>Roles</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+                                    <a href="{{ route('admin.permissions.index') }}"
+                                        class="nav-link @if (Route::is('admin.permissions.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
+                                        <p>Permissions</p>
                                     </a>
-                                </li> --}}
+                                </li>
                             </ul>
                         </li>
                         {{-- <li class="nav-item">
@@ -873,7 +878,7 @@
             <!-- /.sidebar -->
         </aside>
         <div class="content-wrapper">
-        @yield('content')
+            @yield('content')
         </div>
         <footer class="main-footer">
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
@@ -923,6 +928,7 @@
     <script src="{{ asset('admins/js/adminlte.js') }}"></script>
     <!-- AdminLTE dashboard -->
     <script src="{{ asset('admins/js/pages/dashboard.js') }}"></script>
+    @yield('extra-js')
 </body>
 
 </html>
