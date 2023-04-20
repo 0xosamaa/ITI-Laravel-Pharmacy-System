@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pharmacy extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
 
         protected $fillable = [
             'priority',
@@ -27,4 +28,6 @@ class Pharmacy extends Model
         return $this->belongsTo(User::class, 'owner_user_id');
     }
 
+=======
+>>>>>>> e89560f (edit order details table)
 }
