@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Permission;
@@ -41,7 +42,10 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
     Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
 });
 
-
+Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
