@@ -10,44 +10,24 @@
                     <th>ID</th>
                         <th>Name</th>
                         <th>Address</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+           
+                        @foreach ($areas as $area)
+                        <tr>
+                            <td>{{ $area->id}}</td>
+                            <td>{{ $area->name }}</td>
+                            <td>{{ $area->address }}</td>
+                        </tr>
+                        @endforeach
+
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 @endsection
 
-@section('scripts')
-<script type="text/javascript">
-    $(function() {
-        var table = $('.user_datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('areas.index') }}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'address',
-                    name: 'address'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
-    });
-</script>
 
-@endsection
+
