@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PharmacyController;
+use App\Http\Controllers\AreaController;
 use Spatie\Permission\Contracts\Permission;
 
 /*
@@ -32,14 +34,17 @@ Route::get('/dashboard', function () {
 });
 
 
+
 Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
     Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
-
     Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
+    //
+
 });
+Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
+Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
 
 
 
