@@ -1,8 +1,7 @@
 <?php
 
-
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Migrations\Migration;
 
 class SetupCountriesTable extends Migration {
@@ -46,7 +45,7 @@ class SetupCountriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(\Config::get('countries.table_name'));
+		Schema::drop(Config::get('countries.table_name'));
 	}
 
 }
