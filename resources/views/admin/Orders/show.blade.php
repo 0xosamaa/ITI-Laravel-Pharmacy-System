@@ -1,57 +1,86 @@
-// extend the layout from the admin layout file
-    @extends ( 'admin.layouts.app' )
+@extends ( 'admin.layouts.app' )
 
-    // set the page title
-    @section ( 'title' ,   'Order Details' )
+// set the page title
+@section ( 'title' ,   'Order Details' )
 
-    // set the active sidebar element
-    @section ( 'active' ,   'orders' )
+// set the active sidebar element
+@section ( 'active' ,   'orders' )
 
-    // set the page content
-    @section ( 'content' )
-            <h1>Order Details</h1>
+// set the page content
+@section ( 'content' )
+
+    <div class="container-fluid row d-flex justify-content-around p-5 h-75">
+        <div class="card p-3 col-4">
+            <h5>
+                Doctor Name : <span style="color: #777;"> {{ $order['doctor_name'] }}</span>
+            </h5>
             <hr>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Order Information</h3>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Order ID</th>
-                            <td>123</td>
-                        </tr>
-                        <tr>
-                            <th>Order Date</th>
-                            <td>any</td>
-                        </tr>
-                        <tr>
-                            <th>Order Status</th>
-                            <td>active</td>
-                        </tr>
-                        <tr>
-                            <th>Order Total</th>
-                            <td>5000</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <h3>Customer Information</h3>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Customer Name</th>
-                            <td>Hassan</td>
-                        </tr>
-                        <tr>
-                            <th>Customer Email</th>
-                            <td>hassan@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <th>Customer Phone</th>
-                            <td>1541421911</td>
-                        </tr>
-                    </table>
-                </div>
+            <h5>
+                User Name : <span style="color: #777;"> {{ $order['user_name'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Creation Date : <span style="color: #777;"> {{ $order['createdAt'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Delivering Address : <span style="color: #777;"> {{ $order['delivery_address'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Is Insured : <span style="color: #777;"> {{ $order['is_insured'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Status : <span style="color: #777;"> {{ $order['status'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Creator Type : <span style="color: #777;"> {{ $order['creator_type'] }}</span>
+            </h5>
+            <hr>
+            <h5>
+                Assigned Pharmacy : <span style="color: #777;"> {{ $order['assigned_pharmacy'] }}</span>
+            </h5>
+            <hr>
+            <div class="buttons w-100 d-flex justify-content-around">
+                <a href="{{route('admin.orders.edit',$order['id'])}}" class="btn btn-outline-success w-25">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{route('admin.orders.index')}}" class="btn btn-outline-info w-25">
+                    <i class="fas fa-info"></i>
+                </a>
             </div>
-            <hr>
+        </div>
+        <div class="card p-3 col-7 h-100 d-flex align-items-center justify-content-center  flex-column" style="overflow: scroll;">
+            @foreach($order['items'] as $medicine)
+                <div class="card p-3 col-10 d-flex flex-row justify-content-around align-items-center" style="max-height: 80px">
+                    <h5>
+                        Name : <span style="color: #777;"> {{ $medicine['name'] }}</span>
+                    </h5>
+                    <h6>
+                        Price : <span style="color: #777;"> {{ $medicine['price'] }}</span>
+                    </h6>
+                    <h6>
+                        Quantity : <span style="color: #777;"> {{ $medicine['quantity'] }}</span>
+                    </h6>
+                </div>
+            @endforeach
 
-    @endsection
 
+        </div>
+
+    </div>
+
+
+@endsection
+
+// set the page scripts
+@section ( 'extra-js' )
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+@endsection
+
+// set the page styles
+@section ( 'extra-css' )
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+@endsection
