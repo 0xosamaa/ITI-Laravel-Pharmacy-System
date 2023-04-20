@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name('landing-page');
 
 
-Route::group(['middleware' => ['role:super-admin']], function () {
+Route::group(['middleware' => ['auth', 'role:admin|doctor|pharmacist']], function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
