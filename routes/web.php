@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Contracts\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,12 +23,24 @@ Route::get('/', function () {
     return view('site.landing-page');
 })->name('landing-page');
 
-
-Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/admin', function () {
+    return redirect()->route('admin.dashboard');
 });
+
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+});
+
+
+Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
+
+    Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
+});
+
 
 
 Route::middleware('auth')->group(function () {
