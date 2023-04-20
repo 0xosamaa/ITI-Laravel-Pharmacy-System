@@ -1,6 +1,7 @@
 <?php
 
-use Config;
+
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 

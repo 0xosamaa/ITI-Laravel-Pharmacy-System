@@ -13,34 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(RoleSeeder::class);
+        $this->command->info('Seeded the roles!');
 
-        \App\Models\User::factory()->create([
-            'name' => 'Osama',
-            'email' => 'osama@gmail.com',
-        ]);
-        \App\Models\User::factory()->create([
-            'name' => 'Amr',
-            'email' => 'amr@gmail.com',
-        ]);
-        \App\Models\User::factory()->create([
-            'name' => 'Youssef',
-            'email' => 'youssef@gmail.com',
-        ]);
-        \App\Models\User::factory()->create([
-            'name' => 'Saber',
-            'email' => 'saber@gmail.com',
-        ]);
-        \App\Models\User::factory()->create([
-            'name' => 'moustafa',
-            'email' => 'moustafa@gmail.com',
-        ]);
-        \App\Models\User::factory()->create([
-            'name' => 'hassan',
-            'email' => 'hassan@gmail.com',
-        ]);
+        $this->call(UserSeeder::class);
+        $this->command->info('Seeded the doctors, pharmacists and users!');
 
-        $this->command->info('Seeded the users!');
+        $this->call(AdminSeeder::class);
+        $this->command->info('Seeded the admins!');
 
         $this->call(CountriesSeeder::class);
         $this->command->info('Seeded the countries!');
