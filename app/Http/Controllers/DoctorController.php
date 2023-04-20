@@ -8,11 +8,11 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        return view('doctors.index');
+        return view('admin/doctors.index');
     }
 
     public function create()
     {
-        return view('doctors.create');
+        return view('admin/doctors.create');
     }
 }
