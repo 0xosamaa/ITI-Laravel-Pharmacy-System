@@ -310,7 +310,7 @@ a {
           .site-navbar .site-navigation .site-menu .has-children .dropdown > li > a {
             padding: 9px 20px;
             display: block; }
-            .site-navbar .site-navigation .site-menu .has-children .dropdown > li > a:hover {
+            .site-navbar .site-navigation .site-menu .has-children .dropdown > li a:hover {
               background: #f4f5f9;
               color: #25262a; }
           .site-navbar .site-navigation .site-menu .has-children .dropdown > li.has-children > a:before {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PharmacyController;
@@ -40,13 +41,15 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
     Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
     Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
-    //
-
+    Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
+    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
 });
-Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
-Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
 
-
+Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,4 +60,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+

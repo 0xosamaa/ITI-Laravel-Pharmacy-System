@@ -8,14 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Pharmacy extends Model
 {
     use HasFactory;
-
         protected $fillable = [
             'priority',
             'owner_user_id',
             'area_id',
             'name'
         ];
-
 
     public function area()
     {
@@ -26,5 +24,4 @@ class Pharmacy extends Model
     {
         return $this->belongsTo(User::class, 'owner_user_id');
     }
-
 }

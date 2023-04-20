@@ -31,4 +31,3 @@ class PharmacyController extends Controller
         return view('admin.Pharmacy.index');
     }
 }
-
