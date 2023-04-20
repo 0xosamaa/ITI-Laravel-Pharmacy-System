@@ -26,20 +26,30 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search"
-                                    class="form-control form-control-sm" placeholder="" aria-controls="example1"></label>
+                        <div id="example1_filter" class="dataTables_filter">
+                            <label>Search:
+                                <input type="search" class="form-control form-control-sm" placeholder=""
+                                    aria-controls="example1">
+                            </label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
+                        <a href="{{ route('admin.roles.create') }}" type="submit" class="btn btn-success w-25 float-right my-2">New Role</a>
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
                             aria-describedby="example1_info">
                             <thead>
                                 <tr>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-sort="ascending"
-                                        aria-label="Rendering engine: activate to sort column descending">Name
+                                        aria-label="Rendering engine: activate to sort column descending">ID
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Name
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Edit
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-label="CSS grade: activate to sort column ascending">Delete
@@ -47,21 +57,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="odd">
-                                    <td class="dtr-control sorting_1" tabindex="0">Name</td>
-                                    <td><button type="button" class="btn btn-block btn-danger">Delete</button></td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="dtr-control sorting_1" tabindex="0">Name</td>
-                                    <td><button type="button" class="btn btn-block btn-danger">Delete</button></td>
-                                </tr>
+                                @forelse ($roles as $role)
+                                    @if ($loop->odd)
+                                        <tr class="odd">
+                                            <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
+                                            <td>{{ $role->name }}</td>
+                                            <td><a href="{{ route('admin.roles.edit', $role->id) }}"
+                                                    class="btn btn-block btn-info">Edit</a></td>
+                                            <td>
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr class="even">
+                                            <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
+                                            <td>{{ $role->name }}</td>
+                                            <td><a href="{{ route('admin.roles.edit', $role->id) }}"
+                                                    class="btn btn-block btn-info">Edit</a></td>
+                                            <td>
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @empty
+                                    <h3>No roles found</h3>
+                                @endforelse
+
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th rowspan="1" colspan="1">Name</th>
-                                    <th rowspan="1" colspan="1">Delete</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
