@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoleSeeder extends Seeder
 {
@@ -13,9 +14,13 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name'=>'admin']);
-        Role::create(['name'=>'pharmacist']);
-        Role::create(['name'=>'doctor']);
-        Role::create(['name'=>'user']);
+        $permission = Permission::create(['name' => 'add medicines']);
+
+        $role = Role::create(['name' => 'admin']);
+        Role::create(['name' => 'pharmacist']);
+        Role::create(['name' => 'doctor']);
+        Role::create(['name' => 'user']);
+
+        $role->givePermissionTo($permission);
     }
 }

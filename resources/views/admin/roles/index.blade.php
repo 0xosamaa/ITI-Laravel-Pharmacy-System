@@ -1,42 +1,24 @@
 @extends('admin.layouts.app')
+@section('extra-css')
+    <!-- DataTables -->
+    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
+    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
+    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
+@endsection
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">DataTable with default features</h3>
+            <h3 class="card-title">Roles</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="dt-buttons btn-group flex-wrap"> <button
-                                class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="example1"
-                                type="button"><span>Copy</span></button> <button
-                                class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="example1"
-                                type="button"><span>CSV</span></button> <button
-                                class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                aria-controls="example1" type="button"><span>Excel</span></button> <button
-                                class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="example1"
-                                type="button"><span>PDF</span></button> <button class="btn btn-secondary buttons-print"
-                                tabindex="0" aria-controls="example1" type="button"><span>Print</span></button>
-                            <div class="btn-group"><button
-                                    class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
-                                    tabindex="0" aria-controls="example1" type="button" aria-haspopup="true"><span>Column
-                                        visibility</span><span class="dt-down-arrow"></span></button></div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div id="example1_filter" class="dataTables_filter">
-                            <label>Search:
-                                <input type="search" class="form-control form-control-sm" placeholder=""
-                                    aria-controls="example1">
-                            </label>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
+                    <div class="col-sm-12"><a href="{{ route('admin.roles.create') }}" type="submit"
+                        class="btn btn-success w-25 my-2">New Role</a></div>
                     <div class="col-sm-12">
-                        <a href="{{ route('admin.roles.create') }}" type="submit" class="btn btn-success w-25 float-right my-2">New Role</a>
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
                             aria-describedby="example1_info">
                             <thead>
@@ -79,7 +61,8 @@
                                             <td><a href="{{ route('admin.roles.edit', $role->id) }}"
                                                     class="btn btn-block btn-info">Edit</a></td>
                                             <td>
-                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-block btn-danger">Delete</button>
@@ -95,38 +78,51 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-sm-12 col-md-5">
                         <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to
                             10 of 57 entries</div>
                     </div>
                     <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button page-item previous disabled" id="example1_previous"><a
-                                        href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"
-                                        class="page-link">Previous</a></li>
-                                <li class="paginate_button page-item active"><a href="#" aria-controls="example1"
-                                        data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                        data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                        data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                        data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                        data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                        data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                                <li class="paginate_button page-item next" id="example1_next"><a href="#"
-                                        aria-controls="example1" data-dt-idx="7" tabindex="0"
-                                        class="page-link">Next</a></li>
-                            </ul>
-                        </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!-- /.card-body -->
     </div>
+@endsection
+
+@section('extra-js')
+    <!-- DataTables  & Plugins -->
+    <script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}></script>
+    <script src={{ asset('admins/plugins/jszip/jszip.min.js') }}></script>
+    <script src={{ asset('admins/plugins/pdfmake/pdfmake.min.js') }}></script>
+    <script src={{ asset('admins/plugins/pdfmake/vfs_fonts.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
+    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
+    <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
 @endsection
