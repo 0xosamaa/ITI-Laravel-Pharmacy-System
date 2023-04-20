@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('landing-page');
 
 
-Route::group(['middleware' => ['auth', 'role:admin|doctor|pharmacist']], function () {
+Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
