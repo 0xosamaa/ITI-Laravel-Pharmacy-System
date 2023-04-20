@@ -13,8 +13,4 @@ class PharmacyController extends Controller
         $allPharmacies = Pharmacy::all();
         return view('admin.Pharmacy.index', ['pharmacies'=>$allPharmacies]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 8d0e4480603ac6e605bb79638a364bcf115d4254
