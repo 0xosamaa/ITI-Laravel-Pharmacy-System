@@ -40,6 +40,8 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
     Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
 
     Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
+
+    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
 });
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
@@ -56,4 +58,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 
-Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+

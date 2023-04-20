@@ -41,26 +41,29 @@
                             <ul class="site-menu js-clone-nav d-none d-lg-block">
                                 <li class="active"><a href="{{ route('landing-page') }}">Home</a></li>
                                 <li><a href="shop.html">Store</a></li>
-                                <li class="has-children">
-                                    <a href="#">Dropdown</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">Supplements</a></li>
-                                        <li class="has-children">
-                                            <a href="#">Vitamins</a>
-                                            <ul class="dropdown">
-                                                <li><a href="#">Supplements</a></li>
-                                                <li><a href="#">Vitamins</a></li>
-                                                <li><a href="#">Diet &amp; Nutrition</a></li>
-                                                <li><a href="#">Tea &amp; Coffee</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Diet &amp; Nutrition</a></li>
-                                        <li><a href="#">Tea &amp; Coffee</a></li>
-
-                                    </ul>
-                                </li>
                                 <li><a href="about.html">About</a></li>
                                 <li><a href="contact.html">Contact</a></li>
+                                @if (Auth::user())
+                                    <li class="has-children text-right">
+                                        <a href="#">{{ Auth::user()->name }}</a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a href="{{ route('profile.edit') }}">Profile</a>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ route('logout') }}" class="w-100">
+                                                    @csrf
+                                                    <a href="route('logout')" class="nav-link w-100"
+                                                        onclick="event.preventDefault(); this.closest('form').submit();">
+                                                        {{ __('Log Out') }}
+                                                    </a>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li><a href="{{ route('login') }}">Login</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>
