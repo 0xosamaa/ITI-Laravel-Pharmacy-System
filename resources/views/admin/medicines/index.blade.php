@@ -4,6 +4,11 @@
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
+    <style>
+        td {
+            vertical-align: middle !important;
+        }
+    </style>
 @endsection
 @section('title')
     Medicines
