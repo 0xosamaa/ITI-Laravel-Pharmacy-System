@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('admin.layouts.app')
 
 @section('content')
     <h1>Create Pharmacy</h1>
