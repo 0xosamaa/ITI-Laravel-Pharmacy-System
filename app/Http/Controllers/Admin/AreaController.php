@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use DataTables;
 use App\Models\Area;
 use Illuminate\Http\Request;
-use DataTables;
+use App\Http\Controllers\Controller;
 
 class AreaController extends Controller
 {
@@ -42,7 +43,6 @@ public function edit($id)
 public function update(Request $request, $id)
 {
     $area = Area::findOrFail($id);
-    dd($area);
     $request->validate([
         'name' => 'required|string|max:255',
         'address' => 'required|string|max:255',

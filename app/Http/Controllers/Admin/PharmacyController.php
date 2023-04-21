@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use DataTables;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
-use DataTables;
+use App\Http\Controllers\Controller;
 
 class PharmacyController extends Controller
 {
