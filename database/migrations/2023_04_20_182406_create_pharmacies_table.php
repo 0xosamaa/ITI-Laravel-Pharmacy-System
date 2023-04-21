@@ -17,6 +17,7 @@ return new class extends Migration
             $table->tinyInteger('priority');
             $table->foreignId('owner_user_id')->constrained('users');
             $table->foreignId('governorate_id')->constrained('governorates');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -25,7 +25,7 @@ class PharmacyController extends Controller
     public function create()
 {
     $governorates = Governorate::all();
-    $users = User::all();
+    $users = User::role('pharmacist')->get();
     return view('admin.pharmacies.create', ['users' => $users,'governorates' => $governorates]);
 }
 
