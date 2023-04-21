@@ -5,6 +5,9 @@
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
 @endsection
+@section('title')
+    Roles
+@endsection
 @section('content')
     <div class="card">
         <div class="card-header">

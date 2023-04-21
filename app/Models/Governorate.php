@@ -10,4 +10,9 @@ class Governorate extends Model
     use HasFactory;
 
     public $fillable = ['name'];
+
+    public function pharmacies()
+    {
+        return $this->hasMany(Pharmacy::class);
+    }
 }

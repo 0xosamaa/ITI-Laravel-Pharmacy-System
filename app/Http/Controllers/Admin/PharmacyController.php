@@ -7,7 +7,7 @@ use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Area;
+use App\Models\Governorate;
 
 class PharmacyController extends Controller
 {
@@ -18,15 +18,15 @@ class PharmacyController extends Controller
                                  ->select('pharmacies.*', 'users.name as owner_name')
                                  ->get();
         $users = User::all();
-        return view('admin.Pharmacy.index', ['pharmacies'=>$allPharmacies, 'users' => $users]);
+        return view('admin.pharmacies.index', ['pharmacies'=>$allPharmacies, 'users' => $users]);
     }
 
 
     public function create()
 {
-    $areas = Area::all();
+    $governorates = Governorate::all();
     $users = User::all();
-    return view('admin.Pharmacy.create', ['users' => $users,'areas' => $areas]);
+    return view('admin.pharmacies.create', ['users' => $users,'governorates' => $governorates]);
 }
 
 public function store(Request $request)
@@ -35,7 +35,7 @@ public function store(Request $request)
         'name' => 'required',
         'priority' => 'required',
         'owner_user_id' => 'required|exists:users,id',
-        'area_id' => 'required|exists:areas,id',
+        'governorate_id' => 'required|exists:governorates,id',
     ]);
 
     Pharmacy::create($validatedData);
@@ -46,7 +46,7 @@ public function store(Request $request)
 public function edit(Request $request, $id)
 {
     $pharmacy = Pharmacy::findOrFail($id);
-    return view('admin.Pharmacy.edit', ['pharmacy'=>$pharmacy]);
+    return view('admin.pharmacies.edit', ['pharmacy'=>$pharmacy]);
 }
 
 public function update(Request $request, $id)
@@ -56,13 +56,13 @@ public function update(Request $request, $id)
     $validatedData = $request->validate([
         'priority' => 'required',
         'owner_user_id' => 'required',
-        'area_id' => 'required',
+        'governorate_id' => 'required',
         'name' => 'required|max:255',
     ]);
 
     $pharmacy->priority = $validatedData['priority'];
     $pharmacy->owner_user_id = $validatedData['owner_user_id'];
-    $pharmacy->area_id = $validatedData['area_id'];
+    $pharmacy->governorate_id = $validatedData['governorate_id'];
     $pharmacy->name = $validatedData['name'];
     $pharmacy->save();
 

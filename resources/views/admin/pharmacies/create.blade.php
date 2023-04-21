@@ -30,9 +30,9 @@
         </div>
 
         <div class="form-group">
-            <label for="area_id">Area ID</label>
-            <input type="number" name="area_id" id="area_id" class="form-control @error('area_id') is-invalid @enderror" value="{{ old('area_id') }}" required>
-            @error('area_id')
+            <label for="governorate_id">Governorate ID</label>
+            <input type="number" name="governorate_id" id="governorate_id" class="form-control @error('governorate_id') is-invalid @enderror" value="{{ old('governorate_id') }}" required>
+            @error('governorate_id')
                 <span class="invalid-feedback">{{ $message }}</span>
             @enderror
         </div>
@@ -80,14 +80,14 @@
         </div>
 
         <div class="form-group">
-            <label for="area_id">Area</label>
-            <select name="area_id" id="area_id" class="form-control @error('area_id') is-invalid @enderror" required>
-                <option value="">Select Area</option>
-                @foreach($areas as $area)
-                    <option value="{{ $area->id }}" {{ old('area_id') == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
+            <label for="governorate_id">Governorate</label>
+            <select name="governorate_id" id="governorate_id" class="form-control @error('governorate_id') is-invalid @enderror" required>
+                <option value="">Select Governorate</option>
+                @foreach($governorates as $governorate)
+                    <option value="{{ $governorate->id }}" {{ old('governorate_id') == $governorate->id ? 'selected' : '' }}>{{ $governorate->name }}</option>
                 @endforeach
             </select>
-            @error('area_id')
+            @error('governorate_id')
                 <span class="invalid-feedback">{{ $message }}</span>
             @enderror
         </div>
