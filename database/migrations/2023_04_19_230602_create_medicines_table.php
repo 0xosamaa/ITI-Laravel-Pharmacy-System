@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->nullable();
             $table->text('description');
+            $table->string('image');
             $table->string('SKU');
             $table->integer('price');
-            $table->foreignId('discount_id')->constrained('discounts');
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('discount_id')->nullable()->constrained('discounts');
+            $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->softDeletes();
             $table->timestamps();
         });
