@@ -13,7 +13,11 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        return view('admin.doctors.index');
+        $doctors = Doctor::all();
+
+        return view('admin.doctors.index', [
+            'doctors' => $doctors
+        ]);
     }
 
     public function create()
@@ -54,7 +58,7 @@ class DoctorController extends Controller
             $image = $request->file('avatar_image');
             $extension = $image->getClientOriginalExtension();
             $filename = uniqid() . '.' . $extension;
-            $image->move(public_path('admins/images/doctors'), $filename);
+            $image->move(public_path('storage/images/doctors'), $filename);
         }
         else {
             $filename = 'default.jpg';
@@ -67,7 +71,7 @@ class DoctorController extends Controller
         ]);
 
         Doctor::create([
-            'doctor_id' => $user->id,
+            'user_id' => $user->id,
             'national_id' => $request->national_id,
             'avatar_image' => $filename,
             'pharmacy_id' => $request->pharmacy_id

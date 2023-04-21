@@ -10,7 +10,7 @@ class Doctor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'doctor_id',
+        'user_id',
         'national_id',
         'avatar_image',
         'pharmacy_id'
@@ -19,5 +19,10 @@ class Doctor extends Model
     public function pharmacy()
     {
         return $this->belongsTo(Pharmacy::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
