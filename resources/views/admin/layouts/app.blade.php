@@ -260,6 +260,20 @@
                                         <p>Permissions</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.pharmacies.index') }}"
+                                        class="nav-link @if (Route::is('admin.pharmacies.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pharmacies</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.areas.index') }}"
+                                        class="nav-link @if (Route::is('admin.areas.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Areas</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
