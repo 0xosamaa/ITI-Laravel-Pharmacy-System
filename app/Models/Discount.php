@@ -9,4 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Discount extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function medicines(){
+        return $this->hasMany(Medicine::class);
+    }
 }
