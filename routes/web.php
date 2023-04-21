@@ -53,7 +53,9 @@ Route::middleware(['auth', 'verified','role:admin|doctor|pharmacist'])->name('ad
 
 });
 
-
+Route::middleware(['auth', 'role:user'])->group(function(){
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+});
 
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
