@@ -18,28 +18,26 @@
                 <div class="row">
                 </div>
                 <div class="row">
-                    <div class="col-sm-12"><a href="{{ route('admin.areas.create') }}" type="submit"
-                        class="btn btn-success w-25 my-2">New Area</a></div>
+                    <div class="col-sm-12"><a href="{{ route('admin.governorates.create') }}" type="submit"
+                        class="btn btn-success w-25 my-2">New Governorate</a></div>
                     <div class="col-sm-12">
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                             <thead>
                                 <tr>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">ID</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Name</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Address</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($areas as $area)
+                                @foreach ($governorates as $governorate)
                                 <tr>
-                                    <td>{{ $area->id }}</td>
-                                    <td>{{ $area->name }}</td>
-                                    <td>{{ $area->address }}</td>
+                                    <td>{{ $governorate->id }}</td>
+                                    <td>{{ $governorate->name }}</td>
                                     <td>
-                                         <a href="{{ route('admin.areas.edit', $area->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                         <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
-                                         <form method="POST" action="{{ route('admin.areas.destroy', $area->id ) }}" style="display: inline">
+                                         <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>

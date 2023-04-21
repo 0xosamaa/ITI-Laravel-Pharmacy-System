@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(GovernorateSeeder::class);
         $this->command->info('Seeded the Governorates!');
-        
+
         $this->call(RoleSeeder::class);
         $this->command->info('Seeded the Roles!');
 
@@ -23,9 +23,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AdminSeeder::class);
         $this->command->info('Seeded the Admins!');
-
-        $this->call(AreaSeeder::class);
-        $this->command->info('Seeded the Areas!');
 
         $this->call(PharmacySeeder::class);
         $this->command->info('Seeded the Pharmacies!');

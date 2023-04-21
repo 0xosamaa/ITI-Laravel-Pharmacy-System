@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('pharmacies', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->tinyInteger('priority');
-            $table->unsignedBigInteger('owner_user_id');
-            $table->unsignedBigInteger('area_id');
-            $table->unique(['priority', 'area_id']);
+            $table->foreignId('owner_user_id')->constrained('users');
+            $table->foreignId('governorate_id')->constrained('governorates');
             $table->timestamps();
         });
     }
