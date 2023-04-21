@@ -24,5 +24,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CountriesSeeder::class);
         $this->command->info('Seeded the countries!');
+
+        $this->call(AreaSeeder::class);
+        $this->command->info('Seeded the Areas!');
+
+        $this->call(PharmacySeeder::class);
+        $this->command->info('Seeded the Pharmacies!');
     }
 }
