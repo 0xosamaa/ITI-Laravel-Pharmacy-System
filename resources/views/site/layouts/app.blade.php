@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('site/css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('site/css/aos.css') }}">
     <link rel="stylesheet" href="{{ asset('site/css/style.css') }}">
+    @yield('extra-css')
 </head>
 
 <body>
@@ -33,16 +34,16 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="logo">
                         <div class="site-logo">
-                            <a href="{{ route('landing-page') }}" class="js-logo-clone">Pharma</a>
+                            <a href="{{ route('site.landing-page') }}" class="js-logo-clone">Pharma</a>
                         </div>
                     </div>
                     <div class="main-nav d-none d-lg-block">
                         <nav class="site-navigation text-right text-md-center" role="navigation">
                             <ul class="site-menu js-clone-nav d-none d-lg-block">
-                                <li class="active"><a href="{{ route('landing-page') }}">Home</a></li>
-                                <li><a href="shop.html">Store</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li class="@if(Route::is('site.landing-page')) active @endif"><a href="{{ route('site.landing-page') }}">Home</a></li>
+                                <li class="@if(Route::is('site.shop.index')) active @endif"><a href="{{ route('site.shop.index') }}">Shop</a></li>
+                                <li class="@if(Route::is('site.about')) active @endif"><a href="about.html">About</a></li>
+                                <li class="@if(Route::is('site.contact')) active @endif"><a href="contact.html">Contact</a></li>
                                 @if (Auth::user())
                                     <li class="has-children text-right">
                                         <a href="#">{{ Auth::user()->name }}</a>
@@ -81,6 +82,7 @@
             </div>
         </div>
 
+        @yield('bread-crumbs')
         @yield('content')
         <footer class="site-footer">
             <div class="container">
@@ -144,6 +146,7 @@
     <script src="{{ asset('site/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('site/js/aos.js') }}"></script>
     <script src="{{ asset('site/js/main.js') }}"></script>
+    @yield('extra-js')
 </body>
 
 </html>
