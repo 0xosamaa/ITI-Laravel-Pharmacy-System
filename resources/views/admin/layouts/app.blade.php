@@ -268,10 +268,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.areas.index') }}"
-                                        class="nav-link @if (Route::is('admin.areas.index')) active @endif">
+                                    <a href="{{ route('admin.governorates.index') }}"
+                                        class="nav-link @if (Route::is('admin.governorates.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Areas</p>
+                                        <p>Governorates</p>
                                     </a>
                                 </li>
                             </ul>

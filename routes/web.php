@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RoleController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\PharmacyController;
-use App\Http\Controllers\Admin\AreaController;
-use Spatie\Permission\Contracts\Permission;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +46,8 @@ Route::middleware(['auth', 'verified','role:admin|doctor|pharmacist'])->name('ad
     Route::resource('/orders', OrderController::class);
     //pharmacies
     Route::resource('/pharmacies', PharmacyController::class);
-    //areas
-    Route::resource('/areas', AreaController::class);
+    //governorates
+    Route::resource('/governorates', GovernorateController::class);
 
 
 });
