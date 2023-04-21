@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PharmacyController;
-use App\Http\Controllers\AreaController;
+use App\Http\Controllers\Admin\PharmacyController;
+use App\Http\Controllers\Admin\AreaController;
 use Spatie\Permission\Contracts\Permission;
 
 /*
@@ -36,38 +36,21 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified','role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-    Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
-    Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
-
-    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    //roles
+    Route::resource('/roles', RoleController::class);
+    //permission
+    Route::resource('/permissions', PermissionController::class);
+    //orders
+    Route::resource('/orders', OrderController::class);
     //pharmacies
-    Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
-    Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
-    Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
-    // Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
-    // Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
+    Route::resource('/pharmacies', PharmacyController::class);
+    //areas
+    Route::resource('/areas', AreaController::class);
 
 
-
-
-
-
-    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
-
-//Areas
-    Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
-    Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
-    Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
-    Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
-    Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
-    Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
-
-
-    // Route::resource('/areas/{id}/edit', [AreaController::class, 'edit'])->middleware(['auth', 'verified']);
 });
 
 
@@ -76,6 +59,9 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+    //doctors
+    // Route::resource('/doctors', DoctorController::class);
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -85,6 +71,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-
 
