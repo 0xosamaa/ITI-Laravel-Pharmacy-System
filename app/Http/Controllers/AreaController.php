@@ -42,7 +42,7 @@ public function edit($id)
 public function update(Request $request, $id)
 {
     $area = Area::findOrFail($id);
-
+    dd($area);
     $request->validate([
         'name' => 'required|string|max:255',
         'address' => 'required|string|max:255',
@@ -51,9 +51,18 @@ public function update(Request $request, $id)
     $area->name = $request->name;
     $area->address = $request->address;
     $area->save();
-
     return redirect()->route('admin.areas.index')->with('success', 'Area updated successfully!');
 }
+
+public function destroy($id)
+{
+    $area = Area::findOrFail($id);
+    $area->delete();
+
+    return redirect()->route('admin.areas.index')
+                     ->with('success', 'Area deleted successfully');
+}
+
 
 
 }

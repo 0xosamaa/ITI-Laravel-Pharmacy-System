@@ -43,20 +43,35 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
     Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
 
     Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
-    Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
+
+    //pharmacies
     Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
+    Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
+    Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
+    // Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
+    // Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
 
 
+
+
+
+
+    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
+
+//Areas
     Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
-    Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
     Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
     Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
     Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+    Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
 
-    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
 
+    // Route::resource('/areas/{id}/edit', [AreaController::class, 'edit'])->middleware(['auth', 'verified']);
 });
+
+
+
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
