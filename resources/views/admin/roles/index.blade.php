@@ -20,7 +20,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12"><a href="{{ route('admin.roles.create') }}" type="submit"
-                        class="btn btn-success w-25 my-2">New Role</a></div>
+                            class="btn btn-success w-25 my-2">New Role</a></div>
                     <div class="col-sm-12">
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
                             aria-describedby="example1_info">
@@ -43,8 +43,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($roles as $role)
-                                    @if ($loop->odd)
-                                        <tr class="odd">
+                                        <tr class="@if ($loop->odd) odd @else even @endif">
                                             <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
                                             <td>{{ $role->name }}</td>
                                             <td><a href="{{ route('admin.roles.edit', $role->id) }}"
@@ -57,7 +56,6 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @else
                                         <tr class="even">
                                             <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
                                             <td>{{ $role->name }}</td>
@@ -72,7 +70,6 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endif
                                 @empty
                                     <h3>No roles found</h3>
                                 @endforelse

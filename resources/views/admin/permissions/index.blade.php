@@ -44,8 +44,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($permissions as $permission)
-                                    @if ($loop->odd)
-                                        <tr class="odd">
+                                    <tr class="@if($loop->odd) odd @else even @endif">
                                             <td class="dtr-control sorting_1" tabindex="0">{{ $permission->id }}</td>
                                             <td>{{ $permission->name }}</td>
                                             <td><a href="{{ route('admin.permissions.edit', $permission->id) }}"
@@ -59,22 +58,6 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    @else
-                                        <tr class="even">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $permission->id }}</td>
-                                            <td>{{ $permission->name }}</td>
-                                            <td><a href="{{ route('admin.permissions.edit', $permission->id) }}"
-                                                    class="btn btn-block btn-info">Edit</a></td>
-                                            <td>
-                                                <form action="{{ route('admin.permissions.destroy', $permission->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endif
                                 @empty
                                     <h3>No permissions found</h3>
                                 @endforelse
