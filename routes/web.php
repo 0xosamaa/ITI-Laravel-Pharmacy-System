@@ -62,6 +62,7 @@ Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
     //doctors
     // Route::resource('/doctors', DoctorController::class);
 
+    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
 });
 
 Route::middleware('auth')->group(function () {
