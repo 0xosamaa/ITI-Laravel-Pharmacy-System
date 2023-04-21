@@ -43,33 +43,19 @@
                             </thead>
                             <tbody>
                                 @forelse ($roles as $role)
-                                        <tr class="@if ($loop->odd) odd @else even @endif">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
-                                            <td>{{ $role->name }}</td>
-                                            <td><a href="{{ route('admin.roles.edit', $role->id) }}"
-                                                    class="btn btn-block btn-info">Edit</a></td>
-                                            <td>
-                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr class="even">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
-                                            <td>{{ $role->name }}</td>
-                                            <td><a href="{{ route('admin.roles.edit', $role->id) }}"
-                                                    class="btn btn-block btn-info">Edit</a></td>
-                                            <td>
-                                                <form action="{{ route('admin.roles.destroy', $role->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                    <tr class="@if ($loop->odd) odd @else even @endif">
+                                        <td class="dtr-control sorting_1" tabindex="0">{{ $role->id }}</td>
+                                        <td>{{ $role->name }}</td>
+                                        <td><a href="{{ route('admin.roles.edit', $role->id) }}"
+                                                class="btn btn-block btn-info">Edit</a></td>
+                                        <td>
+                                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-block btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 @empty
                                     <h3>No roles found</h3>
                                 @endforelse
