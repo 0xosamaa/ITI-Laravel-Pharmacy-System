@@ -49,6 +49,11 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
 
     Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
     Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
+    Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
+    Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
+    Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
+    Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+
     Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
 
 });
