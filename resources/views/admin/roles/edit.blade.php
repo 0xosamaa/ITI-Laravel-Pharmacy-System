@@ -2,6 +2,9 @@
 @section('extra-css')
     <link href="{{ asset('admins/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
 @endsection
+@section('title')
+    Edit Role
+@endsection
 @section('content')
     <div class="card card-primary">
         <div class="card-header">

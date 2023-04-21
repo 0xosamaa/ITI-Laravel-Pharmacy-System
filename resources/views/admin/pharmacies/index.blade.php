@@ -5,23 +5,19 @@
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
 @endsection
-@section('title')
-    Permissions
-@endsection
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Permissions</h3>
+            <h3 class="card-title">Pharmacies</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
             <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <a href="{{ route('admin.permissions.create') }}" type="submit" class="btn btn-success w-25 my-2">New
-                            Permission</a>
-
-                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12"><a href="{{ route('admin.pharmacies.create') }}" type="submit"
+                            class="btn btn-success w-25 my-2">New Pharmacy</a></div>
                     <div class="col-sm-12">
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
                             aria-describedby="example1_info">
@@ -29,59 +25,58 @@
                                 <tr>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-sort="ascending"
-                                        aria-label="Rendering engine: activate to sort column descending">ID
-                                    </th>
+                                        aria-label="Rendering engine: activate to sort column descending">ID</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">Name
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Edit
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                        Address</th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                        Priority</th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Owner
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="CSS grade: activate to sort column ascending">Delete
+                                        colspan="1" aria-label="CSS grade: activate to sort column ascending">Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($permissions as $permission)
-                                    @if ($loop->odd)
-                                        <tr class="odd">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $permission->id }}</td>
-                                            <td>{{ $permission->name }}</td>
-                                            <td><a href="{{ route('admin.permissions.edit', $permission->id) }}"
-                                                    class="btn btn-block btn-info">Edit</a></td>
-                                            <td>
-                                                <form action="{{ route('admin.permissions.destroy', $permission->id) }}"
-                                                    method="POST">
+                                @foreach ($pharmacies as $pharmacy)
+                                    <tr>
+                                        <td>{{ $pharmacy->id }}</td>
+                                        <td>{{ $pharmacy->name }}</td>
+                                        <td>{{ $pharmacy->governorate->name }}</td>
+                                        <td>{{ $pharmacy->priority }}</td>
+                                        <td>{{ $pharmacy->owner_name }}</td>
+
+                                        <td>
+                                            <div class="btn-group">
+                                                <form action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Are you sure you want to delete this pharmacy?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-lg">Delete</button>
                                                 </form>
-                                            </td>
-                                        </tr>
-                                    @else
-                                        <tr class="even">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $permission->id }}</td>
-                                            <td>{{ $permission->name }}</td>
-                                            <td><a href="{{ route('admin.permissions.edit', $permission->id) }}"
-                                                    class="btn btn-block btn-info">Edit</a></td>
-                                            <td>
-                                                <form action="{{ route('admin.permissions.destroy', $permission->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-block btn-danger">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @empty
-                                    <h3>No permissions found</h3>
-                                @endforelse
+                                                &nbsp;
+                                                &nbsp;
+                                                <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}"
+                                                    class="btn btn-primary btn-lg">Edit</a>
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- /.card-body -->
