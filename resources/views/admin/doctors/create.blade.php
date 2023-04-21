@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password_confirmation">Confirm Password</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
                     </div>
                     <div class="form-group">
                         <label for="national_id">National ID</label>
