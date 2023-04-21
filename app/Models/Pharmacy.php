@@ -4,19 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pharmacy extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-        protected $fillable = [
-            'priority',
-            'owner_user_id',
-            'governorate_id',
-            'name'
-        ];
+    protected $fillable = [
+        'priority',
+        'owner_user_id',
+        'governorate_id',
+        'name'
+    ];
 
-    public function governorate()
+public function governorate()
     {
         return $this->belongsTo(Governorate::class, 'governorate_id');
     }
@@ -26,4 +27,8 @@ class Pharmacy extends Model
         return $this->belongsTo(User::class, 'owner_user_id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
 }
