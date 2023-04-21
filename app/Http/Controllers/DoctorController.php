@@ -68,7 +68,7 @@ class DoctorController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ])->assignRole('doctor');
 
         Doctor::create([
             'user_id' => $user->id,

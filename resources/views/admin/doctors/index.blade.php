@@ -73,7 +73,7 @@
                                             <td>{{ $doctor->user->name }}</td>
                                             <td>{{ $doctor->user->email }}</td>
                                             <td>{{ $doctor->national_id }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($doctor->created_at)->format('Y-m-d') }}</td>
+                                            <td>{{ $doctor->created_at }}</td>
                                             <td>{{ $doctor->pharmacy->name }}</td>
                                             <td>{{ $doctor->is_banned }}</td>
                                             <td>
