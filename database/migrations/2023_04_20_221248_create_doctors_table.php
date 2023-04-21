@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('doctor_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->decimal('national_id', $precision = 14, $scale = 0)->unique();
             $table->string('avatar_image')->default('default.jpg');
             $table->boolean('is_banned')->default(false);
