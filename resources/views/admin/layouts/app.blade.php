@@ -247,6 +247,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.medicines.index') }}"
+                                        class="nav-link @if (Route::is('admin.medicines.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Medicines</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('admin.roles.index') }}"
                                         class="nav-link @if (Route::is('admin.roles.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
