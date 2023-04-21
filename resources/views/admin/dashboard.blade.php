@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('title')
-    Home
+    Dashboard
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -106,7 +106,7 @@
                                 <div class="card-tools">
                                     <ul class="nav nav-pills ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
+                                            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Governorate</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard | @yield('title')</title>
+    <title>Admin | @yield('title')</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -247,6 +247,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.medicines.index') }}"
+                                        class="nav-link @if (Route::is('admin.medicines.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Medicines</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('admin.roles.index') }}"
                                         class="nav-link @if (Route::is('admin.roles.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
@@ -258,6 +265,20 @@
                                         class="nav-link @if (Route::is('admin.permissions.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Permissions</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.pharmacies.index') }}"
+                                        class="nav-link @if (Route::is('admin.pharmacies.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pharmacies</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.governorates.index') }}"
+                                        class="nav-link @if (Route::is('admin.governorates.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Governorates</p>
                                     </a>
                                 </li>
                             </ul>

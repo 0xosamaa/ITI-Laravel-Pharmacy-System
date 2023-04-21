@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Database\Seeders\CountriesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,16 +14,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(GovernorateSeeder::class);
+        $this->command->info('Seeded the Governorates!');
+
         $this->call(RoleSeeder::class);
-        $this->command->info('Seeded the roles!');
+        $this->command->info('Seeded the Roles!');
 
         $this->call(UserSeeder::class);
-        $this->command->info('Seeded the doctors, pharmacists and users!');
+        $this->command->info('Seeded the Doctors, Pharmacists and Users!');
 
         $this->call(AdminSeeder::class);
-        $this->command->info('Seeded the admins!');
+        $this->command->info('Seeded the Admins!');
 
-        $this->call(CountriesSeeder::class);
-        $this->command->info('Seeded the countries!');
+        $this->call(CategorySeeder::class);
+        $this->command->info('Seeded the Categories!');
+
+        $this->call(DiscountSeeder::class);
+        $this->command->info('Seeded the Discounts!');
+
+        $this->call(MedicineSeeder::class);
+        $this->command->info('Seeded the Medicines!');
+
+        $this->call(PharmacySeeder::class);
+        $this->command->info('Seeded the Pharmacies!');
     }
 }
