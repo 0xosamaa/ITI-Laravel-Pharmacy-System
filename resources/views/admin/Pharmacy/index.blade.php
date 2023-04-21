@@ -29,6 +29,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Name</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Address</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Priority</th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Owner</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Actions</th>
                                 </tr>
                             </thead>
@@ -39,6 +40,7 @@
                                     <td>{{ $pharmacy->name }}</td>
                                     <td>{{ $pharmacy->area->name }}</td>
                                     <td>{{ $pharmacy->priority }}</td>
+                                    <td>{{ $pharmacy->owner_name }}</td>
 
                                     <td>
                                         <div class="btn-group">

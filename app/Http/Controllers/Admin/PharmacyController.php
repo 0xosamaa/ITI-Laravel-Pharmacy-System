@@ -6,19 +6,27 @@ use DataTables;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Area;
 
 class PharmacyController extends Controller
 {
+
     public function index(Request $request)
     {
-        $allPharmacies = Pharmacy::all();
-        return view('admin.Pharmacy.index', ['pharmacies'=>$allPharmacies]);
+        $allPharmacies = Pharmacy::join('users', 'pharmacies.owner_user_id', '=', 'users.id')
+                                 ->select('pharmacies.*', 'users.name as owner_name')
+                                 ->get();
+        $users = User::all();
+        return view('admin.Pharmacy.index', ['pharmacies'=>$allPharmacies, 'users' => $users]);
     }
 
 
     public function create()
 {
-    return view('admin.Pharmacy.create');
+    $areas = Area::all();
+    $users = User::all();
+    return view('admin.Pharmacy.create', ['users' => $users,'areas' => $areas]);
 }
 
 public function store(Request $request)
