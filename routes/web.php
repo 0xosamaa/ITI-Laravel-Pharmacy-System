@@ -56,6 +56,7 @@ Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->pre
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function() {
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
 });
 
 Route::middleware('auth')->group(function () {

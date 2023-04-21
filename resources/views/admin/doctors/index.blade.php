@@ -9,6 +9,9 @@
     <link rel="stylesheet" href={{ asset("admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css") }}>
     <link rel="stylesheet" href={{ asset("admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css") }}>
     <link rel="stylesheet" href={{ asset("admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css") }}>
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href={{ asset("admins/plugins/toastr/toastr.min.css") }}>
 @endsection
 
 @section('content')
@@ -499,6 +502,9 @@
     <script src={{ asset("admins/plugins/datatables-buttons/js/buttons.html5.min.js") }}></script>
     <script src={{ asset("admins/plugins/datatables-buttons/js/buttons.print.min.js") }}></script>
     <script src={{ asset("admins/plugins/datatables-buttons/js/buttons.colVis.min.js") }}></script>
+
+    <!-- Toastr -->
+    <script src={{ asset("admins/plugins/toastr/toastr.min.js") }}></script>
     <script>
         $(function() {
             $("#example1").DataTable({
@@ -516,6 +522,26 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+            @if (session('success'))
+                toastr["success"]("{{ session('success') }}");
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            @endif
         });
     </script>
 @endsection
