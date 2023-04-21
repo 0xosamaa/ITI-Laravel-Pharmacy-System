@@ -1,37 +1,3 @@
-{{-- @extends('admin.layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-12 table-responsive">
-            <table class="table table-bordered user_datatable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Priority</th>
-                        <th>Pharmacy Name</th>
-                        <th>Area Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        @foreach ($pharmacies as $pharmacy)
-                        <tr>
-                            <td>{{ $pharmacy->id}}</td>
-                            <td>{{ $pharmacy->priority }}</td>
-                            <td>{{ $pharmacy->name }}</td>
-                            <td>{{ $pharmacy->area->name }}</td>
-                        </tr>
-                        @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-
-@endsection --}}
-
-
 
 @extends('admin.layouts.app')
 @section('extra-css')
@@ -51,40 +17,36 @@
                 <div class="row">
                 </div>
                 <div class="row">
-                    <div class="col-sm-12"><a href="{{ route('admin.roles.create') }}" type="submit"
+                    <div class="col-sm-12"><a href="{{ route('admin.pharmacies.create') }}" type="submit"
                         class="btn btn-success w-25 my-2">New Pharmacy</a></div>
                     <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
-                            aria-describedby="example1_info">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-sort="ascending"
-                                        aria-label="Rendering engine: activate to sort column descending">ID
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Name
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Edit
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="CSS grade: activate to sort column ascending">Delete
-                                    </th>
+                                    <th>Name</th>
+                                    <th>Area</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                                        @foreach ($pharmacies as $pharmacy)
-                                        <tr>
-                                            <td>{{ $pharmacy->id}}</td>
-                                            <td>{{ $pharmacy->priority }}</td>
-                                            <td>{{ $pharmacy->name }}</td>
-                                            <td>{{ $pharmacy->area->name }}</td>
-                                        </tr>
-                                        @endforeach
-
-
+                                @foreach($pharmacies as $pharmacy)
+                                <tr>
+                                    <td>{{ $pharmacy->name }}</td>
+                                    <td>{{ $pharmacy->area->name }}</td>
+                                    <td>{{ $pharmacy->priority }}</td>
+                                    <td>
+                                        <form action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                        <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}">
+                                            <button type="button">Edit</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

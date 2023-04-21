@@ -37,10 +37,9 @@
                                     <td>{{ $area->name }}</td>
                                     <td>{{ $area->address }}</td>
                                     <td>
-                                        <a href="{{ route('admin.areas.edit', $area->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        
-                                        <form method="POST" action="{{ route('admin.areas.store') }}" style="display: inline">
-                                            {{-- 'areas.destroy', $area->id --}}
+                                         <a href="{{ route('admin.areas.edit', $area->id) }}" class="btn btn-sm btn-primary">Edit</a>
+
+                                         <form method="POST" action="{{ route('admin.areas.destroy', $area->id ) }}" style="display: inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
