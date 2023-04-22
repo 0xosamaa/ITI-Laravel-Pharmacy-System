@@ -1,12 +1,17 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Contracts\Permission;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\Admin\PharmacyController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\GovernorateController;
+use App\Http\Controllers\Admin\MedicineController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +24,7 @@ use Spatie\Permission\Contracts\Permission;
 |
 */
 
-Route::get('/', function () {
-    return view('site.landing-page');
-})->name('landing-page');
+Route::get('/', [LandingPageController::class, 'index'])->name('site.landing-page');
 
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
@@ -32,18 +35,37 @@ Route::get('/dashboard', function () {
 });
 
 
-Route::middleware(['auth', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
 
-    Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']);
-
-    Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']);
-
-    Route::resource('/orders', OrderController::class)->middleware(['auth', 'verified']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    //roles
+    Route::resource('/roles', RoleController::class);
+    //permission
+    Route::resource('/permissions', PermissionController::class);
+    //orders
+    Route::resource('/orders', OrderController::class);
+    //pharmacies
+    Route::resource('/pharmacies', PharmacyController::class);
+    //governorates
+    Route::resource('/governorates', GovernorateController::class);
+    //medicines
+    Route::resource('/medicines', MedicineController::class);
 });
 
 
+
+
+Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
+});
+
+Route::name('site.')->group(function () {
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/shop/{medicine:slug}', [ShopController::class, 'show'])->name('shop.show');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,6 +74,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-
-
