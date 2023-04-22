@@ -15,7 +15,6 @@ use Laravel\Cashier\Billable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Billable;
-
     /**
      * The attributes that are mass assignable.
      *
