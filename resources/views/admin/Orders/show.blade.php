@@ -47,9 +47,14 @@
                 <a href="{{route('admin.orders.index')}}" class="btn btn-outline-info w-25">
                     <i class="fas fa-info"></i>
                 </a>
+                @if($order->status == 'WaitingForUserConfirmation' || $order->status == 'Confirmed')
+                    <a href="#" class="btn btn-outline-secondary w-25">
+                        <i class="fas fa-money-bill"></i>
+                    </a>
+                @endif
             </div>
         </div>
-        <div class="card p-3 col-7 h-100 d-flex align-items-center justify-content-center  flex-column" style="overflow: scroll;">
+        <div class="card p-3 col-7 d-flex align-items-center justify-content-center  flex-column" style="overflow: scroll;">
             @foreach($order->items as $item)
                 <div class="card p-3 col-10 d-flex flex-row justify-content-around align-items-center" style="max-height: 80px">
                     <h5>

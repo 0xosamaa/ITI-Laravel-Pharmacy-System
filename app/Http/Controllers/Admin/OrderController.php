@@ -56,7 +56,7 @@ class OrderController extends Controller
         $order = [
             'user_id' => $data['user_id'],
             'pharmacy_id' => $data['pharmacy_id'],
-            'status' => 'New',
+            'status' => 'WaitingForUserConfirmation',
             'is_insured' => true,
             'delivery_address' => $delivery_address,
         ];
