@@ -13,6 +13,15 @@
     <link rel="stylesheet" href={{ asset("admins/plugins/toastr/toastr.min.css") }}>
 @endsection
 
+@section('extra-css')
+    <!-- Select2 -->
+    <link rel="stylesheet" href={{ asset('admins/plugins/select2/css/select2.min.css') }}>
+    <link rel="stylesheet" href={{ asset('admins/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}>
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href={{ asset("admins/plugins/toastr/toastr.min.css") }}>
+@endsection
+
 @section('content')
     <div class="container py-4">
         <!-- general form elements -->

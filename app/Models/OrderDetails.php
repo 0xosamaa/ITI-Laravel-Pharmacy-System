@@ -10,6 +10,7 @@ class OrderDetails extends Model
 {
     use HasFactory, SoftDeletes;
 
+<<<<<<< HEAD
     protected $fillable = [
         'doctor_id',
         'pharmacy_id',
@@ -21,10 +22,13 @@ class OrderDetails extends Model
         'user_id'
     ];
 
+=======
+>>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     public function pharmacy()
     {
         return $this->belongsTo(Pharmacy::class);
     }
+<<<<<<< HEAD
     public function items()
     {
         return $this->hasMany(OrderItems::class, 'order_id', 'id');
@@ -37,4 +41,6 @@ class OrderDetails extends Model
     {
         return $this->belongsTo(User::class);
     }
+=======
+>>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
 }

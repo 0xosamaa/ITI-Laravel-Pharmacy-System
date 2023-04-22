@@ -13,9 +13,12 @@
     <!-- Toastr -->
     <link rel="stylesheet" href={{ asset('admins/plugins/toastr/toastr.min.css') }}>
 
+<<<<<<< HEAD
     <!-- Font Awesome -->
     <link rel="stylesheet" href={{ asset('admins/plugins/fontawesome-free/css/all.min.css') }}>
 
+=======
+>>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     <style>
         img {
             width: 50px;
@@ -63,6 +66,7 @@
                                         <th>Created At</th>
                                         <th>Pharmacy</th>
                                         <th>Status</th>
+                                        <th>Is banned</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -97,6 +101,7 @@
                                                 <a href="" class="btn btn-warning rounded-lg mx-1">
                                                     <i class="fas fa-user-slash"></i>
                                                 </a>
+                                                <td>
                                             </td>
                                         </tr>
                                     @endforeach
