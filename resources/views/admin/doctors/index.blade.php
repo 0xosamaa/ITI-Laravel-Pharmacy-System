@@ -39,7 +39,8 @@
                     <h1>Doctors</h1>
                 </div>
                 <div class="col-sm-6 d-flex justify-content-end">
-                    <a name="" id="" class="btn btn-success" href="{{ route('doctors.create') }}" role="button">Create Doctor</a>
+                    <a name="" id="" class="btn btn-success" href="{{ route('doctors.create') }}"
+                        role="button">Create Doctor</a>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -79,7 +80,8 @@
                                             <td>{{ $doctor->created_at }}</td>
                                             <td>{{ $doctor->pharmacy->name }}</td>
                                             <td>
-                                                <span class="badge rounded-pill @if ($doctor->is_banned == 0) bg-success @else bg-danger @endif">
+                                                <span
+                                                    class="badge rounded-pill @if ($doctor->is_banned == 0) bg-success @else bg-danger @endif">
                                                     @if ($doctor->is_banned == 0)
                                                         Not Banned
                                                     @else
@@ -88,15 +90,80 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="/doctors/{{ $doctor['id'] }}/edit" class="btn btn-primary rounded-lg mx-1">
+                                                <a href="/doctors/{{ $doctor->id }}/edit"
+                                                    class="btn btn-primary rounded-lg mx-1">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <a href="#" class="btn btn-danger rounded-lg mx-1">
+                                                <button type="button" class="btn btn-danger rounded-lg mx-1"
+                                                    data-toggle="modal" data-target="#deleteModal"
+                                                    data-id="{{ $doctor->id }}">
                                                     <i class="fas fa-trash"></i>
-                                                </a>
-                                                <a href="" class="btn btn-warning rounded-lg mx-1">
+                                                </button>
+
+                                                <!-- Delete Modal -->
+                                                <div class="modal fade" id="deleteModal">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Delete Doctor</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure to delete doctor?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="" method="POST" id='delete-form'>
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    {{ method_field('DELETE') }}
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">No</button>
+                                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
+
+                                                <button class="btn btn-warning rounded-lg mx-1">
                                                     <i class="fas fa-user-slash"></i>
-                                                </a>
+                                                </button>
+
+                                                <!-- Ban/Unban Modal -->
+                                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete
+                                                                    Post</h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure to delete post?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="" method="POST" id='delete-form'>
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    {{ method_field('DELETE') }}
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">No</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Yes</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -116,6 +183,12 @@
 @endsection
 
 @section('extra-js')
+    <!-- JQuery -->
+    <script src={{ asset('admins/plugins/jquery/jquery.js') }}></script>
+
+    <!-- bootstrap 4 js -->
+    <script src={{ asset('admins/plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
+
     <!-- DataTables  & Plugins -->
     <script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
     <script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
@@ -149,6 +222,13 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+
+            let id;
+            $('button[data-bs-target="#deleteModal"]').on('click', function() {
+                id = $(this).get(0).dataset['id'];
+                $('#delete-form').attr('action', '/doctors/' + id);
+            });
+
             @if (session('success'))
                 toastr["success"]("{{ session('success') }}");
                 toastr.options = {
