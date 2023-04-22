@@ -10,6 +10,7 @@ use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Stripe;
 
 class OrderController extends Controller
 {
@@ -165,5 +166,33 @@ class OrderController extends Controller
         $order->items->each->delete();
         $order->delete();
         return redirect()->route('admin.orders.index');*/
+    }
+
+    public function checkOut(string $id)
+    {
+        $order = OrderDetails::find($id);
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $charge = \Stripe\Charge::create([
+                'amount' => $order->total / 100,
+                'currency' => 'usd',
+                'source' => $order->user->id,
+                'description' => 'Order',
+                'receipt_email' => $order->user->email,
+                'metadata' => [
+                    'contents' => $order->items->map(function ($item) {
+                        return $item->medicine->name . ', ' . $item->quantity;
+                    })->values()->toJson(),
+                    'quantity' => $order->items->sum('quantity'),
+                ],
+            ]);
+            $order->status = 'Completed';
+            $order->transaction_id = $charge->id;
+            $order->save();
+            return redirect()->back()->with('success_message', 'Payment successful!');
+
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }
