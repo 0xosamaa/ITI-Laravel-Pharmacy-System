@@ -33,9 +33,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="area_id">Area ID</label>
-                                <input id="area_id" type="number" class="form-control @error('area_id') is-invalid @enderror" name="area_id" value="{{ old('area_id', $pharmacy->area_id) }}" required>
-                                @error('area_id')
+                                <label for="governorate_id">Governorate</label>
+                                <input id="governorate_id" type="number" class="form-control @error('governorate_id') is-invalid @enderror" name="governorate_id" value="{{ old('governorate_id', $pharmacy->governorate_id) }}" required>
+                                @error('governorate_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
