@@ -15,9 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone_no')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->enum('gender', ['male', 'female'])->default('male');
             $table->string('password');
+            $table->string('confirm_password');
+            $table->date('date_of_birth')->nullable();
+            $table->string('mobile_number')->nullable();
+            $table->string('national_id', 14)->unique()->nullable();
+            $table->string('profile_image_path')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
