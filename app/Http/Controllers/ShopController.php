@@ -9,7 +9,7 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $medicines = Medicine::paginate(12);
+        $medicines = Medicine::with('discount')->paginate(12);
         return view('site.shop.index', compact('medicines'));
     }
 
