@@ -8,22 +8,15 @@ use App\Models\Doctor;
 use App\Models\Pharmacy;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-=======
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
 
 class DoctorController extends Controller
 {
     public function index()
     {
-<<<<<<< HEAD
         // $doctors = Doctor::all();
         $doctors = Doctor::with("pharmacy", "user")->get();
-=======
-        $doctors = Doctor::all();
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
 
         return view('admin.doctors.index', [
             'doctors' => $doctors
@@ -88,7 +81,6 @@ class DoctorController extends Controller
         ]);
 
         return redirect('doctors')->with('success', 'Doctor created successfully');
-<<<<<<< HEAD
     }
 
     public function show($id)
@@ -170,7 +162,5 @@ class DoctorController extends Controller
         // ]);
 
         return redirect('doctors')->with('success', 'Doctor updated successfully');
-=======
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     }
 }
