@@ -289,6 +289,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.users.index') }}"
+                                        class="nav-link @if (Route::is('admin.users.index')) active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Users</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('admin.orders.index') }}"
                                         class="nav-link @if (Route::is('admin.orders.index')) active @endif">
                                         <i class="far fa-flag nav-icon"></i>
