@@ -41,5 +41,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserAddressSeeder::class);
         $this->command->info('Seeded the User Addresses');
+        
+        $this->call(DoctorSeeder::class);
+        $this->command->info('Seeded the Doctors!');
     }
 }

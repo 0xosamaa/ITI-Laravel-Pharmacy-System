@@ -16,7 +16,7 @@ class Governorate extends Model
         return $this->hasMany(Pharmacy::class);
     }
 
-    public function user_adresses()
+    public function user_addresses()
     {
         return $this->hasMany(UserAddress::class);
     }

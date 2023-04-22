@@ -1,13 +1,9 @@
-// extend the layout from the admin layout file
     @extends ( 'admin.layouts.app' )
 
-    // set the page title
     @section ( 'title' ,   'Orders' )
 
-    // set the active sidebar element
     @section ( 'active' ,   'orders' )
 
-    // set the page content
     @section ( 'content' )
             <div class="container-fluid p-4">
                 <table id="example1" class="table table-bordered table-striped">
@@ -20,8 +16,10 @@
                         <th>Doctor Name</th>
                         <th>Is Insured</th>
                         <th>Status</th>
-                        <th>Creator Type</th>
-                        <th>Assigned Pharmacy </th>
+                        @if(auth()->user()->hasRole('admin'))
+                            <th>Creator Type</th>
+                            <th>Assigned Pharmacy </th>
+                        @endif
                         <th>Actions</th>
 
                     </tr>
@@ -30,11 +28,11 @@
                         @foreach($orders as $order)
                             <tr>
                                 <td>{{$order['id']}}</td>
-                                <td>{{$order['user_name']}}</td>
+                                <td>{{$order->user->name}}</td>
                                 <td>{{$order['delivery_address']}}</td>
-                                <td>{{$order['createdAt']}}</td>
+                                <td>{{$order['created_at']}}</td>
                                 <td>{{$order['doctor_name']}}</td>
-                                <td>{{$order['is_insured']}}</td>
+                                <td>{{$order['is_insured']==1 ? 'True' : 'False' }}</td>
                                 <td>
                                     <span class="badge badge-{{$order['status'] == 'New' ? 'primary' :
                                     ($order['status'] == 'Processing' ? 'success' :
@@ -43,8 +41,10 @@
                                     ($order['status'] == 'WaitingForUserConfirmation' ? 'warning' : 'dark'))))
                                         }}">{{$order['status']}}</span>
                                 </td>
-                                <td>{{$order['creator_type']}}</td>
-                                <td>{{$order['assigned_pharmacy']}}</td>
+                                @if(auth()->user()->hasRole('admin'))
+                                    <td>{{$order['creator_type']}}</td>
+                                    <td>{{$order->pharmacy->name}}</td>
+                                @endif
                                 <td class="d-flex justify-content-around">
                                     <a href="{{route('admin.orders.show',$order['id'])}}" class="btn btn-outline-info">
                                         <i class="fas fa-info"></i>
@@ -91,11 +91,14 @@
                 </table>
 
             </div>
+            <a href="{{route('admin.orders.create')}}" class="btn btn-primary d-flex justify-content-center align-items-center rounded-circle shadow-lg" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;width: 50px;height: 50px">
+                <i class="fas fa-plus"></i>
+            </a>
+
 
 
     @endsection
 
-    // set the page scripts
     @section ( 'extra-js' )
         <script src="{{asset('admins/plugins/jquery/jquery.min.js')}}"></script>
         <!-- Bootstrap 4 -->
@@ -131,7 +134,6 @@
         </script>
     @endsection
 
-    // set the page styles
     @section ( 'extra-css' )
         <!-- DataTables -->
         <link rel="stylesheet" href="{{asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">

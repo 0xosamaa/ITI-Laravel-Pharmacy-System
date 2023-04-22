@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserAdressController;
+use App\Http\Controllers\StripeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -57,17 +59,19 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
     Route::resource('/users', UserController::class);
     // users_addresses
     Route::resource('/user_addresses', UserAdressController::class);
+    //stripe
+    Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
+    Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
+
+    Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
+
 });
 
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
-    // Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-    // Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    // Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-    // Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
-    // Route::get('/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
-    // Route::patch('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
+    // //doctors
     Route::resource('/doctors', DoctorController::class);
+    Route::delete('/doctors', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
 Route::name('site.')->group(function () {

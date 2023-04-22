@@ -1,6 +1,7 @@
-
-
 @extends('admin.layouts.app')
+@section('title')
+    Governorates
+@endsection
 @section('extra-css')
     <!-- DataTables -->
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
