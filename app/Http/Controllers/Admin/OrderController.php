@@ -33,12 +33,13 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $medicines = Medicine::all();
         $users = User::role('user')->get();
         $pharmacies = Pharmacy::all();
         return view('admin.Orders.create', ['medicines' => $medicines, 'users' => $users, 'pharmacies' => $pharmacies]);
+
     }
 
     /**
