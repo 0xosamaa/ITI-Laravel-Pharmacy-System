@@ -71,14 +71,14 @@
             <div class="row">
                 @foreach ($medicines as $medicine)
                     <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                        @if ($medicine->discount)
+                        @if ($medicine->hasActiveDiscount())
                             <span class="tag">Sale</span>
                         @endif
                         <a href="{{ route('site.shop.show', $medicine->slug) }}"> <img src="{{ asset($medicine->image) }}"
                                 alt="Image"></a>
                         <h3 class="text-dark"><a
                                 href="{{ route('site.shop.show', $medicine->slug) }}">{{ $medicine->name }}</a></h3>
-                        @if ($medicine->discount)
+                        @if ($medicine->hasActiveDiscount())
                             <p class="price"><del>{{ $medicine->formatted_price() }}</del> &nbsp;
                                 {{ $medicine->formatted_discount() }}</p>
                         @else
@@ -108,7 +108,7 @@
                         <div class="nonloop-block-3 owl-carousel">
                             @foreach ($new_medicines as $new_medicine)
                                 <div class="text-center item mb-4">
-                                    @if ($medicine->discount)
+                                    @if ($medicine->hasActiveDiscount())
                                         <span class="tag">Sale</span>
                                     @endif
                                     <a href="{{ route('site.shop.show', $new_medicine->slug) }}"> <img
@@ -116,7 +116,7 @@
                                     <h3 class="text-dark"><a
                                             href="{{ route('site.shop.show', $new_medicine->slug) }}">{{ $new_medicine->name }}</a>
                                     </h3>
-                                    @if ($new_medicine->discount)
+                                    @if ($new_medicine->hasActiveDiscount())
                                         <p class="price"><del>{{ $new_medicine->formatted_price() }}</del> &nbsp;
                                             {{ $new_medicine->formatted_discount() }}</p>
                                     @else
