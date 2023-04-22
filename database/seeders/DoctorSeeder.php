@@ -65,7 +65,9 @@ class DoctorSeeder extends Seeder
                     'user_id' => $user_id,
                     'national_id' => $national_id++,
                     'avatar_image' => $image_name,
-                    'pharmacy_id' => $pharmacies->random()
+                    'pharmacy_id' => $pharmacies->random(),
+                    'created_at' => \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
                 ]);
 
                 $user = \App\Models\User::find($user_id);

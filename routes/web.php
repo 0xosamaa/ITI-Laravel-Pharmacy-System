@@ -67,6 +67,7 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
+    Route::delete('/doctors', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
 Route::name('site.')->group(function () {
