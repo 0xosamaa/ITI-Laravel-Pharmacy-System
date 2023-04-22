@@ -1,4 +1,7 @@
 @extends('admin.layouts.app')
+@section('title')
+    Pharmacy
+@endsection
 
 @section('content')
     <div class="my-6">
