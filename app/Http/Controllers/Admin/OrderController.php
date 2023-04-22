@@ -18,7 +18,15 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = OrderDetails::all();
+        if (Auth::user()->hasRole('pharmacist')) {
+            $orders = OrderDetails::where('pharmacy_id', Auth::user()->id)->get();
+        }
+        elseif (Auth::user()->hasRole('doctor')) {
+            $orders = OrderDetails::where('doctor_id', Auth::user()->id)->get();
+        }
+        else {
+            $orders = OrderDetails::all();
+        }
         return view('admin.Orders.index',['orders' => $orders]);
     }
 
@@ -148,8 +156,13 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $order = OrderDetails::find($id);
+        $order->status = 'Canceled';
+        $order->save();
+        return redirect()->route('admin.orders.index');
+
+        /*$order = OrderDetails::find($id);
         $order->items->each->delete();
         $order->delete();
-        return redirect()->route('admin.orders.index');
+        return redirect()->route('admin.orders.index');*/
     }
 }
