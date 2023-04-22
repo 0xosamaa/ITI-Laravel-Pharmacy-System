@@ -37,5 +37,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PharmacySeeder::class);
         $this->command->info('Seeded the Pharmacies!');
+
+        $this->call(DoctorSeeder::class);
+        $this->command->info('Seeded the Doctors!');
     }
 }
