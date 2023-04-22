@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
+use App\Http\Controllers\StripeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +53,10 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
     Route::resource('/governorates', GovernorateController::class);
     //medicines
     Route::resource('/medicines', MedicineController::class);
+    //stripe
+    Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
+    Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
+
 });
 
 
