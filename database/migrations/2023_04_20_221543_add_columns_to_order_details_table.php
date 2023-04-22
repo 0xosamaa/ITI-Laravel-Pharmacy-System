@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('is_insured');
             $table->string('delivery_address');
             $table->string('creator_type');
+            $table->string('transaction_id')->nullable();
         });
     }
 

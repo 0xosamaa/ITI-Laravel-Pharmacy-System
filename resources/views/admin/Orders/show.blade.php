@@ -61,7 +61,7 @@
                         Name : <span style="color: #777;"> {{ $item->medicine->name }}</span>
                     </h5>
                     <h6>
-                        Price : <span style="color: #777;"> {{ $item->medicine->price }}</span>
+                        Price : <span style="color: #777;"> {{ format_price($item->medicine->price) }}</span>
                     </h6>
                     <h6>
                         Quantity : <span style="color: #777;"> {{ $item['quantity'] }}</span>
