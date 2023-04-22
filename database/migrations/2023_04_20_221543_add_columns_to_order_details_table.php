@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('order_details', function (Blueprint $table) {
-            $table->foreignId('doctor_id')->constrained('users');
+            $table->foreignId('doctor_id')->nullable()->constrained('users');
             $table->foreignId('pharmacy_id')->constrained('pharmacies');
             $table->enum('status', ['New', 'Confirmed', 'Processing', 'WaitingForUserConfirmation', 'Completed', 'Cancelled']);
             $table->boolean('is_insured');

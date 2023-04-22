@@ -31,4 +31,8 @@ public function governorate()
     {
         return $this->hasMany(OrderDetails::class);
     }
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

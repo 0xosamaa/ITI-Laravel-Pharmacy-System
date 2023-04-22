@@ -12,15 +12,15 @@
     <div class="container-fluid row d-flex justify-content-around p-5 h-75">
         <div class="card p-3 col-4">
             <h5>
-                Doctor Name : <span style="color: #777;"> {{ $order['doctor_name'] }}</span>
+                Doctor Name : <span style="color: #777;"> {{ auth()->user()->hasRole('doctor') ? $order->doctor->name : "" }}</span>
             </h5>
             <hr>
             <h5>
-                User Name : <span style="color: #777;"> {{ $order['user_name'] }}</span>
+                User Name : <span style="color: #777;"> {{ $order->user->name }}</span>
             </h5>
             <hr>
             <h5>
-                Creation Date : <span style="color: #777;"> {{ $order['createdAt'] }}</span>
+                Creation Date : <span style="color: #777;"> {{ $order['created_at'] }}</span>
             </h5>
             <hr>
             <h5>
@@ -28,7 +28,7 @@
             </h5>
             <hr>
             <h5>
-                Is Insured : <span style="color: #777;"> {{ $order['is_insured'] }}</span>
+                Is Insured : <span style="color: #777;"> {{ $order['is_insured']==1 ? 'True' : 'False' }}</span>
             </h5>
             <hr>
             <h5>
@@ -40,7 +40,7 @@
             </h5>
             <hr>
             <h5>
-                Assigned Pharmacy : <span style="color: #777;"> {{ $order['assigned_pharmacy'] }}</span>
+                Assigned Pharmacy : <span style="color: #777;"> {{ $order->pharmacy->name }}</span>
             </h5>
             <hr>
             <div class="buttons w-100 d-flex justify-content-around">
@@ -53,16 +53,16 @@
             </div>
         </div>
         <div class="card p-3 col-7 h-100 d-flex align-items-center justify-content-center  flex-column" style="overflow: scroll;">
-            @foreach($order['items'] as $medicine)
+            @foreach($order->items as $item)
                 <div class="card p-3 col-10 d-flex flex-row justify-content-around align-items-center" style="max-height: 80px">
                     <h5>
-                        Name : <span style="color: #777;"> {{ $medicine['name'] }}</span>
+                        Name : <span style="color: #777;"> {{ $item->medicine->name }}</span>
                     </h5>
                     <h6>
-                        Price : <span style="color: #777;"> {{ $medicine['price'] }}</span>
+                        Price : <span style="color: #777;"> {{ $item->medicine->price }}</span>
                     </h6>
                     <h6>
-                        Quantity : <span style="color: #777;"> {{ $medicine['quantity'] }}</span>
+                        Quantity : <span style="color: #777;"> {{ $item['quantity'] }}</span>
                     </h6>
                 </div>
             @endforeach
