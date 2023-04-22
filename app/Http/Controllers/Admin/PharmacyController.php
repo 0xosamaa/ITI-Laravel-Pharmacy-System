@@ -48,11 +48,8 @@ public function edit(Request $request, $id)
     $governorates = Governorate::all();
     $users = User::role('pharmacist')->get();
     $pharmacy = Pharmacy::findOrFail($id);
-<<<<<<< HEAD
-    return view('admin.pharmacies.edit', ['pharmacy'=>$pharmacy]);
-=======
+
     return view('admin.pharmacies.edit', ['pharmacy'=>$pharmacy, 'users' => $users,'governorates' => $governorates ]);
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
 }
 
 public function update(Request $request, $id)

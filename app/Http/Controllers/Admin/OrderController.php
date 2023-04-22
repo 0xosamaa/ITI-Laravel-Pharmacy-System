@@ -9,11 +9,7 @@ use App\Models\OrderItems;
 use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
-=======
-use App\Models\Pharmacy;
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
 
 class OrderController extends Controller
 {
@@ -39,18 +35,11 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-<<<<<<< HEAD
         $medicines = Medicine::all();
         $users = User::role('user')->get();
         $pharmacies = Pharmacy::all();
         return view('admin.Orders.create', ['medicines' => $medicines, 'users' => $users, 'pharmacies' => $pharmacies]);
-=======
-        //this code for decreasing the priority y hassan
-        $pharmacy = Pharmacy::findOrFail($request->pharmacy_id);
-        $pharmacy->decreasePriority();
 
-        return view('admin.Orders.create');
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     }
 
     /**
@@ -116,17 +105,11 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-<<<<<<< HEAD
         $order = OrderDetails::find($id);
         $pharmacies = Pharmacy::all();
         $users = User::role('user')->get();
         $medicines = Medicine::all();
         return view('admin.Orders.edit', ['order' => $order, 'pharmacies' => $pharmacies, 'users' => $users, 'medicines' => $medicines]);
-=======
-        //increase priority if order completed
-
-        return view('admin.Orders.edit');
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     }
 
     /**
