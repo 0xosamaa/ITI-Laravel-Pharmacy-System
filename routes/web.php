@@ -63,12 +63,12 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
 
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
-    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    //doctors
-    // Route::resource('/doctors', DoctorController::class);
+    // Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    // Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+    // //doctors
 
-    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
+    // Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
+    Route::resource('/doctors', DoctorController::class);
 });
 
 Route::name('site.')->group(function () {
