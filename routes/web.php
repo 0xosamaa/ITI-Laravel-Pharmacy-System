@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserAdressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,10 +53,10 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
     Route::resource('/governorates', GovernorateController::class);
     //medicines
     Route::resource('/medicines', MedicineController::class);
-});
-
-Route::middleware(['auth', 'role:user'])->group(function(){
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    // users
+    Route::resource('/users', UserController::class);
+    // users_addresses
+    Route::resource('/user_addresses', UserAdressController::class);
 });
 
 

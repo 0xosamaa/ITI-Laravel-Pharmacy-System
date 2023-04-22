@@ -9,4 +9,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class UserAddress extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'flat_number',
+        'floor_number',
+        'building_number',
+        'street_name',
+        'area_id',
+        'is_main',
+        'user_id',
+        'governorate_id'
+    ];
+
+    public function governorate(){
+        return $this->belongsTo(Governorate::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
