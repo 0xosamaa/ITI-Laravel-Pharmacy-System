@@ -30,11 +30,11 @@
                         @foreach($orders as $order)
                             <tr>
                                 <td>{{$order['id']}}</td>
-                                <td>{{$order['user_name']}}</td>
+                                <td>{{$order->user->name}}</td>
                                 <td>{{$order['delivery_address']}}</td>
-                                <td>{{$order['createdAt']}}</td>
+                                <td>{{$order['created_at']}}</td>
                                 <td>{{$order['doctor_name']}}</td>
-                                <td>{{$order['is_insured']}}</td>
+                                <td>{{$order['is_insured']==1 ? 'True' : 'False' }}</td>
                                 <td>
                                     <span class="badge badge-{{$order['status'] == 'New' ? 'primary' :
                                     ($order['status'] == 'Processing' ? 'success' :
@@ -44,7 +44,7 @@
                                         }}">{{$order['status']}}</span>
                                 </td>
                                 <td>{{$order['creator_type']}}</td>
-                                <td>{{$order['assigned_pharmacy']}}</td>
+                                <td>{{$order->pharmacy->name}}</td>
                                 <td class="d-flex justify-content-around">
                                     <a href="{{route('admin.orders.show',$order['id'])}}" class="btn btn-outline-info">
                                         <i class="fas fa-info"></i>
@@ -91,6 +91,10 @@
                 </table>
 
             </div>
+            <a href="{{route('admin.orders.create')}}" class="btn btn-primary d-flex justify-content-center align-items-center rounded-circle shadow-lg" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;width: 50px;height: 50px">
+                <i class="fas fa-plus"></i>
+            </a>
+
 
 
     @endsection

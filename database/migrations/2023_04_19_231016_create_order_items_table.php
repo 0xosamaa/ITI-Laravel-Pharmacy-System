@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('order_details');
+            $table->foreignId('medicine_id')->constrained('medicines');
             $table->unsignedInteger('quantity');
             $table->softDeletes();
             $table->timestamps();
