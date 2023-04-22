@@ -50,7 +50,7 @@ class DoctorSeeder extends Seeder
             }
 
             $pharmacies = Pharmacy::all()->pluck('id');
-            $national_id = 282042274800;
+            $national_id = 28204227480000;
 
             foreach ($users as $user) {
                 $user_id = DB::table('users')->insertGetId($user);
