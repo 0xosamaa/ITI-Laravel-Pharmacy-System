@@ -26,4 +26,18 @@ class Pharmacy extends Model
         return $this->belongsTo(User::class, 'owner_user_id');
     }
 
+    public function decreasePriority() {
+        if ($this->priority > 1) {
+        $this->priority *= 0.9;
+        $this->save();
+        }
+        }
+
+
+    public function increasePriority() {
+        if ($this->priority) {
+        $this->priority /= 0.9;
+        $this->save();
+        }
+        }
 }

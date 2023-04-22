@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Pharmacy;
 
 class OrderController extends Controller
 {
@@ -80,8 +81,12 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        //this code for decreasing the priority y hassan
+        $pharmacy = Pharmacy::findOrFail($request->pharmacy_id);
+        $pharmacy->decreasePriority();
+
         return view('admin.Orders.create');
     }
 
@@ -142,6 +147,8 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
+        //increase priority if order completed
+
         return view('admin.Orders.edit');
     }
 
