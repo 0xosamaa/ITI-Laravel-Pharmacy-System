@@ -42,6 +42,9 @@
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">Name
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Category
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         Description
                                     </th>
@@ -69,15 +72,16 @@
                                         <td class="dtr-control sorting_1" tabindex="0">{{ $medicine->id }}</td>
                                         <td><img width="128" src="{{ asset($medicine->image) }}" alt=""></td>
                                         <td>{{ $medicine->name }}</td>
+                                        <td>{{ $medicine->category->name }}</td>
                                         <td>{{ Str::limit($medicine->description, 10) }}</td>
                                         <td>{{ $medicine->formatted_price() }}</td>
-                                        @if (!empty($medicine->discount))
+                                        @if ($medicine->hasActiveDiscount())
                                             <td>
                                                 {{ $medicine->formatted_discount() }}
                                                 ({{ $medicine->discount->discount_percent }}%)
                                             </td>
                                         @else
-                                            <td>No Discount</td>
+                                            <td>No Active Discount</td>
                                         @endif
                                         <td>{{ $medicine->SKU }}</td>
                                         <td>

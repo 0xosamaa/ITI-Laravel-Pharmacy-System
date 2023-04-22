@@ -30,7 +30,7 @@
                     <small>Category: {{ $medicine->category->name }}</small>
                     <p>{{ $medicine->description }}</p>
 
-                    @if ($medicine->discount_id)
+                    @if ($medicine->hasActiveDiscount())
                         <p><del>{{ $medicine->formatted_price() }}</del> <strong
                                 class="text-primary h4">{{ $medicine->formatted_discount() }}</strong>
                         </p>

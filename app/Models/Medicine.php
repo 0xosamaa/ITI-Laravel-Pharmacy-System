@@ -11,6 +11,15 @@ class Medicine extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
+    public $fillable = [
+        'name',
+        'description',
+        'SKU',
+        'image',
+        'price',
+        'category_id',
+        'discount_id',
+    ];
     public function sluggable(): array
     {
         return [
@@ -29,6 +38,11 @@ class Medicine extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function hasActiveDiscount()
+    {
+        if ($this->discount && $this->discount->active) return true;
+        return false;
+    }
 
     function formatted_price()
     {
@@ -37,8 +51,8 @@ class Medicine extends Model
 
     function formatted_discount()
     {
-        if (!isset($this->discount)) return $this->price;
-        
+        if (!isset($this->discount) || !($this->discount->active)) return $this->formatted_price();
+
         $percent = $this->discount->discount_percent;
         $discounted_price = $this->price - ($this->price * $percent / 100);
 

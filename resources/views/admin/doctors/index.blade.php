@@ -13,6 +13,9 @@
     <!-- Toastr -->
     <link rel="stylesheet" href={{ asset('admins/plugins/toastr/toastr.min.css') }}>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href={{ asset('admins/plugins/fontawesome-free/css/all.min.css') }}>
+
     <style>
         img {
             width: 50px;
@@ -59,7 +62,7 @@
                                         <th>National Id</th>
                                         <th>Created At</th>
                                         <th>Pharmacy</th>
-                                        <th>Is banned</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -75,10 +78,25 @@
                                             <td>{{ $doctor->national_id }}</td>
                                             <td>{{ $doctor->created_at }}</td>
                                             <td>{{ $doctor->pharmacy->name }}</td>
-                                            <td>{{ $doctor->is_banned }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary">Edit</a>
-                                                <a href="#" class="btn btn-danger">Delete</a>
+                                                <span class="badge rounded-pill @if ($doctor->is_banned == 0) bg-success @else bg-danger @endif">
+                                                    @if ($doctor->is_banned == 0)
+                                                        Not Banned
+                                                    @else
+                                                        Banned
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="/doctors/{{ $doctor['id'] }}/edit" class="btn btn-primary rounded-lg mx-1">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-danger rounded-lg mx-1">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                <a href="" class="btn btn-warning rounded-lg mx-1">
+                                                    <i class="fas fa-user-slash"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
