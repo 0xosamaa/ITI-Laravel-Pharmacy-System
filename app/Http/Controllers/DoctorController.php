@@ -155,12 +155,21 @@ class DoctorController extends Controller
     public function destroy($id)
     {
         $doctor = Doctor::find($id);
-        dd($doctor);
+
         if ($doctor->avatar_image != 'default.jpg') {
             File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
         }
-        DB::table('users')->where('id', $id)->delete();
+        DB::table('doctors')->where('id', $doctor->id)->delete();
+        Doctor::destroy($id);
 
-        return redirect('doctors')->with('success', 'Doctor deleted successfully');
+        // Get the updated list of doctors
+        $doctors = Doctor::all();
+
+        // Return a JSON response with the updated data
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor deleted successfully.',
+            'doctors' => $doctors
+        ]);
     }
 }
