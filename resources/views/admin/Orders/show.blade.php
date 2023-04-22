@@ -1,12 +1,9 @@
 @extends ( 'admin.layouts.app' )
 
-// set the page title
 @section ( 'title' ,   'Order Details' )
 
-// set the active sidebar element
 @section ( 'active' ,   'orders' )
 
-// set the page content
 @section ( 'content' )
 
     <div class="container-fluid row d-flex justify-content-around p-5 h-75">
@@ -75,12 +72,10 @@
 
 @endsection
 
-// set the page scripts
 @section ( 'extra-js' )
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
 @endsection
 
-// set the page styles
 @section ( 'extra-css' )
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
 @endsection

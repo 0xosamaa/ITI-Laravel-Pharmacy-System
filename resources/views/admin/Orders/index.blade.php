@@ -1,13 +1,9 @@
-// extend the layout from the admin layout file
     @extends ( 'admin.layouts.app' )
 
-    // set the page title
     @section ( 'title' ,   'Orders' )
 
-    // set the active sidebar element
     @section ( 'active' ,   'orders' )
 
-    // set the page content
     @section ( 'content' )
             <div class="container-fluid p-4">
                 <table id="example1" class="table table-bordered table-striped">
@@ -20,8 +16,10 @@
                         <th>Doctor Name</th>
                         <th>Is Insured</th>
                         <th>Status</th>
-                        <th>Creator Type</th>
-                        <th>Assigned Pharmacy </th>
+                        @if(auth()->user()->hasRole('admin'))
+                            <th>Creator Type</th>
+                            <th>Assigned Pharmacy </th>
+                        @endif
                         <th>Actions</th>
 
                     </tr>
@@ -43,8 +41,10 @@
                                     ($order['status'] == 'WaitingForUserConfirmation' ? 'warning' : 'dark'))))
                                         }}">{{$order['status']}}</span>
                                 </td>
-                                <td>{{$order['creator_type']}}</td>
-                                <td>{{$order->pharmacy->name}}</td>
+                                @if(auth()->user()->hasRole('admin'))
+                                    <td>{{$order['creator_type']}}</td>
+                                    <td>{{$order->pharmacy->name}}</td>
+                                @endif
                                 <td class="d-flex justify-content-around">
                                     <a href="{{route('admin.orders.show',$order['id'])}}" class="btn btn-outline-info">
                                         <i class="fas fa-info"></i>
@@ -99,7 +99,6 @@
 
     @endsection
 
-    // set the page scripts
     @section ( 'extra-js' )
         <script src="{{asset('admins/plugins/jquery/jquery.min.js')}}"></script>
         <!-- Bootstrap 4 -->
@@ -135,7 +134,6 @@
         </script>
     @endsection
 
-    // set the page styles
     @section ( 'extra-css' )
         <!-- DataTables -->
         <link rel="stylesheet" href="{{asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
