@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-    Create Doctor
+    Edit Doctor
 @endsection
 
 @section('extra-css')
@@ -18,35 +18,30 @@
         <!-- general form elements -->
         <div class="card card-primary mx-auto w-75 mb-0">
             <div class="card-header">
-                <h3 class="card-title">Create Doctor</h3>
+                <h3 class="card-title">Edit Doctor</h3>
             </div>
             <!-- /.card-header -->
 
             <!-- form start -->
-            <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('doctors.update',['doctor'=>$doctor['id']]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PATCH')
+                {{ method_field('PATCH') }}
                 <div class="card-body p-4">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name"
-                            placeholder="Enter doctor name">
+                            value="{{ $doctor->user->name }}" placeholder="Enter doctor name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="password_confirmation">Confirm Password</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ $doctor->user->email }}" placeholder="Enter email">
                     </div>
                     <div class="form-group">
                         <label for="national_id">National ID</label>
                         <input type="text" class="form-control" id="national_id" name="national_id"
-                            placeholder="Enter national id">
+                            value="{{ $doctor->national_id }}" placeholder="Enter national id">
                     </div>
                     <div class="form-group">
                         <label for="avatar_image">Avatar Image</label>
@@ -64,7 +59,7 @@
                         <label for="pharmacy_id" class="form-label">Pharmacy Name</label>
                         <select class="form-select select2" style="width: 100%" name="pharmacy_id" id="pharmacy_id">
                             @foreach ($pharmacies as $pharmacy)
-                                <option value="{{ $pharmacy->id }}">{{ $pharmacy->name }}</option>
+                                <option value="{{ $pharmacy->id }}" @if ($doctor['pharmacy_id'] === $pharmacy->id) selected @endif>{{ $pharmacy->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -72,7 +67,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Create Doctor</button>
+                    <button type="submit" class="btn btn-primary">Edit Doctor</button>
                 </div>
             </form>
         </div>
