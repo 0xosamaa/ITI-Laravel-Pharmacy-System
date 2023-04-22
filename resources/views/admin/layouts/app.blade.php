@@ -288,6 +288,13 @@
                                         <p>Governorates</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.orders.index') }}"
+                                        class="nav-link @if (Route::is('admin.orders.index')) active @endif">
+                                        <i class="far fa-flag nav-icon"></i>
+                                        <p>Orders</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

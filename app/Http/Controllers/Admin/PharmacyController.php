@@ -45,8 +45,11 @@ public function store(Request $request)
 
 public function edit(Request $request, $id)
 {
+    $governorates = Governorate::all();
+    $users = User::role('pharmacist')->get();
     $pharmacy = Pharmacy::findOrFail($id);
-    return view('admin.pharmacies.edit', ['pharmacy'=>$pharmacy]);
+
+    return view('admin.pharmacies.edit', ['pharmacy'=>$pharmacy, 'users' => $users,'governorates' => $governorates ]);
 }
 
 public function update(Request $request, $id)

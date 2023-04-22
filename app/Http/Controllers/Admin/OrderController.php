@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Medicine;
+use App\Models\OrderDetails;
+use App\Models\OrderItems;
+use App\Models\Pharmacy;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -12,77 +18,28 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = [
-            [
-                'id' => 1,
-                'doctor_name' => 'Dr. John Doe',
-                'user_name' => 'John Doe',
-                'createdAt' => '2021-01-01 12:00:00',
-                'status' => 'New',
-                'total' => 1400,
-                'delivery_address' => 'Address 1',
-                'assigned_pharmacy' => 'Pharmacist 1',
-                'creator_type' => 'Admin 1',
-                'is_insured' => true,
-            ],
-            [
-                'id' => 2,
-                'doctor_name' => 'Dr. John Doe',
-                'user_name' => 'John Doe',
-                'createdAt' => '2021-01-01 12:00:00',
-                'status' => 'Confirmed',
-                'total' => 1400,
-                'delivery_address' => 'Address 1',
-                'assigned_pharmacy' => 'Pharmacist 1',
-                'creator_type' => 'Admin 1',
-                'is_insured' => true,
-            ],
-            [
-                'id' => 3,
-                'doctor_name' => 'Dr. John Doe',
-                'user_name' => 'John Doe',
-                'createdAt' => '2021-01-01 12:00:00',
-                'status' => 'Processing',
-                'total' => 1400,
-                'delivery_address' => 'Address 1',
-                'assigned_pharmacy' => 'Pharmacist 1',
-                'creator_type' => 'Admin 1',
-                'is_insured' => true,
-            ],
-            [
-                'id' => 4,
-                'doctor_name' => 'Dr. John Doe',
-                'user_name' => 'John Doe',
-                'createdAt' => '2021-01-01 12:00:00',
-                'status' => 'WaitingForUserConfirmation',
-                'total' => 1400,
-                'delivery_address' => 'Address 1',
-                'assigned_pharmacy' => 'Pharmacist 1',
-                'creator_type' => 'Admin 1',
-                'is_insured' => true,
-            ],
-            [
-                'id' => 5,
-                'doctor_name' => 'Dr. John Doe',
-                'user_name' => 'John Doe',
-                'createdAt' => '2021-01-01 12:00:00',
-                'status' => 'Canceled',
-                'total' => 1400,
-                'delivery_address' => 'Address 1',
-                'assigned_pharmacy' => 'Pharmacist 1',
-                'creator_type' => 'Admin 1',
-                'is_insured' => true,
-            ],
-        ];
+        if (Auth::user()->hasRole('pharmacist')) {
+            $orders = OrderDetails::where('pharmacy_id', Auth::user()->id)->get();
+        }
+        elseif (Auth::user()->hasRole('doctor')) {
+            $orders = OrderDetails::where('doctor_id', Auth::user()->id)->get();
+        }
+        else {
+            $orders = OrderDetails::all();
+        }
         return view('admin.Orders.index',['orders' => $orders]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.Orders.create');
+        $medicines = Medicine::all();
+        $users = User::role('user')->get();
+        $pharmacies = Pharmacy::all();
+        return view('admin.Orders.create', ['medicines' => $medicines, 'users' => $users, 'pharmacies' => $pharmacies]);
+
     }
 
     /**
@@ -91,7 +48,47 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        dd($data);
+        // get user with the given id
+        /*$delivery = User::findOrFailed($data['user_id'])->user_addresses;
+        $delivery_address = "$delivery->street $delivery->city $delivery->governate->name";*/
+        $delivery_address = "Address 1";
+
+        // create order details and get the id of the created order details
+        $order = [
+            'user_id' => $data['user_id'],
+            'pharmacy_id' => $data['pharmacy_id'],
+            'status' => 'WaitingForUserConfirmation',
+            'is_insured' => true,
+            'delivery_address' => $delivery_address,
+        ];
+        if (isset($data['doctor_id'])) {
+            $order['doctor_id'] = $data['doctor_id'];
+            $order['creator_type'] = 'doctor';
+        }
+        elseif (Auth::user()->hasRole('admin')) {
+            $order['creator_type'] = 'admin';
+        }
+        else {
+            $order['creator_type'] = 'pharmacy';
+        }
+        // get all medicines with id in array of ids
+        $medicines = Medicine::whereIn('id', $data['medicines'])->get();
+        $total = 0;
+        foreach ($medicines as $medicine) {
+            $total += $medicine->price;
+        }
+        $order['total'] = $total;
+        $orderDetails = OrderDetails::create($order);
+
+        foreach ($medicines as $medicine) {
+            OrderItems::create([
+                'order_id' => $orderDetails->id,
+                'medicine_id' => $medicine->id,
+                'quantity' => 1,
+            ]);
+        }
+        // create order items
+        return redirect()->route('admin.orders.index');
     }
 
     /**
@@ -99,41 +96,7 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = [
-            'id' => 1,
-            'doctor_name' => 'Dr. John Doe',
-            'user_name' => 'John Doe',
-            'createdAt' => '2021-01-01 12:00:00',
-            'status' => 'pending',
-            'items' => [
-                [
-                    'id' => 1,
-                    'name' => 'Item 1',
-                    'quantity' => 1,
-                    'price' => 100,
-                    'total' => 100,
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Item 2',
-                    'quantity' => 2,
-                    'price' => 200,
-                    'total' => 400,
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'Item 3',
-                    'quantity' => 3,
-                    'price' => 300,
-                    'total' => 900,
-                ],
-            ],
-            'total' => 1400,
-            'delivery_address' => 'Address 1',
-            'assigned_pharmacy' => 'Pharmacist 1',
-            'creator_type' => 'Admin 1',
-            'is_insured' => true,
-        ];
+        $order = OrderDetails::find($id);
         return view('admin.Orders.show', ['order' => $order]);
     }
 
@@ -142,7 +105,11 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.Orders.edit');
+        $order = OrderDetails::find($id);
+        $pharmacies = Pharmacy::all();
+        $users = User::role('user')->get();
+        $medicines = Medicine::all();
+        return view('admin.Orders.edit', ['order' => $order, 'pharmacies' => $pharmacies, 'users' => $users, 'medicines' => $medicines]);
     }
 
     /**
@@ -150,7 +117,38 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        $medicines = Medicine::whereIn('id', $data['medicines'])->get();
+        $order = OrderDetails::find($id);
+        $medicine_arr = $order->items->pluck('medicine_id')->toArray();
+
+        // Compare old medicines with new medicines
+        if ($data['medicines'] != $medicine_arr) {
+            $total = 0;
+            foreach ($medicines as $medicine) {
+                $total += $medicine->price;
+            }
+            $data['total'] = $total;
+            foreach ($data['medicines'] as $medicine) {
+                if (!in_array($medicine, $medicine_arr)) {
+                    OrderItems::create([
+                        'order_id' => $id,
+                        'medicine_id' => $medicine,
+                        'quantity' => 1,
+                    ]);
+                }
+            }
+            foreach ($medicine_arr as $medicine) {
+                if (!in_array($medicine, $data['medicines'])) {
+                    OrderItems::where('order_id', $id)->where('medicine_id', $medicine)->delete();
+                }
+            }
+
+        }
+        unset($data['medicines']);
+
+        $order->update($data);
+        return redirect()->route('admin.orders.show', $id);
     }
 
     /**
@@ -158,6 +156,14 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        dd($id);
+        $order = OrderDetails::find($id);
+        $order->status = 'Canceled';
+        $order->save();
+        return redirect()->route('admin.orders.index');
+
+        /*$order = OrderDetails::find($id);
+        $order->items->each->delete();
+        $order->delete();
+        return redirect()->route('admin.orders.index');*/
     }
 }

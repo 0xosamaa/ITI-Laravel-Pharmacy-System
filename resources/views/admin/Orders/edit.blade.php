@@ -1,59 +1,83 @@
 @extends ( 'admin.layouts.app' )
 
-// set the page title
 @section ( 'title' ,   'Order Edit' )
 
-// set the active sidebar element
 @section ( 'active' ,   'orders' )
 
-// set the page content
 @section ( 'content' )
 
     <div class="container d-flex justify-center p-5">
-        <form method="POST" action="{{ route('admin.orders.update') }}">
-            @csrf
-            @method('PUT')
-            <div class="row">
-                <div class="form-group col-6">
-                    <label for="doctorName">Doctor Name</label>
-                    <input type="text" readonly class="form-control" id="doctorName">
-                </div>
-                <div class="form-group col-6">
-                    <label for="assignedPharmacy">Assigned Pharmacy</label>
-                    <input type="text" class="form-control" id="assignedPharmacy">
-                </div>
-                <div class="form-group col-12">
-                    <label for="userName">User Name</label>
-                    <select class="custom-select rounded-0" id="userName">
-                        <option>Value 1</option>
-                        <option>Value 2</option>
-                        <option>Value 3</option>
-                    </select>
-                </div>
-                <div class="form-group col-12">
-                    <label for="userName">Status</label>
-                    <select class="custom-select rounded-0" id="userName">
-                        <option value="New" >New</option>
-                        <option value="Processing" >Processing</option>
-                        <option value="WaitingForUserConfirmation">WaitingForUserConfirmation</option>
-                        <option value="Canceled" >Canceled</option>
-                        <option value="Confirmed" >Confirmed</option>
-                        <option value="Delivered" >Delivered</option>
-                    </select>
-                </div>
-                <div class="form-group col-6">
-                    <label for="medicine">Medicine</label>
-                    <select name="medicines[]" class="selectpicker" id="medicine" multiple aria-label="Default select example" data-live-search="true">
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+        @if($order->status == 'Completed' || $order->status == 'Cancelled' )
+            <div class="alert alert-danger" role="alert">
+                You can't edit this order
             </div>
+            <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">Back</a>
+        @else
+            <form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="doctorName">Doctor Name</label>
+                        <input name type="text" readonly value="{{ auth()->user()->hasRole('doctor') ? $order->doctor->name : null }}" class="form-control" id="doctorName">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="assignedPharmacy">Assigned Pharmacy</label>
+                        <select name="pharmacy_id" class="custom-select form-select" id="assignedPharmacy">
+                            @if(auth()->user()->hasRole('doctor') | $order->status == 'Confirmed' | $order->status == 'WaitingForUserConfirmation')
+                                <option value="{{ $order->pharmacy->id }}" selected>{{ $order->pharmacy->name }}</option>
+                            @elseif(($order->status <> 'Confirmed' | $order->status <> 'WaitingForUserConfirmation') & auth()->user()->hasRole('admin'))
+                                @foreach($pharmacies as $pharmacy)
+                                    <option value="{{ $pharmacy->id }}"  {{ $pharmacy->id === $order->pharmacy_id ? 'selected' : '' }}>{{ $pharmacy->name }}</option>
+                                @endforeach
+                            @endif
 
-        </form>
+                        </select>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="userName">User Name</label>
+                        <select class="custom-select form-select" id="userName">
+                            @if($order->status == 'Confirmed' | $order->status == 'WaitingForUserConfirmation')
+                                <option value="{{ $order->user_id }}" selected>{{ $order->user->name }}</option>
+                            @else
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ $user->id === $order->user_id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="status">Status</label>
+                        <select name="status" class="custom-select form-select" id="status">
+                            <option {{ $order->status === 'New' ? 'selected' : '' }} value="New" >New</option>
+                            <option {{ $order->status === 'Processing'? 'selected' : '' }} value="Processing" >Processing</option>
+                            <option {{ $order->status === 'WaitingForUserConfirmation' ? 'selected' : '' }} value="WaitingForUserConfirmation">WaitingForUserConfirmation</option>
+                            <option {{ $order->status === 'Canceled' ? 'selected' : '' }} value="Canceled" >Canceled</option>
+                            <option {{ $order->status === 'Confirmed' ? 'selected' : '' }} value="Confirmed" >Confirmed</option>
+                            <option {{ $order->status === 'Delivered' ? 'selected' : '' }} value="Delivered" >Delivered</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-8">
+                        <h6 class="font-weight-bold">Medicine</h6>
+                        <select id="medicine" class="custom-select form-select w-100" name="medicines[]" multiple="multiple">
+                            @if($order->status == 'Confirmed' | $order->status == 'WaitingForUserConfirmation')
+                                @foreach($order->items as $item)
+                                    <option value="{{ $item->medicine->id }}" selected>{{ $item->medicine->name }}</option>
+                                @endforeach
+                            @else
+                                @foreach($medicines as $medicine)
+                                    <option value="{{ $medicine->id }}" {{ in_array($medicine->id, $order->items->pluck('medicine_id')->toArray()) ? 'selected' : '' }}>{{ $medicine->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group d-flex justify-content-center align-items-center pt-4 col-4">
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </div>
+
+            </form>
+        @endif
     </div>
 
 
@@ -61,10 +85,18 @@
 
 // set the page scripts
 @section ( 'extra-js' )
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+    <script src="{{ asset('admins/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script>
+
+        $('.custom-select').select2({
+            theme: 'bootstrap4'
+        });
+    </script>
 @endsection
 
 // set the page styles
 @section ( 'extra-css' )
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href={{ asset('admins/plugins/select2/css/select2.min.css') }}>
+    <link rel="stylesheet" href={{ asset('admins/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}>
+
 @endsection
