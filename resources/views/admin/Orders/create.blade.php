@@ -1,12 +1,12 @@
 @extends ( 'admin.layouts.app' )
 
-// set the page title
+
 @section ( 'title' ,   'Order Create' )
 
-// set the active sidebar element
+
 @section ( 'active' ,   'orders' )
 
-// set the page content
+
 @section ( 'content' )
 
     <div class="container d-flex justify-center p-5">
@@ -30,7 +30,7 @@
                             <option value="{{ $pharmacy->id }}">{{ $pharmacy->name }}</option>
                         @endforeach
                     @elseif(auth()->user()->hasRole('doctor'))
-                            <option selected value="{{ auth()->user()->doctor->$pharmacy_id }}">{{ auth()->user()->doctor->pharmacy->name }}</option>
+                            <option selected value="{{ auth()->user()->doctor->pharmacy_id }}">{{ auth()->user()->doctor->pharmacy->name }}</option>
                     @else
                     @endif
 
@@ -63,7 +63,6 @@
 
 @endsection
 
-// set the page scripts
 @section ( 'extra-js' )
     <script src="{{ asset('admins/plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
@@ -79,7 +78,6 @@
     </script>
 @endsection
 
-// set the page styles
 @section ( 'extra-css' )
     <link href="{{ asset('admins/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
 @endsection

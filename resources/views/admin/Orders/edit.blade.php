@@ -1,12 +1,9 @@
 @extends ( 'admin.layouts.app' )
 
-// set the page title
 @section ( 'title' ,   'Order Edit' )
 
-// set the active sidebar element
 @section ( 'active' ,   'orders' )
 
-// set the page content
 @section ( 'content' )
 
     <div class="container d-flex justify-center p-5">
