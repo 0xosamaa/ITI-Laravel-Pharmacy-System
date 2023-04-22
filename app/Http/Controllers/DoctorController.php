@@ -9,6 +9,7 @@ use App\Models\Pharmacy;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class DoctorController extends Controller
 {
@@ -130,6 +131,9 @@ class DoctorController extends Controller
             $extension = $image->getClientOriginalExtension();
             $filename = uniqid() . '.' . $extension;
             $image->move(public_path('storage/images/doctors'), $filename);
+            if ($doctor->avatar_image != 'default.jpg') {
+                File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
+            }
         }
         else {
             $filename = $doctor->avatar_image;
