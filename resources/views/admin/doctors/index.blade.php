@@ -77,7 +77,7 @@
                                             <td>{{ $doctor->pharmacy->name }}</td>
                                             <td>{{ $doctor->is_banned }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary">Edit</a>
+                                                <a href="/doctors/{{ $doctor['id'] }}/edit" class="btn btn-primary">Edit</a>
                                                 <a href="#" class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
