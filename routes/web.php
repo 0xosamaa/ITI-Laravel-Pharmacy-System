@@ -40,7 +40,7 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out-banned-user'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //roles
@@ -69,10 +69,12 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
 });
 
 
-Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
+Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
-    Route::delete('/doctors', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+    Route::patch('/doctors/ban/{doctor}', [DoctorController::class, 'ban'])->name('doctors.ban');
+    Route::patch('/doctors/unban/{doctor}', [DoctorController::class, 'unban'])->name('doctors.unban');
+    Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
 Route::name('site.')->group(function () {

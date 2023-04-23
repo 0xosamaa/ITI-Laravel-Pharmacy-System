@@ -274,13 +274,15 @@
                                         <p>Pharmacies</p>
                                     </a>
                                 </li>
+                                @hasanyrole(['admin', 'pharmacist'])
                                 <li class="nav-item">
-                                    <a href="{{ route('doctors.index') }}"
+                                    <a href="{{ route('admin.doctors.index') }}"
                                         class="nav-link @if (Route::is('doctors.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Doctors</p>
                                     </a>
                                 </li>
+                                @endhasanyrole
                                 <li class="nav-item">
                                     <a href="{{ route('admin.governorates.index') }}"
                                         class="nav-link @if (Route::is('admin.governorates.index')) active @endif">
