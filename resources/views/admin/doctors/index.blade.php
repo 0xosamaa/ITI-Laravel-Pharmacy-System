@@ -111,32 +111,6 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
-                                                <!-- Delete Modal -->
-                                                <div class="modal fade" id="deleteModal">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Delete Doctor</h4>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Are you sure to delete doctor?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">No</button>
-                                                                <button class="btn btn-danger delete-btn"
-                                                                    data-dismiss="modal" data-url="">Yes</button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
                                                 @if ($doctor->user->isBanned())
                                                     <button type="button" class="btn btn-success rounded-lg mx-1"
                                                     data-toggle="modal" data-target="#unbanModal"
@@ -150,67 +124,92 @@
                                                         Ban
                                                     </button>
                                                 @endif
-
-                                                <!-- Unban Modal -->
-                                                <div class="modal fade" id="unbanModal">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Unban Doctor</h4>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Are you sure to unban doctor?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">No</button>
-                                                                <button class="btn btn-danger unban-btn"
-                                                                    data-dismiss="modal" data-url="">Yes</button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-
-                                                <!-- Ban Modal -->
-                                                <div class="modal fade" id="banModal">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Ban Doctor</h4>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Are you sure to ban doctor?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">No</button>
-                                                                <button class="btn btn-danger ban-btn"
-                                                                    data-dismiss="modal" data-url="">Yes</button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-
                                             </td>
                                         </tr>
                                         @endif
                                     @endforeach
                                 </tbody>
                             </table>
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Delete Doctor</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure to delete doctor?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">No</button>
+                                            <button class="btn btn-danger delete-btn"
+                                                data-dismiss="modal" data-url="">Yes</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+
+                            <!-- Unban Modal -->
+                            <div class="modal fade" id="unbanModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Unban Doctor</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure to unban doctor?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">No</button>
+                                            <button class="btn btn-danger unban-btn"
+                                                data-dismiss="modal" data-url="">Yes</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+
+                            <!-- Ban Modal -->
+                            <div class="modal fade" id="banModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Ban Doctor</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure to ban doctor?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">No</button>
+                                            <button class="btn btn-danger ban-btn"
+                                                data-dismiss="modal" data-url="">Yes</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
                         </div>
                         <!-- /.card-body -->
                     </div>
