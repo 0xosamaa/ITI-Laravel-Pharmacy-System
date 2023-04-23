@@ -22,10 +22,10 @@ class UserAddress extends Model
     ];
 
     public function governorate(){
-        return $this->belongsTo(Governorate::class);
+        return $this->belongsTo(Governorate::class, 'governorate_id', 'id');
     }
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class , 'user_id', 'id');
     }
 }
