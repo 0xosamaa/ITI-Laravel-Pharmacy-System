@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Pharmacy;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -44,7 +45,6 @@ class DoctorSeeder extends Seeder
                 $users[] = [
                     'name' => $name,
                     'email' => $email,
-                    'email_verified_at' => \Carbon\Carbon::now(),
                     'password' => bcrypt('password')
                 ];
             }
@@ -53,7 +53,15 @@ class DoctorSeeder extends Seeder
             $national_id = 28204227480000;
 
             foreach ($users as $user) {
-                $user_id = DB::table('users')->insertGetId($user);
+                // $user_id = DB::table('users')->insertGetId($user);
+
+                $user = User::factory()->create([
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'email_verified_at' => \Carbon\Carbon::now(),
+                    'password' => $user['password']
+                ])->assignRole('doctor');
+                $user_id = $user->id;
 
                 $image_name = uniqid() . '.jpg';
                 File::copy(
