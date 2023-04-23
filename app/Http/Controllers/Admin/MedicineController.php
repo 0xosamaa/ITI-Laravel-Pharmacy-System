@@ -111,6 +111,5 @@ class MedicineController extends Controller
     public function destroy(Medicine $medicine)
     {
         $medicine->delete();
-        return redirect()->route('admin.medicines.index');
     }
 }

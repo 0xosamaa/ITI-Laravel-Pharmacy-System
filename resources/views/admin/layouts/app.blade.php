@@ -276,8 +276,8 @@
                                 </li>
                                 @hasanyrole(['admin', 'pharmacist'])
                                 <li class="nav-item">
-                                    <a href="{{ route('doctors.index') }}"
-                                        class="nav-link @if (Route::is('doctors.index')) active @endif">
+                                    <a href="{{ route('admin.doctors.index') }}"
+                                        class="nav-link @if (Route::is('admin.doctors.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Doctors</p>
                                     </a>
