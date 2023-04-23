@@ -23,11 +23,12 @@
             <!-- /.card-header -->
 
             <!-- form start -->
-            <form action="{{ route('doctors.update',['doctor'=>$doctor['id']]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('doctors.update',['doctor' => $doctor->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 {{ method_field('PATCH') }}
                 <div class="card-body p-4">
+                    <input type="text" class="form-control" name="id" value="{{ $doctor->id }}" hidden>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name"

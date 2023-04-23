@@ -82,11 +82,11 @@
                                             <td>{{ $doctor->pharmacy->name }}</td>
                                             <td>
                                                 <span
-                                                    class="badge rounded-pill @if ($doctor->is_banned == 0) bg-success @else bg-danger @endif">
-                                                    @if ($doctor->is_banned == 0)
-                                                        Not Banned
-                                                    @else
+                                                    class="badge rounded-pill @if ($doctor->user->isBanned()) bg-danger @else bg-success @endif">
+                                                    @if ($doctor->user->isBanned())
                                                         Banned
+                                                    @else
+                                                        Active
                                                     @endif
                                                 </span>
                                             </td>
@@ -127,34 +127,73 @@
                                                     <!-- /.modal-dialog -->
                                                 </div>
                                                 <!-- /.modal -->
+                                                @if ($doctor->user->isBanned())
+                                                    <button type="button" class="btn btn-success rounded-lg mx-1"
+                                                    data-toggle="modal" data-target="#unbanModal"
+                                                    data-id="{{ $doctor->id }}">
+                                                        Unban
+                                                    </button>
+                                                @else
+                                                    <button type="button" class="btn btn-danger rounded-lg mx-1"
+                                                    data-toggle="modal" data-target="#banModal"
+                                                    data-id="{{ $doctor->id }}">
+                                                        Ban
+                                                    </button>
+                                                @endif
 
-                                                <button class="btn btn-warning rounded-lg mx-1">
-                                                    <i class="fas fa-user-slash"></i>
-                                                </button>
-
-                                                <!-- Ban/Unban Modal -->
-                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <!-- Unban Modal -->
+                                                <div class="modal fade" id="unbanModal">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete
-                                                                    Post</h1>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                <h4 class="modal-title">Unban Doctor</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Are you sure to delete post?
+                                                                <p>Are you sure to unban doctor?</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">No</button>
-                                                                <button class="btn btn-danger delete-btn"
-                                                                    data-id="{{ $doctor->id }}">Yes</button>
+                                                                    data-dismiss="modal">No</button>
+                                                                <button class="btn btn-danger unban-btn"
+                                                                    data-dismiss="modal" data-url="">Yes</button>
                                                             </div>
                                                         </div>
+                                                        <!-- /.modal-content -->
                                                     </div>
+                                                    <!-- /.modal-dialog -->
                                                 </div>
+                                                <!-- /.modal -->
+
+                                                <!-- Ban Modal -->
+                                                <div class="modal fade" id="banModal">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Ban Doctor</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure to ban doctor?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">No</button>
+                                                                <button class="btn btn-danger ban-btn"
+                                                                    data-dismiss="modal" data-url="">Yes</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
 
                                             </td>
                                         </tr>
@@ -200,11 +239,11 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#doctors-table_wrapper .col-md-6:eq(0)');
 
+            // Delete Modal
             $(document).on('click', 'button[data-target="#deleteModal"]', function() {
                 let id = $(this).data('id');
                 $('#deleteModal .delete-btn').data('url', '/doctors/' + id);
             });
-
             $(document).on('click', '#deleteModal .delete-btn', function(event) {
                 $.ajax({
                     url: $(this).data('url'),
@@ -213,13 +252,76 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: response => {
-                        console.log('success');
                         toastr["success"]("Doctor deleted successfully");
                         toastr.options = toastr_options;
-                        const id = $(this).data('url').split('/')[2];
+                        const id = $(this).data('url').split('/').pop();
                         const table = $('#doctors-table').DataTable();
                         const row = table.row('#' + id);
                         row.remove().draw();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            // Ban Modal
+            $(document).on('click', 'button[data-target="#banModal"]', function() {
+                let id = $(this).data('id');
+                $('#banModal .ban-btn').data('url', '/doctors/ban/' + id);
+            });
+            $(document).on('click', '#banModal .ban-btn', function(event) {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: response => {
+                        const banUrl = $(this).data('url');
+                        const id = banUrl.split('/').pop();
+                        const $tr = $('#' + id);
+                        const $status = $tr.find('.badge');
+                        const $banButton = $tr.find('button[data-target="#banModal"]');
+
+                        $status.text('Banned').removeClass('bg-success').addClass('bg-danger');
+                        $banButton.text('Unban').removeClass('btn-danger').addClass('btn-success');
+                        $banButton.attr('data-target', '#unbanModal');
+
+                        toastr["success"]("Doctor banned successfully");
+                        toastr.options = toastr_options;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            // Unban Modal
+            $(document).on('click', 'button[data-target="#unbanModal"]', function() {
+                let id = $(this).data('id');
+                $('#unbanModal .unban-btn').data('url', '/doctors/unban/' + id);
+            });
+            $(document).on('click', '#unbanModal .unban-btn', function(event) {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: response => {
+                        const unbanUrl = $(this).data('url');
+                        const id = unbanUrl.split('/').pop();
+                        const $tr = $('#' + id);
+                        const $status = $tr.find('.badge');
+                        const $unbanButton = $tr.find('button[data-target="#unbanModal"]');
+
+                        $status.text('Active').removeClass('bg-danger').addClass('bg-success');
+                        $unbanButton.text('ban').removeClass('btn-success').addClass('btn-danger');
+                        $unbanButton.attr('data-target', '#banModal');
+
+                        toastr["success"]("Doctor unbanned successfully");
+                        toastr.options = toastr_options;
                     },
                     error: function(xhr, status, error) {
                         console.log(error);

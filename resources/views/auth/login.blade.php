@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <link rel="stylesheet" href={{ asset("admins/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css") }}>
+    <script src={{ asset("admins/plugins/jquery/jquery.min.js") }}></script>
+    <script src={{ asset("admins/plugins/sweetalert2/sweetalert2.min.js") }}></script>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -44,4 +48,26 @@
             </x-primary-button>
         </div>
     </form>
+
+    @if (session()->has('errors'))
+        <script>
+            const jsonString = '{{ session("errors") }}'
+            const parser = new DOMParser()
+            const decodedJsonString = parser.parseFromString(`<!doctype html><body>${jsonString}`, 'text/html').body.textContent
+            const jsonObject = JSON.parse(decodedJsonString)
+
+            $('document').ready(function () {
+                Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                }).fire({
+                    icon: 'error',
+                    title: jsonObject.login[0]
+                })
+            });
+        </script>
+    @endif
+
 </x-guest-layout>
