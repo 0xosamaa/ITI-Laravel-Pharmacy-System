@@ -5,6 +5,8 @@
 @endsection
 
 @section('extra-css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- DataTables -->
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
@@ -13,12 +15,8 @@
     <!-- Toastr -->
     <link rel="stylesheet" href={{ asset('admins/plugins/toastr/toastr.min.css') }}>
 
-<<<<<<< HEAD
     <!-- Font Awesome -->
     <link rel="stylesheet" href={{ asset('admins/plugins/fontawesome-free/css/all.min.css') }}>
-
-=======
->>>>>>> b2c544443471a25cca6b4850c8c035340394d24b
     <style>
         img {
             width: 50px;
@@ -57,7 +55,7 @@
                     <div class="card">
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="doctors-table" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>Avatar</th>
@@ -67,7 +65,6 @@
                                         <th>Created At</th>
                                         <th>Pharmacy</th>
                                         <th>Status</th>
-                                        <th>Is banned</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -119,14 +116,19 @@
                                                                 <p>Are you sure to delete doctor?</p>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="" method="POST" id='delete-form'>
+                                                                {{-- <form action="" method="POST" id='delete-form'>
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     {{ method_field('DELETE') }}
                                                                     <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">No</button>
-                                                                    <button type="submit" class="btn btn-danger">Yes</button>
-                                                                </form>
+                                                                        data-dismiss="modal">No</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Yes</button>
+                                                                </form> --}}
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">No</button>
+                                                                <button class="btn btn-danger delete-btn"
+                                                                    data-url="">Yes</button>
                                                             </div>
                                                         </div>
                                                         <!-- /.modal-content -->
@@ -154,7 +156,7 @@
                                                                 Are you sure to delete post?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="" method="POST" id='delete-form'>
+                                                                {{-- <form action="" method="POST" id='delete-form'>
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     {{ method_field('DELETE') }}
@@ -162,7 +164,11 @@
                                                                         data-bs-dismiss="modal">No</button>
                                                                     <button type="submit"
                                                                         class="btn btn-danger">Yes</button>
-                                                                </form>
+                                                                </form> --}}
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">No</button>
+                                                                <button class="btn btn-danger delete-btn"
+                                                                    data-id="{{ $doctor->id }}">Yes</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -187,12 +193,6 @@
 @endsection
 
 @section('extra-js')
-    <!-- JQuery -->
-    <script src={{ asset('admins/plugins/jquery/jquery.js') }}></script>
-
-    <!-- bootstrap 4 js -->
-    <script src={{ asset('admins/plugins/bootstrap/js/bootstrap.bundle.min.js') }}></script>
-
     <!-- DataTables  & Plugins -->
     <script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
     <script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
@@ -211,27 +211,79 @@
     <script src={{ asset('admins/plugins/toastr/toastr.min.js') }}></script>
     <script>
         $(function() {
-            $("#example1").DataTable({
+            $("#doctors-table").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+            }).buttons().container().appendTo('#doctors-table_wrapper .col-md-6:eq(0)');
+
+            $(document).on('click', 'button[data-target="#deleteModal"]', function() {
+                let id = $(this).data('id');
+                $('#deleteModal .delete-btn').data('url', '/doctors/' + id);
             });
 
-            let id;
-            $('button[data-bs-target="#deleteModal"]').on('click', function() {
-                id = $(this).get(0).dataset['id'];
-                $('#delete-form').attr('action', '/doctors/' + id);
+            $(document).on('click', '#deleteModal .delete-btn', function(event) {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('success');
+                        // $('#deleteModal .close').click();
+                        bootstrap.Modal.getOrCreateInstance('#deleteModal').hide();
+                        // $('#doctors-table').DataTable().clear().rows.add(response.doctors).draw();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
             });
+
+            // $(document).on('click', '#deleteModal button[type="submit"]', function(event) {
+            //     event.preventDefault(); // Prevent default form submission
+            //     var form = $('#delete-form');
+            //     var id = form.data('id');
+            //     var url = form.attr('action') + '/' + id;
+            //     console.log(url);
+            //     $.ajax({
+            //         type: 'DELETE',
+            //         url: url,
+            //         data: {
+            //             _token: $('meta[name="csrf-token"]').attr('content')
+            //         },
+            //         success: function(response) {
+            //             // Handle success response
+            //             console.log('success');
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Handle error response
+            //             console.log('error');
+            //         }
+            //     });
+            // });
+
+            // $(document).on('click', '.delete-btn', function() {
+            //     var id = $(this).data('id');
+            //     console.log(id);
+                // $.ajax({
+                //     url: '/doctors/' + id,
+                //     type: 'DELETE',
+                //     data: {
+                //         _token: $('meta[name="csrf-token"]').attr('content')
+                //     },
+                //     success: function(data) {
+                //         alert('Record deleted successfully');
+                //         // Refresh the Datatables here
+                //     },
+                //     error: function(xhr, status, error) {
+                //         alert('Error deleting record');
+                //     }
+                // });
+            // });
+
 
             @if (session('success'))
                 toastr["success"]("{{ session('success') }}");

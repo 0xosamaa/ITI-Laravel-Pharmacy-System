@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserAdressController;
 use App\Http\Controllers\StripeController;
 
 
@@ -53,6 +55,10 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
     Route::resource('/governorates', GovernorateController::class);
     //medicines
     Route::resource('/medicines', MedicineController::class);
+    // users
+    Route::resource('/users', UserController::class);
+    // users_addresses
+    Route::resource('/user_addresses', UserAdressController::class);
     //stripe
     Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
@@ -62,11 +68,10 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
 });
 
 
-
-
 Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
+    Route::delete('/doctors', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
 Route::name('site.')->group(function () {
