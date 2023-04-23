@@ -70,7 +70,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($doctors as $doctor)
-                                        <tr>
+                                        <tr id="{{ $doctor->id }}">
                                             <td>
                                                 <img src="{{ asset('storage/images/doctors/' . $doctor->avatar_image) }}"
                                                     alt="avatar-image">
@@ -116,19 +116,10 @@
                                                                 <p>Are you sure to delete doctor?</p>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                {{-- <form action="" method="POST" id='delete-form'>
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    {{ method_field('DELETE') }}
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">No</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">Yes</button>
-                                                                </form> --}}
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-dismiss="modal">No</button>
                                                                 <button class="btn btn-danger delete-btn"
-                                                                    data-url="">Yes</button>
+                                                                    data-dismiss="modal" data-url="">Yes</button>
                                                             </div>
                                                         </div>
                                                         <!-- /.modal-content -->
@@ -156,15 +147,6 @@
                                                                 Are you sure to delete post?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                {{-- <form action="" method="POST" id='delete-form'>
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    {{ method_field('DELETE') }}
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">No</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">Yes</button>
-                                                                </form> --}}
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">No</button>
                                                                 <button class="btn btn-danger delete-btn"
@@ -230,11 +212,14 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: response => {
                         console.log('success');
-                        // $('#deleteModal .close').click();
-                        bootstrap.Modal.getOrCreateInstance('#deleteModal').hide();
-                        // $('#doctors-table').DataTable().clear().rows.add(response.doctors).draw();
+                        toastr["success"]("Doctor deleted successfully");
+                        toastr.options = toastr_options;
+                        const id = $(this).data('url').split('/')[2];
+                        const table = $('#doctors-table').DataTable();
+                        const row = table.row('#' + id);
+                        row.remove().draw();
                     },
                     error: function(xhr, status, error) {
                         console.log(error);
@@ -242,69 +227,28 @@
                 });
             });
 
-            // $(document).on('click', '#deleteModal button[type="submit"]', function(event) {
-            //     event.preventDefault(); // Prevent default form submission
-            //     var form = $('#delete-form');
-            //     var id = form.data('id');
-            //     var url = form.attr('action') + '/' + id;
-            //     console.log(url);
-            //     $.ajax({
-            //         type: 'DELETE',
-            //         url: url,
-            //         data: {
-            //             _token: $('meta[name="csrf-token"]').attr('content')
-            //         },
-            //         success: function(response) {
-            //             // Handle success response
-            //             console.log('success');
-            //         },
-            //         error: function(xhr, status, error) {
-            //             // Handle error response
-            //             console.log('error');
-            //         }
-            //     });
-            // });
-
-            // $(document).on('click', '.delete-btn', function() {
-            //     var id = $(this).data('id');
-            //     console.log(id);
-                // $.ajax({
-                //     url: '/doctors/' + id,
-                //     type: 'DELETE',
-                //     data: {
-                //         _token: $('meta[name="csrf-token"]').attr('content')
-                //     },
-                //     success: function(data) {
-                //         alert('Record deleted successfully');
-                //         // Refresh the Datatables here
-                //     },
-                //     error: function(xhr, status, error) {
-                //         alert('Error deleting record');
-                //     }
-                // });
-            // });
-
-
             @if (session('success'))
                 toastr["success"]("{{ session('success') }}");
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": false,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
+                toastr.options = toastr_options;
             @endif
+
+            toastr_options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
         });
     </script>
 @endsection
