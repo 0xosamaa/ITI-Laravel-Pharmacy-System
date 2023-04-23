@@ -41,8 +41,8 @@
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">Owner
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="CSS grade: activate to sort column ascending">Actions
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="2" aria-label="CSS grade: activate to sort column ascending">Actions
                                     </th>
                                 </tr>
                             </thead>
@@ -55,19 +55,23 @@
                                         <td>{{ $pharmacy->priority }}</td>
                                         <td>{{ $pharmacy->owner_name }}</td>
 
+
                                         <td>
-                                            <div class="btn-group">
-                                                <form action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}"
+                                        <div class="btn-container">
+
+                                            <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}"
+                                                class="btn btn-info d-block btn-lg">Edit</a>
+                                        </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-container">
+                                                <form class="d-block" action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}"
                                                     method="POST"
                                                     onsubmit="return confirm('Are you sure you want to delete this pharmacy?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-lg">Delete</button>
+                                                    <button type="submit" class="btn btn-lg btn-danger w-100">Delete</button>
                                                 </form>
-                                                &nbsp;
-                                                &nbsp;
-                                                <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}"
-                                                    class="btn btn-primary btn-lg">Edit</a>
                                             </div>
                                         </td>
 

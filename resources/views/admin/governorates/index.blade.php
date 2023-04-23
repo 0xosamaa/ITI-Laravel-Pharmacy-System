@@ -27,7 +27,8 @@
                                 <tr>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">ID</th>
                                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Name</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Actions</th>
+                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="2" aria-label="Actions">Actions</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,34 +37,31 @@
                                     <td>{{ $governorate->id }}</td>
                                     <td>{{ $governorate->name }}</td>
                                     <td>
-                                        <div class="row">
-                                          <div class="col">
+                                        <div class="btn-container">
                                             <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-lg btn-info w-100">Edit</a>
-                                          </div>
-                                          <div class="col">
-                                            <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
-                                              @csrf
-                                              @method('DELETE')
-                                              <button type="submit" class="btn btn-lg btn-danger w-100" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                                            </form>
-                                          </div>
                                         </div>
-                                      </td>
-                                      d>
-
+                                    </td>
+                                    <td>
+                                        <div class="btn-container">
+                                            <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-lg btn-danger w-100" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- /.card-body -->
     </div>
 @endsection
+
 
 @section('extra-js')
     <!-- DataTables  & Plugins -->
