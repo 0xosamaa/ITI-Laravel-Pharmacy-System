@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 class UserAdressController extends Controller
 {
     //index
-    public function index(Request $request){
-        $data = UserAddress::where('user_id', $request->query('id'))->get();
+    public function index($id){
+        $data = UserAddress::where('user_id', $id)->get();
         if($data){
             return view('admin.user_addresses.index', ['addresses'=>$data]);
         }

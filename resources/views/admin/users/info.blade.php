@@ -43,7 +43,7 @@
                         @endif
                     </span>
                     <!-- &nbsp;&nbsp;&nbsp; -->
-                    <a href="{{ route('admin.user_addresses.index', ['id'=>$user->id]) }}" class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
+                    <a href="{{ route('admin.users.addresses.index', $user->id) }}" class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
                         Show {{ $user->name }}'s Addresses
                     </a>
                 </td>
