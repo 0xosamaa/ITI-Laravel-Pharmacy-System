@@ -27,9 +27,9 @@ class UserAdressController extends Controller
     public function store($user_id, Request $request)
     {
         $validedAddress = $request->validate([
-            'flat_number' => 'required',
-            'floor_number' => 'required',
-            'building_number' => 'required',
+            'flat_number' => 'required|max:255',
+            'floor_number' => 'required|max:255',
+            'building_number' => 'required|max:255',
             'street_name' => 'required|max:255',
             'governorate_id' => 'required|exists:governorates,id'
         ]);
@@ -54,10 +54,10 @@ class UserAdressController extends Controller
         $address = UserAddress::findOrfail($address_id);
 
         $validedAddress = $request->validate([
-            'flat_number' => 'required',
-            'floor_number' => 'required',
-            'building_number' => 'required',
-            'street_name' => 'required|max',
+            'flat_number' => 'required|max:255',
+            'floor_number' => 'required|max:255',
+            'building_number' => 'required|max:255',
+            'street_name' => 'required|max:255',
             'governorate_id' => 'required|exists:governorates,id'
         ]);
 
