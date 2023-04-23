@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Medicine;
 use App\Models\OrderDetails;
+use App\Models\OrderItems;
 use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -34,17 +35,18 @@ class OrderDetailsSeeder extends Seeder
             $counter = fake()->numberBetween(1, 5);
             $total = 0;
             for ($j = 0; $j < $counter; $j++) {
-                OrderItems::create([
+                $item = OrderItems::create([
                     'order_id' => $order->id,
                     'medicine_id' => $medicines->random()->id,
                     'quantity' => fake()->numberBetween(1, 5),
                 ]);
-                $total += $order->medicine->price * $order->quantity;
+                $total += $item->medicine['price'] * $item->quantity;
             }
 
             $order->doctor_id=$order->pharmacy->doctors->random()->id;
             $order->total = $total;
-            $order->delivery_address = $order->user->address->governorate->name . ' ' . $order->user->address->city . ' ' . $order->user->address->street ;
+            //$order->delivery_address = $order->user->address->governorate['name'] . ' ' . $order->user->address->city . ' ' . $order->user->address->street ;
+            $order->delivery_address = fake()->address();
             $order->save();
         }
 

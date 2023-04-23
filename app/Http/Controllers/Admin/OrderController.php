@@ -49,6 +49,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        //dd($data);
         // get user with the given id
         /*$delivery = User::findOrFailed($data['user_id'])->user_addresses;
         $delivery_address = "$delivery->street $delivery->city $delivery->governate->name";*/
@@ -85,7 +86,7 @@ class OrderController extends Controller
             OrderItems::create([
                 'order_id' => $orderDetails->id,
                 'medicine_id' => $medicine->id,
-                'quantity' => 1,
+                'quantity' => $data[$medicine->id],
             ]);
         }
         // create order items
@@ -171,12 +172,14 @@ class OrderController extends Controller
     public function checkOut(string $id)
     {
         $order = OrderDetails::find($id);
+        $token = request()->stripeToken;
+        dd(request());
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $charge = \Stripe\Charge::create([
                 'amount' => $order->total / 100,
                 'currency' => 'usd',
-                'source' => $order->user->id,
+                'source' => $token,
                 'description' => 'Order',
                 'receipt_email' => $order->user->email,
                 'metadata' => [
@@ -194,5 +197,11 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+    public function quantity(Request $request)
+    {
+        $data = $request->all();
+        $medicines = Medicine::whereIn('id', $data['medicines'])->get();
+        return view('admin.Orders.quantity', ['medicines' => $medicines, 'data' => $data]);
     }
 }

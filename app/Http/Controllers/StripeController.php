@@ -66,13 +66,12 @@ class StripeController extends Controller
                 $token = $request->stripeToken;
 
                 $charge = Charge::create([
-                    'amount' => 1000,
+                    'amount' => 100000,
                     'currency' => 'usd',
                     'description' => 'Test charge',
                     'source' => $token,
                     'metadata' => ['order_id' => '1234'],
                 ]);
-
                 return redirect()->back()->with('success_message', 'Payment successful!');
             } catch (ApiErrorException $e) {
                 return redirect()->back()->with('error_message', 'Payment failed: ' . $e->getMessage());
