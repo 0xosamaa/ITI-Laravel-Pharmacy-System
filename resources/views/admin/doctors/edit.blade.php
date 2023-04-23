@@ -56,6 +56,10 @@
                             </div>
                         </div>
                     </div>
+                    @role('pharmacist')
+                    <input type="text" class="form-control" name="pharmacy_id" value="{{ $doctor->pharmacy->id }}" hidden>
+                    @endrole
+                    @role('admin')
                     <div class="form-group">
                         <label for="pharmacy_id" class="form-label">Pharmacy Name</label>
                         <select class="form-select select2" style="width: 100%" name="pharmacy_id" id="pharmacy_id">
@@ -64,6 +68,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endrole
                 </div>
                 <!-- /.card-body -->
 

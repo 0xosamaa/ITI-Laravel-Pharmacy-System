@@ -27,7 +27,7 @@ class StoreDoctorRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', 'min:6', Rules\Password::defaults()],
             'national_id' => ['required', 'digits:14', 'unique:'.Doctor::class],
             'avatar_image' => ['nullable', 'image'],
             'pharmacy_id' => ['required', 'exists:pharmacies,id']
@@ -43,7 +43,6 @@ class StoreDoctorRequest extends FormRequest
             'email.max' => 'Email must be at most 255 characters',
             'email.unique' => 'Email already exists',
             'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 6 characters',
             'national_id.required' => 'National ID is required',
             'national_id.digits' => 'National ID must be a valid 14-digit number',
             'national_id.unique' => 'National ID already exists',

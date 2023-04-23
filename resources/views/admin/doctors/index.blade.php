@@ -63,13 +63,19 @@
                                         <th>Email</th>
                                         <th>National Id</th>
                                         <th>Created At</th>
+
+                                        @role('admin')
                                         <th>Pharmacy</th>
+                                        @endrole
+
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($doctors as $doctor)
+                                        @if(auth()->user()->hasRole('admin') ||
+                                        (auth()->user()->hasRole('pharmacist') && $doctor->pharmacy->owner_user_id == auth()->user()->id))
                                         <tr id="{{ $doctor->id }}">
                                             <td>
                                                 <img src="{{ asset('storage/images/doctors/' . $doctor->avatar_image) }}"
@@ -79,7 +85,11 @@
                                             <td>{{ $doctor->user->email }}</td>
                                             <td>{{ $doctor->national_id }}</td>
                                             <td>{{ $doctor->created_at }}</td>
+
+                                            @role('admin')
                                             <td>{{ $doctor->pharmacy->name }}</td>
+                                            @endrole
+
                                             <td>
                                                 <span
                                                     class="badge rounded-pill @if ($doctor->user->isBanned()) bg-danger @else bg-success @endif">
@@ -197,6 +207,7 @@
 
                                             </td>
                                         </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
