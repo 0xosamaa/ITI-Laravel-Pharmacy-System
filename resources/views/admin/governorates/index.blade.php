@@ -38,7 +38,9 @@
                                     <td>{{ $governorate->name }}</td>
                                     <td>
                                         <div class="btn-container">
-                                            <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-lg btn-info w-100">Edit</a>
+                                            <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-lg btn-info w-100">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
                                         </div>
                                     </td>
                                     <td>
@@ -46,10 +48,37 @@
                                             <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-lg btn-danger w-100" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                <button type="button" class="btn btn-lg btn-danger w-100" data-toggle="modal" data-target="#confirm-delete-{{$governorate->id}}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+
+
+                                                                                   <!-- Modal -->
+                                    <div class="modal fade" id="confirm-delete-{{$governorate->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmDeleteLabel">Confirm Delete</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this item?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                             </form>
                                         </div>
                                     </td>
+
+
+
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -55,22 +55,43 @@
                                         <td>{{ $pharmacy->priority }}</td>
                                         <td>{{ $pharmacy->owner_name }}</td>
 
-
-                                        <td>
-                                        <div class="btn-container">
-
-                                            <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}"
-                                                class="btn btn-info d-block btn-lg">Edit</a>
-                                        </div>
-                                        </td>
                                         <td>
                                             <div class="btn-container">
-                                                <form class="d-block" action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Are you sure you want to delete this pharmacy?');">
+                                                <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}" class="btn btn-lg btn-info w-100">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="btn-container">
+                                                <form method="POST" action="{{ route('admin.pharmacies.destroy', $pharmacy->id ) }}" style="display: inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-lg btn-danger w-100">Delete</button>
+                                                    <button type="button" class="btn btn-lg btn-danger w-100" data-toggle="modal" data-target="#confirm-delete-{{$pharmacy->id}}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="confirm-delete-{{$pharmacy->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="confirmDeleteLabel">Confirm Delete</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this item?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                                 </form>
                                             </div>
                                         </td>
