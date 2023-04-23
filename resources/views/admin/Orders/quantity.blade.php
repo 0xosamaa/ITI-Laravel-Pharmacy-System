@@ -1,7 +1,7 @@
 @extends ( 'admin.layouts.app' )
 
 
-@section ( 'title' ,   'Order Create' )
+@section ( 'title' ,   'Medicines Quantity' )
 
 
 @section ( 'active' ,   'orders' )
@@ -10,50 +10,51 @@
 @section ( 'content' )
 
     <div class="container d-flex justify-center p-5">
-        <form method="POST" action="{{ route('admin.quantity') }}">
+        <form method="POST" action="{{ route('admin.orders.store') }}">
             @csrf
             @method('POST')
+            <div class="row">
+                @foreach($medicines as $item)
+                    <div class="form-group col-6">
+                        <label for="{{$item->name}}">{{$item->name}}</label>
+                        <input type="number" class="form-control" id="{{$item->name}}" value="1" name="{{$item->id}}">
+                    </div>
+                @endforeach
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center pt-4 col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+            <!-- Order Data -->
+
             <div class="row">
                 <div class="form-group col-6">
                     <label for="doctorName">Doctor Name</label>
                     @if(auth()->user()->hasRole('doctor'))
                         <input type="text" class="form-control" id="doctorName" value="{{auth()->user()['name']}}" readonly>
                     @else
-                    <input type="text" class="form-control" readonly id="doctorName">
+                        <input type="text" class="form-control" readonly id="doctorName">
                     @endif
                 </div>
                 <div class="form-group col-6">
                     <label for="assignedPharmacy">Assigned Pharmacy</label>
                     <select name="pharmacy_id" class="custom-select rounded-0" id="assignedPharmacy">
-                    @if(auth()->user()->hasRole('admin'))
-                        @foreach($pharmacies as $pharmacy)
-                            <option value="{{ $pharmacy->id }}">{{ $pharmacy->name }}</option>
-                        @endforeach
-                    @elseif(auth()->user()->hasRole('doctor'))
-                            <option selected value="{{ auth()->user()->doctor->pharmacy_id }}">{{ auth()->user()->doctor->pharmacy->name }}</option>
-                    @else
-                    @endif
-
+                            <option selected value="{{ $data['pharmacy_id'] }}">{{ $data['pharmacy_id'] }}</option>
                     </select>
                 </div>
                 <div class="form-group col-12">
                     <label for="userName">User Name</label>
                     <select name="user_id" class="custom-select rounded-0" id="userName">
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
+                            <option selected value="{{ $data['user_id'] }}">{{ $data['user_id'] }}</option>
                     </select>
                 </div>
                 <div class="form-group col-8">
                     <h6 class="font-weight-bold">Medicines</h6>
                     <select id="medicine" class="js-example-basic-multiple w-100" name="medicines[]" multiple="multiple">
                         @foreach($medicines as $medicine)
-                            <option value="{{ $medicine->id }}">{{ $medicine->name }}</option>
+                            <option selected value="{{ $medicine['id'] }}">{{ $medicine['name'] }}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="form-group d-flex justify-content-center align-items-center pt-4 col-4">
-                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
 

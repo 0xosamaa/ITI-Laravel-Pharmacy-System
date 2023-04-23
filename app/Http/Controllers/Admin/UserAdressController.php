@@ -84,7 +84,5 @@ class UserAdressController extends Controller
     {
         $address = UserAddress::findOrFail($address_id);
         $address->delete();
-
-        return redirect()->route('admin.users.addresses.index', $user_id)->with('success', 'Address deleted successfully.');
     }
 }

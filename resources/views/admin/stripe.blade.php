@@ -5,6 +5,11 @@
 @endsection
 
 @section('content')
+    @if(session()->has('success_message'))
+        <div class="alert alert-success">
+            {{ session()->get('success_message') }}
+        </div>
+    @endif
     <form action="{{ route('admin.stripe.post') }}" method="post">
         @csrf
         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
