@@ -32,7 +32,7 @@
             <!-- /.card-header -->
 
             <!-- form start -->
-            <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.doctors.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body p-4">
                     <div class="form-group">

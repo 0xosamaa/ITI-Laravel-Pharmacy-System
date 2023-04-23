@@ -16,19 +16,13 @@ class DoctorController extends Controller
     public function index()
     {
         $doctors = Doctor::with("pharmacy", "user")->get();
-
-        return view('admin.doctors.index', [
-            'doctors' => $doctors
-        ]);
+        return view('admin.doctors.index', compact('doctors'));
     }
 
     public function create()
     {
         $pharmacies = Pharmacy::all();
-
-        return view('admin.doctors.create', [
-            'pharmacies' => $pharmacies
-        ]);
+        return view('admin.doctors.create', compact('pharmacies'));
     }
 
     public function store(StoreDoctorRequest $request)
@@ -56,16 +50,13 @@ class DoctorController extends Controller
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
-        return redirect('doctors')->with('success', 'Doctor created successfully');
+        return redirect(route('admin.doctors.index'))->with('success', 'Doctor created successfully');
     }
 
     public function show($id)
     {
         $doctor = Doctor::find($id);
-
-        return view('doctors.show', [
-            'doctor' => $doctor
-        ]);
+        return view('admin.doctors.show', compact('doctor'));
     }
 
     public function edit($id)
@@ -107,7 +98,7 @@ class DoctorController extends Controller
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
-        return redirect('doctors')->with('success', 'Doctor updated successfully');
+        return redirect(route('admin.doctors.index'))->with('success', 'Doctor updated successfully');
     }
 
     public function destroy($id)

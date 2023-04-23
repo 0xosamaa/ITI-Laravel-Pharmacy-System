@@ -40,7 +40,7 @@
                     <h1>Doctors</h1>
                 </div>
                 <div class="col-sm-6 d-flex justify-content-end">
-                    <a name="" id="" class="btn btn-success" href="{{ route('doctors.create') }}"
+                    <a name="" id="" class="btn btn-success" href="{{ route('admin.doctors.create') }}"
                         role="button">Create Doctor</a>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="/doctors/{{ $doctor->id }}/edit"
+                                                <a href="{{ route('admin.doctors.edit', $doctor->id) }}"
                                                     class="btn btn-primary rounded-lg mx-1">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
@@ -253,7 +253,9 @@
             // Delete Modal
             $(document).on('click', 'button[data-target="#deleteModal"]', function() {
                 let id = $(this).data('id');
-                $('#deleteModal .delete-btn').data('url', '/doctors/' + id);
+                // $('#deleteModal .delete-btn').data('url', '/doctors/' + id);
+                $('#deleteModal .delete-btn')
+                .data('url', '{{ route("admin.doctors.destroy", ":id") }}'.replace(':id', id));
             });
             $(document).on('click', '#deleteModal .delete-btn', function(event) {
                 $.ajax({
@@ -279,7 +281,8 @@
             // Ban Modal
             $(document).on('click', 'button[data-target="#banModal"]', function() {
                 let id = $(this).data('id');
-                $('#banModal .ban-btn').data('url', '/doctors/ban/' + id);
+                $('#banModal .ban-btn')
+                .data('url', '{{ route("admin.doctors.ban", ":id") }}'.replace(':id', id));
             });
             $(document).on('click', '#banModal .ban-btn', function(event) {
                 $.ajax({
@@ -311,7 +314,8 @@
             // Unban Modal
             $(document).on('click', 'button[data-target="#unbanModal"]', function() {
                 let id = $(this).data('id');
-                $('#unbanModal .unban-btn').data('url', '/doctors/unban/' + id);
+                $('#unbanModal .unban-btn')
+                .data('url', '{{ route("admin.doctors.unban", ":id") }}'.replace(':id', id));
             });
             $(document).on('click', '#unbanModal .unban-btn', function(event) {
                 $.ajax({

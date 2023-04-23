@@ -3,10 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
-use App\Models\User;
 use App\Models\Doctor;
-use Illuminate\Http\Request;
 
 class UpdateDoctorRequest extends FormRequest
 {
