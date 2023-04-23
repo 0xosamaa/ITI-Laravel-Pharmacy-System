@@ -15,7 +15,6 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        // $doctors = Doctor::all();
         $doctors = Doctor::with("pharmacy", "user")->get();
 
         return view('admin.doctors.index', [
@@ -143,24 +142,34 @@ class DoctorController extends Controller
             'name' => $request->name,
             'email' => $request->email
         ]);
-        // $user = User::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ])->assignRole('doctor');
 
         DB::table('doctors')->where('id', $doctor->id)->update([
             'national_id' => $request->national_id,
             'avatar_image' => $filename,
             'pharmacy_id' => $request->pharmacy_id
         ]);
-        // Doctor::create([
-        //     'user_id' => $user->id,
-        //     'national_id' => $request->national_id,
-        //     'avatar_image' => $filename,
-        //     'pharmacy_id' => $request->pharmacy_id
-        // ]);
 
         return redirect('doctors')->with('success', 'Doctor updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $doctor = Doctor::find($id);
+
+        if ($doctor->avatar_image != 'default.jpg') {
+            File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
+        }
+        DB::table('doctors')->where('id', $doctor->id)->delete();
+        Doctor::destroy($id);
+
+        // Get the updated list of doctors
+        $doctors = Doctor::all();
+
+        // Return a JSON response with the updated data
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor deleted successfully.',
+            'doctors' => $doctors
+        ]);
     }
 }

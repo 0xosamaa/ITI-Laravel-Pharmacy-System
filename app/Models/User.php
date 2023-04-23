@@ -16,7 +16,6 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Billable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +26,10 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    public function user_addresses(){
+        return $this->hasMany(UserAddress::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -49,5 +52,9 @@ class User extends Authenticatable
     public function address()
     {
         return $this->hasOne(UserAddress::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(OrderDetails::class, 'user_id', 'id');
     }
 }

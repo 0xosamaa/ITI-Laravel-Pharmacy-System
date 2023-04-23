@@ -11,23 +11,21 @@ class UserAddress extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'flat_number',
+        'floor_number',
+        'building_number',
+        'street_name',
+        'area_id',
+        'is_main',
         'user_id',
-        'address',
-        'city',
-        'state',
-        'country',
-        'zip_code',
-        'phone_number',
-        'is_default',
+        'governorate_id'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    public function governorate(){
+        return $this->belongsTo(Governorate::class);
     }
 
-    public function governorate()
-    {
-        return $this->belongsTo(Governorate::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

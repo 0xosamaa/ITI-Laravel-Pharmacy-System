@@ -18,7 +18,8 @@ class OrderDetails extends Model
         'delivery_address',
         'creator_type',
         'total',
-        'user_id'
+        'user_id',
+        'transaction_id',
     ];
 
     public function pharmacy()
@@ -31,7 +32,7 @@ class OrderDetails extends Model
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function doctor()
     {

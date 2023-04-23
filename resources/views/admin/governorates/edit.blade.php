@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
-
+@section('title')
+    Governorates
+@endsection
 @section('content')
     <div class="container">
         <h1>Edit Governorate</h1>

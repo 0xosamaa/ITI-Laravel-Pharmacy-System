@@ -13,7 +13,7 @@
             </h5>
             <hr>
             <h5>
-                User Name : <span style="color: #777;"> {{ $order->user->name }}</span>
+                User Name : <span style="color: #777;"> {{ $order->user['name'] }}</span>
             </h5>
             <hr>
             <h5>
@@ -48,8 +48,8 @@
                     <i class="fas fa-info"></i>
                 </a>
                 @if($order->status == 'WaitingForUserConfirmation' || $order->status == 'Confirmed')
-                    <a href="#" class="btn btn-outline-secondary w-25">
-                        <i class="fas fa-money-bill"></i>
+                    <a href="{{route('admin.checkOut',$order['id'])}}" class="btn btn-outline-primary w-25">
+                        <i class="fas fa-check"></i>
                     </a>
                 @endif
             </div>
