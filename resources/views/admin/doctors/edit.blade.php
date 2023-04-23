@@ -23,7 +23,7 @@
             <!-- /.card-header -->
 
             <!-- form start -->
-            <form action="{{ route('doctors.update',['doctor' => $doctor->id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.doctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 {{ method_field('PATCH') }}

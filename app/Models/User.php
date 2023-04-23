@@ -51,9 +51,10 @@ class User extends Authenticatable implements BannableInterface
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function address()
+    public function main_address()
     {
-        return $this->hasOne(UserAddress::class);
+        return $this->user_addresses()->where('is_main', true)->with('governorate')->first();
+
     }
     public function orders()
     {
