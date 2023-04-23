@@ -53,7 +53,8 @@ class User extends Authenticatable implements BannableInterface
     ];
     public function main_address()
     {
-        return $this->user_addresses()->where('is_main', true)->first();
+        return $this->user_addresses()->where('is_main', true)->with('governorate')->first();
+
     }
     public function orders()
     {

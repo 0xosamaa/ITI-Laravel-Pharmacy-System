@@ -15,6 +15,18 @@ class UserAddressSeeder extends Seeder
      */
     public function run(): void
     {
-        UserAddress::factory()->count(30)->create();
+        //UserAddress::factory()->count(30)->create();
+        foreach (User::all() as $user) {
+            $user->user_addresses()->create([
+                'flat_number' => rand(1, 100),
+                'floor_number' => rand(1, 100),
+                'building_number' => rand(1, 100),
+                'street_name' => fake()->word(),
+                'area_id' => fake()->randomLetter().fake()->randomNumber(3),
+                'is_main' => true,
+                'user_id' => $user->id,
+                'governorate_id' => Governorate::all()->random()->id
+            ]);
+        }
     }
 }

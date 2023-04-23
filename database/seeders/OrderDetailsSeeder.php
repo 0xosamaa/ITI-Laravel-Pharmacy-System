@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Governorate;
 use App\Models\Medicine;
 use App\Models\OrderDetails;
 use App\Models\OrderItems;
@@ -45,8 +46,7 @@ class OrderDetailsSeeder extends Seeder
 
             $order->doctor_id=$order->pharmacy->doctors->random()->id;
             $order->total = $total;
-            //$order->delivery_address = $order->user->address->governorate['name'] . ' ' . $order->user->address->city . ' ' . $order->user->address->street ;
-            $order->delivery_address = fake()->address();
+            $order->delivery_address = $order->user->main_address()->governorate->name . ' ' . $order->user->main_address()->street_name . ' ' . $order->user->main_address()->building_number . ' ' . $order->user->main_address()->floor_number . ' ' . $order->user->main_address()->flat_number;
             $order->save();
         }
 

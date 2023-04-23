@@ -18,13 +18,14 @@ class UserAddressFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
             'flat_number' => rand(1, 100),
             'floor_number' => rand(1, 100),
             'building_number' => rand(1, 100),
             'street_name' => fake()->word(),
             'area_id' => fake()->randomLetter().fake()->randomNumber(3),
-            'is_main' => false,
+            'is_main' => true,
             'user_id' => User::all()->random()->id,
             'governorate_id' => Governorate::all()->random()->id
         ];
