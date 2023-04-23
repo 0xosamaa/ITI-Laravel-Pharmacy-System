@@ -36,14 +36,21 @@
                                     <td>{{ $governorate->id }}</td>
                                     <td>{{ $governorate->name }}</td>
                                     <td>
-                                         <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <div class="row">
+                                          <div class="col">
+                                            <a href="{{ route('admin.governorates.edit', $governorate->id) }}" class="btn btn-lg btn-info w-100">Edit</a>
+                                          </div>
+                                          <div class="col">
+                                            <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
+                                              @csrf
+                                              @method('DELETE')
+                                              <button type="submit" class="btn btn-lg btn-danger w-100" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      d>
 
-                                         <form method="POST" action="{{ route('admin.governorates.destroy', $governorate->id ) }}" style="display: inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                                        </form>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
