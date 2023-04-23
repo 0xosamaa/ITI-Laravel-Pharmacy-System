@@ -25,73 +25,12 @@
                         @if ($user->image == null)
                             <small class="text-warning">Not Added Yet</small>
                         @endif
-                    </td>
-                </tr>
-                <tr class="">
-                    <th>Name</th>
-                    <td scope="row">{{ $user->name }}</td>
-                </tr>
-                <tr class="">
-                    <th>Email</th>
-                    <td scope="row">{{ $user->email }}</td>
-                </tr>
-                <tr class="">
-                    <th>Defualt Address</th>
-                    <td scope="row" class="d-flex justify-content-between">
-                        <span>
-                            @if ($address == null)
-                                <small class="text-warning">No Defualt Address Yet</small>
-                            @else
-                                {{ $address->street_name }},{{ $address->governorate->name }}
-                            @endif
                         </span>
                         <!-- &nbsp;&nbsp;&nbsp; -->
                         <a href="{{ route('admin.users.addresses.index', $user->id) }}"
                             class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
                             Show {{ $user->name }}'s Addresses
                         </a>
-                    </td>
-                </tr>
-                <tr class="">
-                    <th>Gender</th>
-                    <td scope="row">{{ $user->gender }}</td>
-                </tr>
-                <tr class="">
-                    <th>Date Of Birth</th>
-                    <td scope="row">
-                        {{ $user->date_of_birth }}
-                        @if ($user->date_of_birth == null)
-                            <small class="text-warning">Not Added Yet</small>
-                        @endif
-                    </td>
-                </tr>
-                <tr class="">
-                    <th>Mobile Number</th>
-                    <td scope="row">
-                        {{ $user->mobile_number }}
-                        @if ($user->mobile_number == null)
-                            <small class="text-warning">Not Added Yet</small>
-                        @endif
-                    </td>
-                </tr>
-                <tr class="">
-                    <th>National ID</th>
-                    <td scope="row">
-                        {{ $user->national_id }}
-                        @if ($user->national_id == null)
-                            <small class="text-warning">Not Added Yet</small>
-                        @endif
-                    </td>
-                </tr>
-                <tr class="">
-                    <th>Created At</th>
-                    <td scope="row">{{ $user->created_at }}</td>
-                </tr>
-                <tr class="">
-                    <a href="{{ route('admin.users.edit', $user->id) }}"
-                        class="btn btn-icon btn-light text-info rounded-pill m-2  shadow bg-body-tertiary">
-                        Edit {{ $user->name }}'s Data
-                    </a>
                 </tr>
             </tbody>
         </table>
