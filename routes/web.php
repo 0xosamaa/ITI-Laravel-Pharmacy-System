@@ -68,7 +68,7 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
 });
 
 
-Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
+Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
     Route::patch('/doctors/ban/{doctor}', [DoctorController::class, 'ban'])->name('doctors.ban');
