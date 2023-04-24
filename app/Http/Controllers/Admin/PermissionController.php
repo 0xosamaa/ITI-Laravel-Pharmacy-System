@@ -43,6 +43,5 @@ class PermissionController extends Controller
     public function destroy(permission $permission)
     {
         $permission->delete();
-        return redirect()->route('admin.permissions.index');
     }
 }
