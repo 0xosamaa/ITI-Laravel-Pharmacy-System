@@ -23,11 +23,12 @@
             <!-- /.card-header -->
 
             <!-- form start -->
-            <form action="{{ route('doctors.update',['doctor'=>$doctor['id']]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.doctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 {{ method_field('PATCH') }}
                 <div class="card-body p-4">
+                    <input type="text" class="form-control" name="id" value="{{ $doctor->id }}" hidden>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name"
@@ -55,6 +56,10 @@
                             </div>
                         </div>
                     </div>
+                    @role('pharmacist')
+                    <input type="text" class="form-control" name="pharmacy_id" value="{{ $doctor->pharmacy->id }}" hidden>
+                    @endrole
+                    @role('admin')
                     <div class="form-group">
                         <label for="pharmacy_id" class="form-label">Pharmacy Name</label>
                         <select class="form-select select2" style="width: 100%" name="pharmacy_id" id="pharmacy_id">
@@ -63,6 +68,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endrole
                 </div>
                 <!-- /.card-body -->
 

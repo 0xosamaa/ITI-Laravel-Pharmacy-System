@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('national_id', $precision = 14, $scale = 0)->unique();
             $table->string('avatar_image')->default('default.jpg');
-            $table->boolean('is_banned')->default(false);
             $table->foreignId('pharmacy_id')->constrained('pharmacies');
             $table->timestamps();
         });

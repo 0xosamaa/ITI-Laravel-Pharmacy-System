@@ -2,60 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Pharmacy;
-use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\StoreDoctorRequest;
+use App\Http\Requests\UpdateDoctorRequest;
 
 class DoctorController extends Controller
 {
     public function index()
     {
         $doctors = Doctor::with("pharmacy", "user")->get();
-
-        return view('admin.doctors.index', [
-            'doctors' => $doctors
-        ]);
+        return view('admin.doctors.index', compact('doctors'));
     }
 
     public function create()
     {
         $pharmacies = Pharmacy::all();
-
-        return view('admin.doctors.create', [
-            'pharmacies' => $pharmacies
-        ]);
+        return view('admin.doctors.create', compact('pharmacies'));
     }
 
-    public function store(Request $request)
+    public function store(StoreDoctorRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'min:6', 'confirmed', Rules\Password::defaults()],
-            'national_id' => ['required', 'digits:14', 'unique:'.Doctor::class],
-            'avatar_image' => ['nullable', 'image'],
-            'pharmacy_id' => ['required', 'exists:pharmacies,id']
-        ], [
-            'name.required' => 'Name is required',
-            'name.max' => 'Name must be at most 255 characters',
-            'email.required' => 'Email is required',
-            'email.max' => 'Email must be at most 255 characters',
-            'email.unique' => 'Email already exists',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 6 characters',
-            'national_id.required' => 'National ID is required',
-            'national_id.digits' => 'National ID must be a valid 14-digit number',
-            'national_id.unique' => 'National ID already exists',
-            'avatar_image.image' => 'Avatar must be an image',
-            'pharmacy_id.required' => 'Pharmacy is required',
-            'pharmacy_id.exists' => 'Pharmacy does not exist'
-        ]);
-
         if ($request->hasFile('avatar_image')) {
             $image = $request->file('avatar_image');
             $extension = $image->getClientOriginalExtension();
@@ -79,16 +50,13 @@ class DoctorController extends Controller
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
-        return redirect('doctors')->with('success', 'Doctor created successfully');
+        return redirect(route('admin.doctors.index'))->with('success', 'Doctor created successfully');
     }
 
     public function show($id)
     {
         $doctor = Doctor::find($id);
-
-        return view('doctors.show', [
-            'doctor' => $doctor
-        ]);
+        return view('admin.doctors.show', compact('doctor'));
     }
 
     public function edit($id)
@@ -102,28 +70,9 @@ class DoctorController extends Controller
         ]);
     }
 
-    public function update($id, Request $request)
+    public function update($id, UpdateDoctorRequest $request)
     {
         $doctor = Doctor::find($id);
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$doctor->user_id],
-            'national_id' => ['required', 'digits:14', 'unique:doctors,national_id,'.$doctor->id],
-            'avatar_image' => ['nullable', 'image'],
-            'pharmacy_id' => ['required', 'exists:pharmacies,id']
-        ], [
-            'name.required' => 'Name is required',
-            'name.max' => 'Name must be at most 255 characters',
-            'email.required' => 'Email is required',
-            'email.max' => 'Email must be at most 255 characters',
-            'email.unique' => 'Email already exists',
-            'national_id.required' => 'National ID is required',
-            'national_id.digits' => 'National ID must be a valid 14-digit number',
-            'national_id.unique' => 'National ID already exists',
-            'avatar_image.image' => 'Avatar must be an image',
-            'pharmacy_id.required' => 'Pharmacy is required',
-            'pharmacy_id.exists' => 'Pharmacy does not exist'
-        ]);
 
         if ($request->hasFile('avatar_image')) {
             $image = $request->file('avatar_image');
@@ -149,7 +98,7 @@ class DoctorController extends Controller
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
-        return redirect('doctors')->with('success', 'Doctor updated successfully');
+        return redirect(route('admin.doctors.index'))->with('success', 'Doctor updated successfully');
     }
 
     public function destroy($id)
@@ -168,8 +117,29 @@ class DoctorController extends Controller
         // Return a JSON response with the updated data
         return response()->json([
             'success' => true,
-            'message' => 'Doctor deleted successfully.',
-            'doctors' => $doctors
+            'message' => 'Doctor deleted successfully.'
+        ]);
+    }
+
+    public function ban($id)
+    {
+        $doctor = Doctor::find($id);
+        $doctor->user->ban();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor banned successfully.'
+        ]);
+    }
+
+    public function unban($id)
+    {
+        $doctor = Doctor::find($id);
+        $doctor->user->unban();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor unbanned successfully.'
         ]);
     }
 }

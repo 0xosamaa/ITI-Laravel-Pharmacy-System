@@ -40,7 +40,7 @@ Route::get('/dashboard', function () {
 
 
 
-Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out-banned-user'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //roles
@@ -58,20 +58,24 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist'])->name('a
     // users
     Route::resource('/users', UserController::class);
     // users_addresses
-    Route::resource('/users.addresses', UserAdressController::class);
+    Route::resource('/users.addresses', UserAdressController::class)->parameters([
+        'addresses' => 'id'
+    ]);
     //stripe
     Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
 
     Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
-
+    Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
 });
 
 
-Route::middleware(['auth', 'role:admin|pharmacist'])->group(function () {
+Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
-    Route::delete('/doctors', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+    Route::patch('/doctors/ban/{doctor}', [DoctorController::class, 'ban'])->name('doctors.ban');
+    Route::patch('/doctors/unban/{doctor}', [DoctorController::class, 'unban'])->name('doctors.unban');
+    Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
 Route::name('site.')->group(function () {

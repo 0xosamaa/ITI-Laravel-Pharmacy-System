@@ -9,48 +9,42 @@
 @section('content')
     <!-- Modal -->
 
-<div class="table-responsive w-75 m-auto p-5">
-    <h3 class="text-center mb-3">User Info</h3><hr>
-    <table class="table table-striped-columns">
-        <tbody>
-            <tr class="">
-                <th>ID</th>
-                <td scope="row">{{ $user->id }}</td>
-            </tr>
-            <tr class="">
-                <th>Avatar</th>
-                <td scope="row">
-                    <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
-                    @if(($user->profile_image_path)==null)  
-                        <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
-                        <small class="text-warning">Not Updated Yet</small>  
-                    @endif
-                </td>
-            </tr>
-            <tr class="">
-                <th>Name</th>
-                <td scope="row">{{ $user->name }}</td>
-            </tr>
-            <tr class="">
-                <th>Email</th>
-                <td scope="row">{{ $user->email }}</td>
-            </tr>
-            <tr class="">
-                <th>Defualt Address</th>
-                <td scope="row" class="d-flex justify-content-between">
-                    <span>
-                        @if($address==null)  
-                            <small class="text-warning">No Defualt Address Yet</small> 
-                        @else
-                            {{ $address->street_name }},{{ $address->governorate->name }} 
-                        @endif
-                        </span>
-                        <!-- &nbsp;&nbsp;&nbsp; -->
-                        <a href="{{ route('admin.users.addresses.index', $user->id) }}"
-                            class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
-                            Show {{ $user->name }}'s Addresses
-                        </a>
+    <div class="table-responsive w-75 m-auto p-5">
+        <h3 class="text-center mb-3">Address Info</h3>
+        <hr>
+        <table class="table table-striped-columns">
+            <tbody>
+
+                <tr>
+                    <th>ID</th>
+                    <td scope="row">{{ $address->id }}</td>
                 </tr>
+
+                <tr>
+                    <th>Flat Number</th>
+                    <td scope="row">{{ $address->flat_number }}</td>
+                </tr>
+
+                <tr>
+                    <th>Floor Number</th>
+                    <td scope="row">{{ $address->floor_number }}</td>
+                </tr>
+
+                <tr>
+                    <th>Building</th>
+                    <td scope="row">{{ $address->building_number }}</td>
+                </tr>
+
+                <tr>
+                    <th>Street Name</th>
+                    <td scope="row">{{ $address->street_name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Governrate</th>
+                    <td scope="row">{{ $address->governorate_id }}</td>
+                </tr>
+
             </tbody>
         </table>
     </div>

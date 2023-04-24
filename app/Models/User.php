@@ -8,12 +8,16 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Cog\Contracts\Ban\Bannable as BannableInterface;
+use Cog\Laravel\Ban\Traits\Bannable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Cashier\Billable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements BannableInterface
 {
+    use Bannable;
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Billable;
     /**
      * The attributes that are mass assignable.
@@ -48,9 +52,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function address()
+    public function main_address()
     {
-        return $this->hasOne(UserAddress::class);
+        return $this->user_addresses()->where('is_main', true)->with('governorate')->first();
+
     }
     public function orders()
     {

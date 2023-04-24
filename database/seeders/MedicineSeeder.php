@@ -26,7 +26,7 @@ class MedicineSeeder extends Seeder
                 'image' => 'site/images/product_0' . fake()->numberBetween(1, 6) . '.png',
                 'SKU' => fake()->numberBetween(20000, 90000),
                 'price' => fake()->numberBetween(5000, 100000),
-                'discount_id' => $discounts->random(),
+                'discount_id' => $i % 3 == 0 ? null : $discounts->random(),
                 'category_id' => $categories->random(),
             ]);
         }

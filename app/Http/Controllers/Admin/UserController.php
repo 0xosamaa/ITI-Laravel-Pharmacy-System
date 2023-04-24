@@ -14,21 +14,24 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $data = User::all();
-        return view('admin.users.index', ['users'=>$data]);
+        return view('admin.users.index', ['users' => $data]);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $user = User::findOrFail($id);
         $default_adress = UserAddress::where('is_main',1)->where('user_id',$id)->with('governorate')->first();
         return view('admin.users.info',['user'=>$user, 'address'=>$default_adress]);
     }
 
-    public function create(){
+    public function create()
+    {
         $governorate = Governorate::all();
-        if($governorate){
-            return view('admin.users.create', ['governorates'=>$governorate]);
+        if ($governorate) {
+            return view('admin.users.create', ['governorates' => $governorate]);
         }
     }
 
@@ -92,7 +95,7 @@ class UserController extends Controller
 
     public function edit($id){
         $user = User::findOrFail($id);
-        dd($user);
+        // dd($user);
     }
 
     public function destroy($id){

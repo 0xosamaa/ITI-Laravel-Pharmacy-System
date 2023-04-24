@@ -108,7 +108,7 @@
                         <div class="nonloop-block-3 owl-carousel">
                             @foreach ($new_medicines as $new_medicine)
                                 <div class="text-center item mb-4">
-                                    @if ($medicine->hasActiveDiscount())
+                                    @if ($new_medicine->hasActiveDiscount())
                                         <span class="tag">Sale</span>
                                     @endif
                                     <a href="{{ route('site.shop.show', $new_medicine->slug) }}"> <img
