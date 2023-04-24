@@ -42,6 +42,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="area_id">Area ID</label>
+                    <input type="text" name="area_id" class="form-control" id="area_id"
+                        placeholder="Area ID">
+                    @error('area_id')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label for="street_name">Street Name</label>
                     <input type="text" name="street_name" class="form-control" id="street_name" placeholder="Enter Name">
                     @error('street_number')

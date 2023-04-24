@@ -6,6 +6,11 @@
 <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
+
+@section('title')
+    User Info
+@endsection
+
 @section('content')
 <!-- Modal -->
 

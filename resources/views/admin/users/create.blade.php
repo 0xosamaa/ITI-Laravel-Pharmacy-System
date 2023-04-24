@@ -166,37 +166,21 @@
     <script src={{ asset("admins/plugins/toastr/toastr.min.js") }}></script>
     <script>
         $(function() {
-            //Initialize Select2 Elements
-            $('.select2').select2();
-
-            //Initialize Select2 Elements
-            $('.select2').select2({
-                theme: 'bootstrap4'
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
             });
-
-            // @if ($errors->any())
-            //     @foreach ($errors->all() as $error)
-            //         toastr["error"]("{{ $error }}", "Error")
-            //     @endforeach
-
-            //     toastr.options = {
-            //         "closeButton": false,
-            //         "debug": false,
-            //         "newestOnTop": false,
-            //         "progressBar": false,
-            //         "positionClass": "toast-top-right",
-            //         "preventDuplicates": false,
-            //         "onclick": null,
-            //         "showDuration": "300",
-            //         "hideDuration": "1000",
-            //         "timeOut": "5000",
-            //         "extendedTimeOut": "1000",
-            //         "showEasing": "swing",
-            //         "hideEasing": "linear",
-            //         "showMethod": "fadeIn",
-            //         "hideMethod": "fadeOut"
-            //     }
-            // @endif
         });
     </script>
 @endsection
