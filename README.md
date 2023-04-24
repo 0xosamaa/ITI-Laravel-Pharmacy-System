@@ -53,10 +53,10 @@ Future plans for the application include:
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## Contributors
-- @0xosamaa
-- @hassanOsama720
-- @amrbasiony97
-- @Youssef-Abdullahx09
-- @Muhammed-saber79
-- @mostafa2080
+- [Mohamed Osama](https://github.com/0xosamaa)
+- [Hassan Osama](https://github.com/hassanOsama720)
+- [Youssef Abdullah](https://github.com/Youssef-Abdullahx09)
+- [Amr Basiony](https://github.com/amrbasiony97)
+- [Muhammed Saber](https://github.com/Muhammed-saber79)
+- [Mostafa Shaaban](https://github.com/mostafa2080)
 
