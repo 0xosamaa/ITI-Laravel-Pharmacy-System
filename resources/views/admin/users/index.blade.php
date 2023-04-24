@@ -45,7 +45,7 @@
                     </a>
                 </div>
                 <div class="col-sm-12">
-                    <table id="users_table" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                         <thead>
                             <tr>
                                 <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">
@@ -157,7 +157,6 @@
 
 @section('extra-js')
     <!-- DataTables  & Plugins -->
-    <!-- DataTables  & Plugins -->
     <script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
     <script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
     <script src={{ asset('admins/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
@@ -175,13 +174,22 @@
     <script src={{ asset('admins/plugins/toastr/toastr.min.js') }}></script>
     <script>
         $(function() {
-            $("#users-table").DataTable({
+            $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+            
             const toastr_options = {
                 "closeButton": false,
                 "debug": false,
@@ -217,7 +225,7 @@
                         toastr["success"]("User deleted successfully");
                         toastr.options = toastr_options;
                         const id = $(this).data('url').split('/').pop();
-                        const table = $('#users-table').DataTable();
+                        const table = $('#example1').DataTable();
                         const row = table.row('#' + id);
                         row.remove().draw();
                     },
@@ -229,4 +237,41 @@
 
         });
     </script>
+@endsection
+
+
+@section('extra-js')
+<!-- DataTables  & Plugins -->
+<script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}></script>
+<script src={{ asset('admins/plugins/jszip/jszip.min.js') }}></script>
+<script src={{ asset('admins/plugins/pdfmake/pdfmake.min.js') }}></script>
+<script src={{ asset('admins/plugins/pdfmake/vfs_fonts.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
+<script src={{ asset('admins/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script>
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
 @endsection
