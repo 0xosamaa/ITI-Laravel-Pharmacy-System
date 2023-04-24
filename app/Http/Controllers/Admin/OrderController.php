@@ -51,10 +51,8 @@ class OrderController extends Controller
         $data = $request->all();
         //dd($data);
         // get user with the given id
-        /*$delivery = User::findOrFailed($data['user_id'])->user_addresses;
-        $delivery_address = "$delivery->street $delivery->city $delivery->governate->name";*/
-        $delivery_address = "Address 1";
-
+        $user = User::findOrFail($data['user_id']);
+        $delivery_address = $user->main_address()->governorate->name . ' ' . $user->main_address()->street_name . ' ' . $user->main_address()->building_number . ' ' . $user->main_address()->floor_number . ' ' . $user->main_address()->flat_number;
         // create order details and get the id of the created order details
         $order = [
             'user_id' => $data['user_id'],
