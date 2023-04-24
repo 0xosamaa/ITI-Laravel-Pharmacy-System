@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-    Create User
+    Update User's Data
 @endsection
 
 @section('extra-css')
@@ -30,7 +30,7 @@
         <!-- general form elements -->
         <div class="card card-primary mx-auto w-75 mb-0">
             <div class="card-header">
-                <h3 class="card-title">Create User</h3>
+                <h3 class="card-title">Update {{ $userData->user->name }}'s Data</h3>
             </div>
             <!-- /.card-header -->
 

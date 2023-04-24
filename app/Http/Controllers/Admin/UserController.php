@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Faker\Provider\UserAgent;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -94,8 +95,12 @@ class UserController extends Controller
     }
 
     public function edit($id){
-        $user = User::findOrFail($id);
-        // dd($user);
+        User::findOrFail($id);
+        $userData = UserAddress::where('user_id', $id)->with(['governorate', 'user'])->first();
+        $governorates = Governorate::all();
+
+        dd($userData);
+        return view('admin.users.edit', ['userData' => $userData, 'governorates' => $governorates]);
     }
 
     public function destroy($id){
