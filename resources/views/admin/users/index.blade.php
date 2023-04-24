@@ -7,9 +7,23 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
 @section('content')
+@if (session('success'))
+
+    <div class="alert alert-success alert-dismissible fade show mx-5" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>{{ session('success') }}</strong>
+    </div>
+
+    <script>
+      var alertList = document.querySelectorAll('.alert');
+      alertList.forEach(function (alert) {
+        new bootstrap.Alert(alert)
+      })
+    </script>
+@endif
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Pharmacies</h3>
+        <h3 class="card-title">Users</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -43,7 +57,7 @@
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
                                     mobile_number
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">
+                                <th class="text-center" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">
                                     Image
                                 </th>
                                 <th class="text-center">
@@ -59,8 +73,12 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->id }}</td>
                                 <td>@if(($user->mobile_number)==null)  <small class="text-warning">No Mobile Number</small>  @endif</td>
-                                <td>
-                                    <img src="{{ $user->image }}" alt="user avatar" class="text-warning text-smaller">
+                                <td class="text-center">
+                                    <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
+                                    @if(($user->profile_image_path)==null)  
+                                        <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
+                                        <small class="text-warning">Not Updated Yet</small>  
+                                    @endif
                                 </td>
 
                                 <td>
@@ -75,7 +93,7 @@
                                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
                                             </svg>
                                         </a>
-                                        <form action="{{ route('admin.pharmacies.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-icon btn-light text-danger rounded-pill m-2  shadow bg-body-tertiary rounded">

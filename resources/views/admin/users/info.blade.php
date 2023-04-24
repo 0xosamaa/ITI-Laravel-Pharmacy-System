@@ -20,8 +20,11 @@
             <tr class="">
                 <th>Avatar</th>
                 <td scope="row">
-                    {{ $user->image }}
-                    @if(($user->image)==null)  <small class="text-warning">Not Added Yet</small>  @endif
+                    <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
+                    @if(($user->profile_image_path)==null)  
+                        <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
+                        <small class="text-warning">Not Updated Yet</small>  
+                    @endif
                 </td>
             </tr>
             <tr class="">
