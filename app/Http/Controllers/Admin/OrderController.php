@@ -77,7 +77,10 @@ class OrderController extends Controller
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
         $total = 0;
         foreach ($medicines as $medicine) {
-            $total += $medicine->price;
+            if (!isset($data[$medicine->id])) {
+                $data[$medicine->id] = 1;
+            }
+            $total += $medicine->price * $data[$medicine->id];
         }
         $order['total'] = $total;
         $orderDetails = OrderDetails::create($order);
@@ -88,6 +91,7 @@ class OrderController extends Controller
                 'medicine_id' => $medicine->id,
                 'quantity' => $data[$medicine->id],
             ]);
+            unset($data[$medicine->id]);
         }
         // create order items
         return redirect()->route('admin.orders.index');
@@ -123,29 +127,51 @@ class OrderController extends Controller
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
         $order = OrderDetails::find($id);
         $medicine_arr = $order->items->pluck('medicine_id')->toArray();
-
         // Compare old medicines with new medicines
         if ($data['medicines'] != $medicine_arr) {
             $total = 0;
+            // Update order items
             foreach ($medicines as $medicine) {
-                $total += $medicine->price;
-            }
-            $data['total'] = $total;
-            foreach ($data['medicines'] as $medicine) {
-                if (!in_array($medicine, $medicine_arr)) {
+                if (!in_array($medicine->id, $medicine_arr)) {
                     OrderItems::create([
                         'order_id' => $id,
-                        'medicine_id' => $medicine,
-                        'quantity' => 1,
+                        'medicine_id' => $medicine['id'],
+                        'quantity' => $data[$medicine->id] | 1,
                     ]);
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
+                }
+                elseif (in_array($medicine->id, $medicine_arr) && $data[$medicine->id] != null) {
+                    $order_item = OrderItems::where('order_id', $id)->where('medicine_id', $medicine->id)->first();
+                    $order_item->quantity = $data[$medicine->id];
+                    $order_item->save();
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
                 }
             }
+            // Delete old order items
             foreach ($medicine_arr as $medicine) {
                 if (!in_array($medicine, $data['medicines'])) {
                     OrderItems::where('order_id', $id)->where('medicine_id', $medicine)->delete();
                 }
             }
+            $data['total'] = $total;
 
+        }
+        else{
+            $total = 0;
+            foreach ($medicines as $medicine) {
+                $order_item = OrderItems::where('order_id', $id)->where('medicine_id', $medicine->id)->first();
+                if($data[$medicine->id] != null){
+                    $order_item->quantity = $data[$medicine->id];
+                    $order_item->save();
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
+                }
+                else
+                    $total += $medicine->price * $order_item->quantity;
+            }
+            $data['total'] = $total;
         }
         unset($data['medicines']);
 
@@ -201,7 +227,12 @@ class OrderController extends Controller
     public function quantity(Request $request)
     {
         $data = $request->all();
+        // check if url contains create
+        $sender = 'create';
+        if (strpos(url()->previous(), 'edit')) {
+            $sender = 'edit';
+        }
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
-        return view('admin.Orders.quantity', ['medicines' => $medicines, 'data' => $data]);
+        return view('admin.Orders.quantity', ['medicines' => $medicines, 'data' => $data, 'sender' => $sender]);
     }
 }
