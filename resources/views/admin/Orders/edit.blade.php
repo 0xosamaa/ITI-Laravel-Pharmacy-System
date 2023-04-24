@@ -13,13 +13,16 @@
             </div>
             <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">Back</a>
         @else
-            <form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
+            <form method="POST" action="{{ route('admin.quantity') }}">
                 @csrf
-                @method('PUT')
+                @method('POST')
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="doctorName">Doctor Name</label>
-                        <input name type="text" readonly value="{{ auth()->user()->hasRole('doctor') ? $order->doctor->name : null }}" class="form-control" id="doctorName">
+                        <input name="doctor_id" type="text" readonly value="{{ auth()->user()->hasRole('doctor') ? $order->doctor->name : null }}" class="form-control" id="doctorName">
+                    </div>
+                    <div class="form-group col-6">
+                        <input name="id" hidden  type="text" readonly value="{{$order->id}}" class="form-control" id="doctorName">
                     </div>
                     <div class="form-group col-6">
                         <label for="assignedPharmacy">Assigned Pharmacy</label>
@@ -36,7 +39,7 @@
                     </div>
                     <div class="form-group col-12">
                         <label for="userName">User Name</label>
-                        <select class="custom-select form-select" id="userName">
+                        <select name="user_id" class="custom-select form-select" id="userName">
                             @if($order->status == 'Confirmed' | $order->status == 'WaitingForUserConfirmation')
                                 <option value="{{ $order->user_id }}" selected>{{ $order->user->name }}</option>
                             @else
@@ -72,7 +75,7 @@
                         </select>
                     </div>
                     <div class="form-group d-flex justify-content-center align-items-center pt-4 col-4">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn btn-success">Next</button>
                     </div>
                 </div>
 

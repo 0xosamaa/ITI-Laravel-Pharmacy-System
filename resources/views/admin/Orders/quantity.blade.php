@@ -10,14 +10,18 @@
 @section ( 'content' )
 
     <div class="container d-flex justify-center p-5">
-        <form method="POST" action="{{ route('admin.orders.store') }}">
+        <form method="POST" action="{{ $sender == 'create'? route('admin.orders.store') : route('admin.orders.update', $data['id']) }}">
             @csrf
-            @method('POST')
+            @if($sender == 'edit')
+                @method('PUT')
+            @else
+                @method('POST')
+            @endif
             <div class="row">
                 @foreach($medicines as $item)
                     <div class="form-group col-6">
                         <label for="{{$item->name}}">{{$item->name}}</label>
-                        <input type="number" class="form-control" id="{{$item->name}}" value="1" name="{{$item->id}}">
+                        <input type="number" class="form-control" id="{{$item->name}}" name="{{$item->id}}">
                     </div>
                 @endforeach
             </div>
@@ -27,7 +31,7 @@
 
             <!-- Order Data -->
 
-            <div class="row">
+            <div hidden class="row">
                 <div class="form-group col-6">
                     <label for="doctorName">Doctor Name</label>
                     @if(auth()->user()->hasRole('doctor'))
@@ -56,6 +60,15 @@
                         @endforeach
                     </select>
                 </div>
+                @if($sender == 'edit')
+                    <div hidden class="form-group col-8">
+                        <select id="status" class="js-example-basic-multiple w-100" name="status">
+                            <option selected value="{{ $data['status'] }}">{{ $data['status'] }}</option>
+                        </select>
+                    </div>
+                @endif
+
+
             </div>
 
         </form>
