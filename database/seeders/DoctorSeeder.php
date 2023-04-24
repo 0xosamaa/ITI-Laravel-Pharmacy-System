@@ -8,7 +8,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DoctorSeeder extends Seeder
 {
@@ -38,6 +37,10 @@ class DoctorSeeder extends Seeder
                 return $first_name . '_' . $last_name . '@doctor.com';
             }, $names);
 
+            $directory = public_path('storage/images/doctors');
+            $files = File::files($directory);
+            File::delete($files);
+
             for ($i = 0; $i < 50; $i++) {
                 $name = $names[$i];
                 $email = $emails[$i];
@@ -53,8 +56,6 @@ class DoctorSeeder extends Seeder
             $national_id = 28204227480000;
 
             foreach ($users as $user) {
-                // $user_id = DB::table('users')->insertGetId($user);
-
                 $user = User::factory()->create([
                     'name' => $user['name'],
                     'email' => $user['email'],
@@ -66,7 +67,7 @@ class DoctorSeeder extends Seeder
                 $image_name = uniqid() . '.jpg';
                 File::copy(
                     public_path('site/images/person_') . fake()->numberBetween(2, 4) . '.jpg',
-                    public_path('storage/images/doctors/') . $image_name
+                    $directory . '/' . $image_name
                 );
 
                 DB::table('doctors')->insert([

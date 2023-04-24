@@ -34,7 +34,7 @@ class DoctorController extends Controller
             $image->move(public_path('storage/images/doctors'), $filename);
         }
         else {
-            $filename = 'default.jpg';
+            $filename = '../default.jpg';
         }
 
         $user = User::create([
@@ -79,7 +79,7 @@ class DoctorController extends Controller
             $extension = $image->getClientOriginalExtension();
             $filename = uniqid() . '.' . $extension;
             $image->move(public_path('storage/images/doctors'), $filename);
-            if ($doctor->avatar_image != 'default.jpg') {
+            if ($doctor->avatar_image != '../default.jpg') {
                 File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
             }
         }
@@ -105,7 +105,7 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::find($id);
 
-        if ($doctor->avatar_image != 'default.jpg') {
+        if ($doctor->avatar_image != '../default.jpg') {
             File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
         }
         DB::table('doctors')->where('id', $doctor->id)->delete();
