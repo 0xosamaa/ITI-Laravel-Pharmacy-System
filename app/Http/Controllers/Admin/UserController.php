@@ -74,6 +74,7 @@ class UserController extends Controller
             $user->national_id = $validData['national_id'];
             $user->gender = $validData['gender'];
             $user->profile_image_path = $fileName;
+            // $user->assignRole('user');
             $user->save();
 
             $address = new UserAddress;
@@ -162,5 +163,6 @@ class UserController extends Controller
 
     public function destroy($id){
         User::destroy($id);
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 }
