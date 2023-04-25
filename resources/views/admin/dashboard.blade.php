@@ -10,12 +10,6 @@
                     <div class="col-sm-6">
                         <h1 class="m-0">Dashboard</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard v1</li>
-                        </ol>
-                    </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -30,14 +24,14 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
+                                <h3>{{ $medicinesCount }}</h3>
 
-                                <p>New Orders</p>
+                                <p>Medicines</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fa fa-capsules"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
+                            <a href="{{ route('admin.medicines.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
@@ -46,14 +40,14 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{ $pharmaciesCount }}</h3>
 
-                                <p>Bounce Rate</p>
+                                <p>Pharmacies</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-ambulance"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
+                            <a href="{{ route('admin.pharmacies.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
@@ -62,14 +56,14 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>44</h3>
+                                <h3>{{ $doctorsCount }}</h3>
 
-                                <p>User Registrations</p>
+                                <p>Doctors</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-user-md"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
+                            <a href="{{ route('admin.doctors.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
@@ -78,14 +72,14 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
+                                <h3>{{ $usersCount }}</h3>
 
-                                <p>Unique Visitors</p>
+                                <p>Users</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="fas fa-user"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
+                            <a href="{{ route('admin.users.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>

@@ -75,6 +75,7 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
+                            @if(auth()->user()->hasRole('admin'))
                             <tr id="{{ $user->id }}">
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }} , {{ $user->role }}</td>
@@ -82,15 +83,15 @@
                                 <td>{{ $user->id }}</td>
                                 <td>
                                     {{ $user->mobile_number }}
-                                    @if(($user->mobile_number)==null)  
-                                        <small class="text-warning">No Mobile Number</small>  
+                                    @if(($user->mobile_number)==null)
+                                        <small class="text-warning">No Mobile Number</small>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
-                                    @if(($user->profile_image_path)==null)  
+                                    @if(($user->profile_image_path)==null)
                                         <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
-                                        <small class="text-warning">Not Updated Yet</small>  
+                                        <small class="text-warning">Not Updated Yet</small>
                                     @endif
                                 </td>
 
@@ -120,6 +121,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -128,7 +130,7 @@
             </div>
 
         </div>
-        
+
     </div>
 </div>
 
@@ -191,7 +193,7 @@
                 "autoWidth": false,
                 "responsive": true,
             });
-            
+
             const toastr_options = {
                 "closeButton": false,
                 "debug": false,
