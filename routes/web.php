@@ -74,6 +74,7 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
 Route::middleware(['auth', 'verified', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard/adminStats', [DashboardController::class, 'getAdminStats'])->name('dashboard.getAdminStats');
     Route::get('/dashboard/medicinesStats', [DashboardController::class, 'getMedicinesStats'])->name('dashboard.getMedicinesStats');
+    Route::get('/dashboard/pharmaciesStats', [DashboardController::class, 'getPharmaciesStats'])->name('dashboard.getPharmaciesStats');
 });
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {

@@ -59,4 +59,21 @@ class DashboardController extends Controller
 
         return response()->json($medicines);
     }
+
+    public function getPharmaciesStats()
+    {
+        $pharmaciesDoctors = Doctor::selectRaw('pharmacy_id, count(*) as doctor_count')
+                            ->groupBy('pharmacy_id')
+                            ->get();
+
+        foreach ($pharmaciesDoctors as $pharmacy) {
+            $pharmacyName = Pharmacy::where('id', $pharmacy->pharmacy_id)
+                        ->first()->name;
+            $doctorCount = $pharmacy->doctor_count;
+
+            $pharmacies[$pharmacyName] = $doctorCount;
+        }
+
+        return response()->json($pharmacies);
+    }
 }
