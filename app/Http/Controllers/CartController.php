@@ -21,9 +21,11 @@ class CartController extends Controller
         $medicine = Medicine::where('id', $request->medicine_id)->firstOrFail();
         $cart = Cart::where('user_id', Auth::user()->id)->first();
         if (!$cart) $cart = Cart::create(['user_id' => Auth::user()->id]);
-        $cart->add($medicine);
-
-        return redirect()->back()->with(['success' => 'Medicine added to cart successfully!']);
+        $isAdded = $cart->add($medicine);
+        if ($isAdded)
+            return ['success' => 'Medicine added to cart successfully!'];
+        else
+            return response()->json(['message' => 'Medicine already in cart'], 400);
     }
 
     public function remove(Request $request)

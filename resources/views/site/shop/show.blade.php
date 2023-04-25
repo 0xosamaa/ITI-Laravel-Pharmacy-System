@@ -17,6 +17,9 @@
     </div>
 @endsection
 @section('content')
+    <div class="alert alert-danger error-message" style="display: none;" role="alert">
+        This is a danger alert—check it out!
+    </div>
     <div class="site-section">
         <div class="container">
             <div class="row">
@@ -97,8 +100,13 @@
                     let items_no = parseInt($('.cart-number').text())
                     $('.cart-number').text(++items_no)
                 },
-                error: function(xhr, status, error) {
-                    window.location.href = '/login';
+                error: function(error) {
+                    if (error.status === 403 || error.status === 401) {
+                        window.location.href = '/login';
+                    } else if (error.status === 400) {
+                        $('.error-message').text('Item already in Cart').css('display', 'block')
+                    }
+
                 }
             });
 

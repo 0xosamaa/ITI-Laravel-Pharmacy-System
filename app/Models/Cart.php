@@ -29,6 +29,7 @@ class Cart extends Model
         foreach ($items as $item) {
             $item->delete();
         }
+        return true;
     }
 
     public function has(Medicine $medicine)
@@ -50,7 +51,9 @@ class Cart extends Model
                 "medicine_id" => $medicine->id,
                 "cart_id" => $this->id
             ]);
+            return true;
         }
+        return false;
     }
 
     public function remove(Medicine $medicine)
@@ -59,7 +62,9 @@ class Cart extends Model
 
         if ($this->has($medicine)) {
             $items->where('medicine_id', $medicine->id)->first()->delete();
+            return true;
         }
+        return false;
     }
 
     public function increase(Medicine $medicine)
@@ -70,9 +75,10 @@ class Cart extends Model
                 if ($medicine->stock <= $item->quantity) return;
                 $item->quantity++;
                 $item->save();
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public function decrease(Medicine $medicine)
@@ -83,16 +89,17 @@ class Cart extends Model
                 if ($item->quantity <= 1) return;
                 $item->quantity--;
                 $item->save();
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public function sub_totals()
     {
         $sub_totals = [];
         $items = $this->items()->get();
-        foreach ($items as $i => $item) {
+        foreach ($items as $item) {
             $sub_totals[$item->id]['id'] = $item->id;
             $sub_totals[$item->id]['medicine_id'] = $item->medicine_id;
             $sub_totals[$item->id]['quantity'] = $item->quantity;
