@@ -14,18 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $medicinesCount = Medicine::count();
-        $pharmaciesCount = Pharmacy::count();
-        $doctorsCount = Doctor::count();
-        $usersCount = User::count();
-
-
-        return view('admin.dashboard', [
-            'medicinesCount' => $medicinesCount,
-            'pharmaciesCount' => $pharmaciesCount,
-            'doctorsCount' => $doctorsCount,
-            'usersCount' => $usersCount
-        ]);
+        return view('admin.dashboard');
     }
 
     public function getAdminStats()
@@ -82,7 +71,7 @@ class DashboardController extends Controller
         $doctors = Doctor::all()->count();
         // get all doctors who have been banned
         $bannedDoctors = 0;
-        foreach(Doctor::all() as $doctor) {
+        foreach(Doctor::with('user')->get() as $doctor) {
             if ($doctor->user->isBanned()) {
                 $bannedDoctors++;
             }
@@ -97,7 +86,7 @@ class DashboardController extends Controller
 
     public function getUsersStats()
     {
-        $users = User::all();
+        $users = User::with('roles')->get();
 
         $admins = $pharmacists = $doctors = $customers = 0;
         foreach ($users as $user) {
