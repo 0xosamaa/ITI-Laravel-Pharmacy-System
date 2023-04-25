@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'pharmacist']);
         Role::create(['name' => 'doctor']);
         Role::create(['name' => 'user']);
+        Role::create(['name' => 'customer']);
 
         $role->givePermissionTo($permission);
     }
