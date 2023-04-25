@@ -6,6 +6,11 @@
 <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 @endsection
+
+@section('title')
+    User Info
+@endsection
+
 @section('content')
 <!-- Modal -->
 
@@ -20,8 +25,11 @@
             <tr class="">
                 <th>Avatar</th>
                 <td scope="row">
-                    {{ $user->image }}
-                    @if(($user->image)==null)  <small class="text-warning">Not Added Yet</small>  @endif
+                    <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
+                    @if(($user->profile_image_path)==null)  
+                        <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
+                        <small class="text-warning">Not Updated Yet</small>  
+                    @endif
                 </td>
             </tr>
             <tr class="">
@@ -43,7 +51,7 @@
                         @endif
                     </span>
                     <!-- &nbsp;&nbsp;&nbsp; -->
-                    <a href="{{ route('admin.user_addresses.index', ['id'=>$user->id]) }}" class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
+                    <a href="{{ route('admin.users.addresses.index', $user->id) }}" class="btn btn-icon btn-light text-primary rounded-pill m-2  shadow bg-body-tertiary">
                         Show {{ $user->name }}'s Addresses
                     </a>
                 </td>

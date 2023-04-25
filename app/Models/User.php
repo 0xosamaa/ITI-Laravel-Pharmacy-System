@@ -5,19 +5,25 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cog\Contracts\Ban\Bannable as BannableInterface;
 use Cog\Laravel\Ban\Traits\Bannable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Cashier\Billable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 
 
-class User extends Authenticatable implements BannableInterface
+class User extends Authenticatable implements BannableInterface, MustVerifyEmail
 {
     use Bannable;
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, Billable;
+    use MustVerifyEmailTrait;
+
     /**
      * The attributes that are mass assignable.
      *
