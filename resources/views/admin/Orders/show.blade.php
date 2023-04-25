@@ -6,7 +6,22 @@
 
 @section ( 'content' )
 
+    @if(session()->has('success'))
+        <div class="alert alert-success">
+            <h3>Success : </h3>
+            <a target="_blank" href="{{session()->get('success')}}" class="btn btn-info w-25">
+                See Invoice
+            </a>
+        </div>
+    @elseif(session()->has('Failed'))
+        <div class="alert alert-danger">
+            <h3>Error : </h3>
+            <span>{{session()->get('Failed')}}</span>
+        </div>
+    @endif
+
     <div class="container-fluid row d-flex justify-content-around p-5 h-75">
+
         <div class="card p-3 col-4">
             <h5>
                 Doctor Name : <span style="color: #777;"> {{ auth()->user()->hasRole('doctor') ? $order->doctor->name : "" }}</span>
@@ -48,9 +63,18 @@
                     <i class="fas fa-info"></i>
                 </a>
                 @if($order->status == 'WaitingForUserConfirmation' || $order->status == 'Confirmed')
-                    <a href="{{route('admin.checkOut',$order['id'])}}" class="btn btn-outline-primary w-25">
-                        <i class="fas fa-check"></i>
-                    </a>
+                    <form action="{{ route('admin.checkOut',$order['id']) }}" method="post">
+                        @csrf
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="{{ config('services.stripe.key') }}"
+                                data-amount="{{$order->total/100}}"
+                                data-name= "Order Checkout"
+                                data-description="Checkout Order For {{$order->user->name}}"
+                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                data-currency="usd"
+                                data-email="{{$order->user->email}}">
+                        </script>
+                    </form>
                 @endif
             </div>
         </div>
