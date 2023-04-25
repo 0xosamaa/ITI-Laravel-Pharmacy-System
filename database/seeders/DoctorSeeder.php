@@ -56,27 +56,25 @@ class DoctorSeeder extends Seeder
             $national_id = 28204227480000;
 
             foreach ($users as $user) {
-                $user = User::factory()->create([
-                    'name' => $user['name'],
-                    'email' => $user['email'],
-                    'email_verified_at' => \Carbon\Carbon::now(),
-                    'password' => $user['password']
-                ])->assignRole('doctor');
-                $user_id = $user->id;
-
                 $image_name = uniqid() . '.jpg';
                 File::copy(
                     public_path('site/images/person_') . fake()->numberBetween(2, 4) . '.jpg',
                     $directory . '/' . $image_name
                 );
 
+                $user = User::factory()->create([
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'email_verified_at' => \Carbon\Carbon::now(),
+                    'password' => $user['password'],
+                    'national_id' => $national_id++,
+                    'profile_image_path' => $image_name,
+                ])->assignRole('doctor');
+                $user_id = $user->id;
+
                 DB::table('doctors')->insert([
                     'user_id' => $user_id,
-                    'national_id' => $national_id++,
-                    'avatar_image' => $image_name,
                     'pharmacy_id' => $pharmacies->random(),
-                    'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
                 ]);
 
                 $user = \App\Models\User::find($user_id);

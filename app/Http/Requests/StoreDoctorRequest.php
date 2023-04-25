@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 use App\Models\User;
-use App\Models\Doctor;
 
 class StoreDoctorRequest extends FormRequest
 {
@@ -28,7 +27,7 @@ class StoreDoctorRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', 'min:6', Rules\Password::defaults()],
-            'national_id' => ['required', 'digits:14', 'unique:'.Doctor::class],
+            'national_id' => ['required', 'digits:14', 'unique:'.User::class],
             'avatar_image' => ['nullable', 'image'],
             'pharmacy_id' => ['required', 'exists:pharmacies,id']
         ];

@@ -47,29 +47,16 @@
 
                                 <div class="form-group">
                                     <label for="governorate_id">Governorate</label>
-                                    <input id="governorate_id" type="number"
-                                        class="form-control @error('governorate_id') is-invalid @enderror"
-                                        name="governorate_id" value="{{ old('governorate_id', $pharmacy->governorate_id) }}"
-                                        required>
+                                    <select name="governorate_id" id="governorate_id" class="form-control @error('governorate_id') is-invalid @enderror" required>
+                                        <option value="">Select Governorate</option>
+                                        @foreach($governorates as $governorate)
+                                            <option value="{{ $governorate->id }}" {{ old('governorate_id') == $governorate->id ? 'selected' : '' }}>{{ $governorate->name }}</option>
+                                        @endforeach
+                                    </select>
                                     @error('governorate_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        <select name="governorate_id" id="governorate_id"
-                                            class="form-control @error('governorate_id') is-invalid @enderror" required>
-                                            <option value="">Select Governorate</option>
-                                            @foreach ($governorates as $governorate)
-                                                <option value="{{ $governorate->id }}"
-                                                    {{ old('governorate_id') == $governorate->id ? 'selected' : '' }}>
-                                                    {{ $governorate->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('governorate_id')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
+                                        <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
-
 
                                 <div class="form-group">
                                     <label for="name">Name</label>

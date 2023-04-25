@@ -8,10 +8,11 @@
 
     <div class="container d-flex justify-center p-5">
         @if($order->status == 'Completed' || $order->status == 'Cancelled' )
-            <div class="alert alert-danger" role="alert">
-                You can't edit this order
+            <div class="alert alert-danger w-100" role="alert">
+                You can't edit this order :
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Back</a>
+
             </div>
-            <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">Back</a>
         @else
             <form method="POST" action="{{ route('admin.quantity') }}">
                 @csrf

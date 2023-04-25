@@ -41,12 +41,12 @@ class DoctorController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'national_id' => $request->national_id,
+            'profile_image_path' => $filename
         ])->assignRole('doctor');
 
-        Doctor::create([
+        DB::table('doctors')->insert([
             'user_id' => $user->id,
-            'national_id' => $request->national_id,
-            'avatar_image' => $filename,
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
@@ -79,22 +79,23 @@ class DoctorController extends Controller
             $extension = $image->getClientOriginalExtension();
             $filename = uniqid() . '.' . $extension;
             $image->move(public_path('storage/images/doctors'), $filename);
-            if ($doctor->avatar_image != '../default.jpg') {
-                File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
+            if ($doctor->user->profile_image_path != '../default.jpg') {
+                File::delete(public_path('storage/images/doctors/'). $doctor->user->profile_image_path);
             }
         }
         else {
-            $filename = $doctor->avatar_image;
+            $filename = $doctor->user->profile_image_path;
         }
 
         DB::table('users')->where('id', $doctor->user_id)->update([
             'name' => $request->name,
-            'email' => $request->email
+            'email' => $request->email,
+            'national_id' => $request->national_id,
+            'profile_image_path' => $filename,
+            'updated_at' => \Carbon\Carbon::now()
         ]);
 
         DB::table('doctors')->where('id', $doctor->id)->update([
-            'national_id' => $request->national_id,
-            'avatar_image' => $filename,
             'pharmacy_id' => $request->pharmacy_id
         ]);
 
@@ -105,8 +106,8 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::find($id);
 
-        if ($doctor->avatar_image != '../default.jpg') {
-            File::delete(public_path('storage/images/doctors/'). $doctor->avatar_image);
+        if ($doctor->user->profile_image_path != '../default.jpg') {
+            File::delete(public_path('storage/images/doctors/'). $doctor->user->profile_image_path);
         }
         DB::table('doctors')->where('id', $doctor->id)->delete();
         Doctor::destroy($id);
@@ -118,28 +119,6 @@ class DoctorController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Doctor deleted successfully.'
-        ]);
-    }
-
-    public function ban($id)
-    {
-        $doctor = Doctor::find($id);
-        $doctor->user->ban();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Doctor banned successfully.'
-        ]);
-    }
-
-    public function unban($id)
-    {
-        $doctor = Doctor::find($id);
-        $doctor->user->unban();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Doctor unbanned successfully.'
         ]);
     }
 }

@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <label for="national_id">National ID</label>
                         <input type="text" class="form-control" id="national_id" name="national_id"
-                            value="{{ $doctor->national_id }}" placeholder="Enter national id">
+                            value="{{ $doctor->user->national_id }}" placeholder="Enter national id">
                     </div>
                     <div class="form-group">
                         <label for="avatar_image">Avatar Image</label>

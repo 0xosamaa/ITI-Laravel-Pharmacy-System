@@ -28,6 +28,23 @@
     <link rel="stylesheet" href="{{ asset('admins/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('admins/plugins/summernote/summernote-bs4.min.css') }}">
+    <style>
+        .circle-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+            margin: 0 10px;
+        }
+        .circle-icon i {
+            color: #241f31;
+            font-size: 20px;
+        }
+    </style>
     @yield('extra-css')
 </head>
 
@@ -200,8 +217,9 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ route('admin.dashboard') }}" class="brand-link">
-                <img src="{{ asset('admins/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
+                <div class="circle-icon">
+                    <i class="fas fa-ambulance brand-image img-circle elevation-3"></i>
+                </div>
                 <span class="brand-text font-weight-light">House of ITI</span>
             </a>
 
@@ -210,7 +228,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('admins/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
+                        <img src="{{ asset('storage/images/doctors/' . Auth::user()->profile_image_path) }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
                     <div class="info">
@@ -294,7 +312,7 @@
                                     <a href="{{ route('admin.users.index') }}"
                                         class="nav-link @if (Route::is('admin.users.index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Users</p>
+                                        <p>Customers</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

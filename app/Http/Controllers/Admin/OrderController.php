@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Medicine;
 use App\Models\OrderDetails;
 use App\Models\OrderItems;
+use App\Models\PaymentDetails;
 use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,7 +50,6 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //dd($data);
         // get user with the given id
         $user = User::findOrFail($data['user_id']);
         $delivery_address = $user->main_address()->governorate->name . ' ' . $user->main_address()->street_name . ' ' . $user->main_address()->building_number . ' ' . $user->main_address()->floor_number . ' ' . $user->main_address()->flat_number;
@@ -78,7 +78,8 @@ class OrderController extends Controller
             if (!isset($data[$medicine->id])) {
                 $data[$medicine->id] = 1;
             }
-            $total += $medicine->price * $data[$medicine->id];
+            //order at checkout 
+            $total += $medicine->actual_price() * $data[$medicine->id];
         }
         $order['total'] = $total;
         $orderDetails = OrderDetails::create($order);
@@ -193,18 +194,20 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index');*/
     }
 
-    public function checkOut(string $id)
+    public function checkOut(Request $request,string $id)
     {
+
         $order = OrderDetails::find($id);
+
+
         $token = request()->stripeToken;
-        dd(request());
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $charge = \Stripe\Charge::create([
-                'amount' => $order->total / 100,
+                'amount' => (int)($order->total/100),
                 'currency' => 'usd',
                 'source' => $token,
-                'description' => 'Order',
+                'description' => 'Order Charge',
                 'receipt_email' => $order->user->email,
                 'metadata' => [
                     'contents' => $order->items->map(function ($item) {
@@ -213,13 +216,24 @@ class OrderController extends Controller
                     'quantity' => $order->items->sum('quantity'),
                 ],
             ]);
+
             $order->status = 'Completed';
-            $order->transaction_id = $charge->id;
             $order->save();
-            return redirect()->back()->with('success_message', 'Payment successful!');
+            $payment = PaymentDetails::create([
+                'order_id' => $order->id,
+                'user_id' => $order->user_id,
+                'amount' => $charge->amount,
+                'status' => $charge->status,
+                'payment_method' => $charge->payment_method,
+                'balance_transaction' => $charge['balance_transaction'],
+                'transaction_id' => $charge->id,
+                'receipt_url' => $charge['receipt_url'],
+            ]);
+            return redirect()->back()->with('success' , $charge->receipt_url);
 
         } catch (\Exception $e) {
-            dd($e);
+            dd($e->getMessage());
+            //return redirect()->back()->with('Failed' , 'Payment Failed');
         }
     }
     public function quantity(Request $request)
