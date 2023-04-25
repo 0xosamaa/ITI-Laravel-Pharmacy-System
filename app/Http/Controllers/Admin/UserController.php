@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = User::all();
+        $data = User::role('customer')->get();
         return view('admin.users.index', ['users' => $data]);
     }
 
@@ -58,7 +58,7 @@ class UserController extends Controller
         $fileName = '';
         if($request->file('avatar_image')){
             $image = $request->file('avatar_image');
-            $fileName = now() . uniqid() . '.' . $image->getClientOriginalExtension();
+            $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('/storage/images/users'), $fileName);
         }else{
             $fileName = 'default.jpg';
@@ -120,7 +120,7 @@ class UserController extends Controller
         $fileName = '';
         if($request->file('avatar_image')){
             $image = $request->file('avatar_image');
-            $fileName = now() . uniqid() . '.' . $image->getClientOriginalExtension();
+            $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('/storage/images/users'), $fileName);
 
             $old_img = $user->profile_image_path;
@@ -137,7 +137,7 @@ class UserController extends Controller
             $user->mobile_number = $validData['mobile_number'];
             $user->gender = $validData['gender'];
             $user->date_of_birth = $validData['date_of_birth'];
-            if($fileName != '') $user->profile_image_path = $fileName;
+            if($fileName != null) $user->profile_image_path = $fileName;
             $user->save();
 
             $new_address = UserAddress::findOrFail($validData['address_id']);

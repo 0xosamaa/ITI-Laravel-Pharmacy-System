@@ -4,10 +4,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Validation\ValidationException;
 
-use App\Http\Controllers\API\VerificationController;
+use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -26,10 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [UserController::class, 'register']);
-Route::middleware('auth:api', 'verified')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     // Protected API routes
-    Route::get('/', [UserController::class, 'index'])->name('user.index')->middleware(['auth:sanctum', 'verified']);
-
+    Route::get('/', [UserController::class, 'index']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
 });
 
 

@@ -50,9 +50,9 @@ class UserController extends Controller
 
         // Upload Image...
         $fileName = '';
-        if($request->hasFile('avatar_image')){
-            $image = $request->file('avatar_image');
-            $fileName = now() . uniqid() . '.' . $image->getClientOriginalExtension();
+        if($request->hasFile('profile_image_path')){
+            $image = $request->file('profile_image_path');
+            $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('/storage/images/users'), $fileName);
         }else{
             $fileName = 'default.jpg';
@@ -69,7 +69,7 @@ class UserController extends Controller
                 'national_id' => $data['national_id'],
                 'gender' => $data['gender'],
                 'profile_image_path' => $fileName,
-            ])->assignRole('user');
+            ])->assignRole('customer');
 
             $address = UserAddress::create([
                 'flat_number' => $data['flat_number'],
@@ -97,7 +97,11 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+        if($user === null){
+            return response(['errors'=>'No such user exists...!'],420);
+        }
+
         $validData = Validator::make($request->all(),[
             'name' => 'required | min:3',
             'national_id' => 'nullable|digits:14|unique:users,national_id,'.$user->id.',id',
@@ -114,9 +118,9 @@ class UserController extends Controller
 
         // Upload Image...
         $fileName = '';
-        if($request->file('avatar_image')){
-            $image = $request->file('avatar_image');
-            $fileName = now() . uniqid() . '.' . $image->getClientOriginalExtension();
+        if($request->file('profile_image_path')){
+            $image = $request->file('profile_image_path');
+            $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('/storage/images/users'), $fileName);
 
             $old_img = $user->profile_image_path;
@@ -135,25 +139,24 @@ class UserController extends Controller
             $user->gender = $data['gender'];
             $user->date_of_birth = $data['date_of_birth'];
             if($fileName != '') $user->profile_image_path = $fileName;
-            $user->save();
+            $user->update();
 
             $new_address = UserAddress::findOrFail($data['address_id']);
             if($new_address->is_main == 0){
                 $oldAddress = $user->user_addresses()->where('is_main', 1)->first();
                 if($oldAddress){
                     $oldAddress->is_main = 0;
-                    $oldAddress->save();
+                    $oldAddress->update();
                 }
 
                 $new_address->is_main = 1;
-                $new_address->save();
+                $new_address->update();
             }
-            
+             
             DB::commit();
-            return response(['message'=>'Registered successfully.', 'user'=>$user]);
+            return response(['message'=>'Updated successfully.', 'user'=>$user]);
         }catch(Exception $e){
             DB::rollBack();
-            // dd($e->getMessage());
             return response(['errors'=>$e->getMessage()], 500);
         }
     }
