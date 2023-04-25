@@ -78,7 +78,8 @@ class OrderController extends Controller
             if (!isset($data[$medicine->id])) {
                 $data[$medicine->id] = 1;
             }
-            $total += $medicine->price * $data[$medicine->id];
+            //order at checkout 
+            $total += $medicine->actual_price() * $data[$medicine->id];
         }
         $order['total'] = $total;
         $orderDetails = OrderDetails::create($order);
