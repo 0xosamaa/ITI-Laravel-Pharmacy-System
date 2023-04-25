@@ -59,14 +59,15 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
     // users
     Route::resource('/users', UserController::class);
     // users_addresses
-    Route::resource('/user_addresses', UserAdressController::class);
+    Route::resource('/users.addresses', UserAdressController::class)->parameters([
+        'addresses' => 'id'
+    ]);
     //stripe
     Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
 
     Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
-
 });
 
 
