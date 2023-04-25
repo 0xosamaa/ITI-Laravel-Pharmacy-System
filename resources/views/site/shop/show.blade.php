@@ -40,7 +40,9 @@
                     <form action="{{ route('site.cart.add') }}" method="POST">
                         @csrf
                         <input type="hidden" name="medicine_id" value="{{ $medicine->id }}">
-                        <button type="submit" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To
+                        <button type="submit"
+                            class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary add-to-cart-button"
+                            data-medicine_id="{{ $medicine->id }}">Add To
                             Cart</button></p>
                     </form>
                 </div>
@@ -76,4 +78,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('extra-js')
+    <script>
+        $('.add-to-cart-button').on('click', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: "/cart/add",
+                data: {
+                    medicine_id: parseInt($(this).data('medicine_id')),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    let items_no = parseInt($('.cart-number').text())
+                    $('.cart-number').text(++items_no)
+                },
+                error: function(xhr, status, error) {}
+            });
+
+        });
+    </script>
 @endsection
