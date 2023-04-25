@@ -72,6 +72,10 @@ class DoctorSeeder extends Seeder
                 ])->assignRole('doctor');
                 $user_id = $user->id;
 
+                if ($national_id % 5 == 0) {
+                    $user->ban();
+                }
+
                 DB::table('doctors')->insert([
                     'user_id' => $user_id,
                     'pharmacy_id' => $pharmacies->random(),

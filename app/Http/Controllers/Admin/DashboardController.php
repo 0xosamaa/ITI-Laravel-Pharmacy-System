@@ -76,4 +76,22 @@ class DashboardController extends Controller
 
         return response()->json($pharmacies);
     }
+
+    public function getDoctorsStats()
+    {
+        $doctors = Doctor::all()->count();
+        // get all doctors who have been banned
+        $bannedDoctors = 0;
+        foreach(Doctor::all() as $doctor) {
+            if ($doctor->user->isBanned()) {
+                $bannedDoctors++;
+            }
+        }
+        $unbannedDoctors = $doctors - $bannedDoctors;
+
+        return response()->json([
+            'Unbanned' => $unbannedDoctors,
+            'Banned' => $bannedDoctors
+        ]);
+    }
 }
