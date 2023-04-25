@@ -97,6 +97,12 @@ Route::name('site.')->group(function () {
     Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/cart/sub_totals', [CartController::class, 'sub_totals'])->name('cart.sub_totals');
+    Route::get('/about', function () {
+        return view('site.about');
+    })->name('about');
+    Route::get('/contact', function () {
+        return view('site.contact');
+    })->name('contact');
 });
 
 Route::middleware('auth')->group(function () {

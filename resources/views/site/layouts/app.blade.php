@@ -45,9 +45,9 @@
                                 <li class="@if (Route::is('site.shop.index')) active @endif"><a
                                         href="{{ route('site.shop.index') }}">Shop</a></li>
                                 <li class="@if (Route::is('site.about')) active @endif"><a
-                                        href="about.html">About</a></li>
+                                        href="{{ route('site.about') }}">About</a></li>
                                 <li class="@if (Route::is('site.contact')) active @endif"><a
-                                        href="contact.html">Contact</a></li>
+                                        href="{{ route('site.contact') }}">Contact</a></li>
                                 @if (Auth::user())
                                     <li class="has-children text-right">
                                         <a href="#">{{ Auth::user()->name }}</a>
