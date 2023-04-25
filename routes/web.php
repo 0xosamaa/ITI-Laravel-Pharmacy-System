@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
     Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
 
-    Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
+    Route::post('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
 });
 

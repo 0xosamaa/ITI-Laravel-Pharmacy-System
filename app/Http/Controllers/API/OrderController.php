@@ -11,92 +11,61 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getOrdersByUser()
     {
-        //
+        $user = Auth::user();
+        $orders = OrderDetails::where('user_id', $user->id)->get();
+        return response()->json(['orders' => $orders]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function AddNewOrder(Request $request)
     {
-        //
-    }
+        try {
+            $data = $request->all();
+            $user = Auth::user();
+            $delivery_address = $user->main_address()->governorate->name . ' ' . $user->main_address()->street_name . ' ' . $user->main_address()->building_number . ' ' . $user->main_address()->floor_number . ' ' . $user->main_address()->flat_number;
+            // create array of medicine ids from an array of medicine objects
+            $medicine_ids = array_map(function ($item) {
+                return $item['medicine_id'];
+            }, $data['cart']);
+            $medicines = Medicine::whereIn('id', $medicine_ids)->get();
+            $total_price = 0;
+            foreach ($data['cart'] as $item) {
+                $medicine = $medicines->where('id', $item['medicine_id'])->first();
+                $total_price += $medicine->price * $item['quantity'];
+            }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->all();
-        // get user with the given id
-        /*$delivery = User::findOrFailed($data['user_id'])->user_addresses;
-        $delivery_address = "$delivery->street $delivery->city $delivery->governate->name";*/
-        $delivery_address = "Address 1";
-
-        // create order details and get the id of the created order details
-        $order = [
-            'user_id' => $data['user_id'],
-            'pharmacy_id' => $data['pharmacy_id'],
-            'status' => 'New',
-            'is_insured' => true,
-            'delivery_address' => $delivery_address,
-        ];
-        $order['creator_type'] = 'user';
-
-        // get all medicines with id in array of ids
-        $medicines = Medicine::whereIn('id', $data['medicines'])->get();
-        $total = 0;
-        foreach ($medicines as $medicine) {
-            $total += $medicine->price;
+            $order = [
+                'user_id' => $user->id,
+                'pharmacy_id' => $data['pharmacy_id'],
+                'status' => 'New',
+                'delivery_address' => $delivery_address,
+                'total' => $total_price,
+                'creator_type' => 'user',
+                'is_insured' => true,
+            ];
+            $orderDetails = OrderDetails::create($order);
+            foreach ($data['cart'] as $item) {
+                $medicine = $medicines->where('id', $item['medicine_id'])->first();
+                OrderItems::create([
+                    'order_id' => $orderDetails->id,
+                    'medicine_id' => $medicine->id,
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+            return response()->json(['msg'=>'Order Done Wait For Confirmation','order' => $orderDetails]);
         }
-        $order['total'] = $total;
-        $orderDetails = OrderDetails::create($order);
-
-        foreach ($medicines as $medicine) {
-            OrderItems::create([
-                'order_id' => $orderDetails->id,
-                'medicine_id' => $medicine->id,
-                'quantity' => 1,
-            ]);
+        catch (\Exception $e) {
+            return response()->json(['msg'=>'Something Went Wrong']);
         }
-        $res = OrderDetails::create($order);
-        return response()->json(['message' => 'Order created successfully', 'order' => $res]);
+
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        // Send Notification to Pharmacy or Doctor with the order id
     }
 }
