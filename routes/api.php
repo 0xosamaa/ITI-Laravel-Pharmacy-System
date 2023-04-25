@@ -31,7 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Protected API routes
     Route::get('/', [UserController::class, 'index']);
     Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::post('/order', [OrderController::class, 'AddNewOrder']);
+    Route::get('/orders', [OrderController::class, 'getOrdersByUser']);
+    Route::post('/orders', [OrderController::class, 'AddNewOrder']);
 });
 
 
