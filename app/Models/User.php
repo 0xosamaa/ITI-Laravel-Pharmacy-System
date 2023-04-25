@@ -33,6 +33,8 @@ class User extends Authenticatable implements BannableInterface, MustVerifyEmail
         'name',
         'email',
         'password',
+        'national_id',
+        'profile_image_path',
     ];
 
     public function user_addresses(){
@@ -65,5 +67,10 @@ class User extends Authenticatable implements BannableInterface, MustVerifyEmail
     public function orders()
     {
         return $this->hasMany(OrderDetails::class, 'user_id', 'id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
     }
 }

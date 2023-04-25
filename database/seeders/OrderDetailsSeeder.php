@@ -19,12 +19,14 @@ class OrderDetailsSeeder extends Seeder
     public function run(): void
     {
         $users = User::role('user')->get()->pluck('id');
+        $doctor = User::role('doctor')->get()->pluck('id');
         $pharmacies = Pharmacy::all()->pluck('id');
         $medicines = Medicine::all();
 
         for ($i = 0; $i < 30; $i++) {
             $order = OrderDetails::create([
                 'user_id' => $users->random(),
+                'doctor_id' => $doctor->random(),
                 'pharmacy_id' => $pharmacies->random(),
                 'status' => 'WaitingForUserConfirmation',
                 'is_insured' => true,

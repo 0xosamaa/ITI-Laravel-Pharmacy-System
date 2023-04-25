@@ -78,13 +78,13 @@
                                         (auth()->user()->hasRole('pharmacist') && $doctor->pharmacy->owner_user_id == auth()->user()->id))
                                         <tr id="{{ $doctor->id }}">
                                             <td>
-                                                <img src="{{ asset('storage/images/doctors/' . $doctor->avatar_image) }}"
+                                                <img src="{{ asset('storage/images/doctors/' . $doctor->user->profile_image_path) }}"
                                                     alt="avatar-image">
                                             </td>
                                             <td>{{ $doctor->user->name }}</td>
                                             <td>{{ $doctor->user->email }}</td>
-                                            <td>{{ $doctor->national_id }}</td>
-                                            <td>{{ $doctor->created_at }}</td>
+                                            <td>{{ $doctor->user->national_id }}</td>
+                                            <td>{{ $doctor->user->created_at }}</td>
 
                                             @role('admin')
                                             <td>{{ $doctor->pharmacy->name }}</td>
