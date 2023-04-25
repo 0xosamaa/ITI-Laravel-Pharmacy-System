@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Medicine;
 use App\Models\OrderDetails;
 use App\Models\OrderItems;
+use App\Models\PaymentDetails;
 use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,12 +50,9 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //dd($data);
         // get user with the given id
-        /*$delivery = User::findOrFailed($data['user_id'])->user_addresses;
-        $delivery_address = "$delivery->street $delivery->city $delivery->governate->name";*/
-        $delivery_address = "Address 1";
-
+        $user = User::findOrFail($data['user_id']);
+        $delivery_address = $user->main_address()->governorate->name . ' ' . $user->main_address()->street_name . ' ' . $user->main_address()->building_number . ' ' . $user->main_address()->floor_number . ' ' . $user->main_address()->flat_number;
         // create order details and get the id of the created order details
         $order = [
             'user_id' => $data['user_id'],
@@ -77,7 +75,10 @@ class OrderController extends Controller
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
         $total = 0;
         foreach ($medicines as $medicine) {
-            $total += $medicine->price;
+            if (!isset($data[$medicine->id])) {
+                $data[$medicine->id] = 1;
+            }
+            $total += $medicine->price * $data[$medicine->id];
         }
         $order['total'] = $total;
         $orderDetails = OrderDetails::create($order);
@@ -88,6 +89,7 @@ class OrderController extends Controller
                 'medicine_id' => $medicine->id,
                 'quantity' => $data[$medicine->id],
             ]);
+            unset($data[$medicine->id]);
         }
         // create order items
         return redirect()->route('admin.orders.index');
@@ -123,29 +125,51 @@ class OrderController extends Controller
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
         $order = OrderDetails::find($id);
         $medicine_arr = $order->items->pluck('medicine_id')->toArray();
-
         // Compare old medicines with new medicines
         if ($data['medicines'] != $medicine_arr) {
             $total = 0;
+            // Update order items
             foreach ($medicines as $medicine) {
-                $total += $medicine->price;
-            }
-            $data['total'] = $total;
-            foreach ($data['medicines'] as $medicine) {
-                if (!in_array($medicine, $medicine_arr)) {
+                if (!in_array($medicine->id, $medicine_arr)) {
                     OrderItems::create([
                         'order_id' => $id,
-                        'medicine_id' => $medicine,
-                        'quantity' => 1,
+                        'medicine_id' => $medicine['id'],
+                        'quantity' => $data[$medicine->id] | 1,
                     ]);
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
+                }
+                elseif (in_array($medicine->id, $medicine_arr) && $data[$medicine->id] != null) {
+                    $order_item = OrderItems::where('order_id', $id)->where('medicine_id', $medicine->id)->first();
+                    $order_item->quantity = $data[$medicine->id];
+                    $order_item->save();
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
                 }
             }
+            // Delete old order items
             foreach ($medicine_arr as $medicine) {
                 if (!in_array($medicine, $data['medicines'])) {
                     OrderItems::where('order_id', $id)->where('medicine_id', $medicine)->delete();
                 }
             }
+            $data['total'] = $total;
 
+        }
+        else{
+            $total = 0;
+            foreach ($medicines as $medicine) {
+                $order_item = OrderItems::where('order_id', $id)->where('medicine_id', $medicine->id)->first();
+                if($data[$medicine->id] != null){
+                    $order_item->quantity = $data[$medicine->id];
+                    $order_item->save();
+                    $total += $medicine->price * $data[$medicine->id];
+                    unset($data[$medicine->id]);
+                }
+                else
+                    $total += $medicine->price * $order_item->quantity;
+            }
+            $data['total'] = $total;
         }
         unset($data['medicines']);
 
@@ -169,18 +193,20 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index');*/
     }
 
-    public function checkOut(string $id)
+    public function checkOut(Request $request,string $id)
     {
+
         $order = OrderDetails::find($id);
+
+
         $token = request()->stripeToken;
-        dd(request());
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $charge = \Stripe\Charge::create([
-                'amount' => $order->total / 100,
+                'amount' => (int)($order->total/100),
                 'currency' => 'usd',
                 'source' => $token,
-                'description' => 'Order',
+                'description' => 'Order Charge',
                 'receipt_email' => $order->user->email,
                 'metadata' => [
                     'contents' => $order->items->map(function ($item) {
@@ -189,19 +215,35 @@ class OrderController extends Controller
                     'quantity' => $order->items->sum('quantity'),
                 ],
             ]);
+
             $order->status = 'Completed';
-            $order->transaction_id = $charge->id;
             $order->save();
-            return redirect()->back()->with('success_message', 'Payment successful!');
+            $payment = PaymentDetails::create([
+                'order_id' => $order->id,
+                'user_id' => $order->user_id,
+                'amount' => $charge->amount,
+                'status' => $charge->status,
+                'payment_method' => $charge->payment_method,
+                'balance_transaction' => $charge['balance_transaction'],
+                'transaction_id' => $charge->id,
+                'receipt_url' => $charge['receipt_url'],
+            ]);
+            return redirect()->back()->with('success' , $charge->receipt_url);
 
         } catch (\Exception $e) {
-            dd($e);
+            dd($e->getMessage());
+            //return redirect()->back()->with('Failed' , 'Payment Failed');
         }
     }
     public function quantity(Request $request)
     {
         $data = $request->all();
+        // check if url contains create
+        $sender = 'create';
+        if (strpos(url()->previous(), 'edit')) {
+            $sender = 'edit';
+        }
         $medicines = Medicine::whereIn('id', $data['medicines'])->get();
-        return view('admin.Orders.quantity', ['medicines' => $medicines, 'data' => $data]);
+        return view('admin.Orders.quantity', ['medicines' => $medicines, 'data' => $data, 'sender' => $sender]);
     }
 }

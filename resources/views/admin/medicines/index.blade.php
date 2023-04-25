@@ -2,11 +2,11 @@ git @extends('admin.layouts.app')
 @section('extra-css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->
-    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
-    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
-    <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
+    <link rel="stylesheet" href="{{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Toastr -->
-    <link rel="stylesheet" href={{ asset('admins/plugins/toastr/toastr.min.css') }}>
+    <link rel="stylesheet" href="{{ asset('admins/plugins/toastr/toastr.min.css') }}">
     <style>
         td {
             vertical-align: middle !important;
@@ -138,20 +138,20 @@ git @extends('admin.layouts.app')
 
 @section('extra-js')
     <!-- DataTables  & Plugins -->
-    <script src={{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}></script>
-    <script src={{ asset('admins/plugins/jszip/jszip.min.js') }}></script>
-    <script src={{ asset('admins/plugins/pdfmake/pdfmake.min.js') }}></script>
-    <script src={{ asset('admins/plugins/pdfmake/vfs_fonts.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
-    <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
+    <script src="{{ asset('admins/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('admins/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- Toastr -->
-    <script src={{ asset('admins/plugins/toastr/toastr.min.js') }}></script>
+    <script src="{{ asset('admins/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         $(function() {
             $("#medicines_table").DataTable({

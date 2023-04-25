@@ -36,6 +36,11 @@
                 </tr>
 
                 <tr>
+                    <th>Area ID</th>
+                    <td scope="row">{{ $address->area_id }}</td>
+                </tr>
+
+                <tr>
                     <th>Street Name</th>
                     <td scope="row">{{ $address->street_name }}</td>
                 </tr>

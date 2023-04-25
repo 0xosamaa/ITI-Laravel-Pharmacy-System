@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserAdressController;
+use App\Http\Controllers\BanController;
 use App\Http\Controllers\StripeController;
 
 
@@ -65,7 +66,7 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
     Route::get('stripe', [StripeController::class, 'stripe'])->name('stripe');
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
 
-    Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
+    Route::post('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
 });
 
@@ -73,8 +74,8 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
 Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
     Route::resource('/doctors', DoctorController::class);
-    Route::patch('/doctors/ban/{doctor}', [DoctorController::class, 'ban'])->name('doctors.ban');
-    Route::patch('/doctors/unban/{doctor}', [DoctorController::class, 'unban'])->name('doctors.unban');
+    Route::patch('/doctors/ban/{doctor}', [BanController::class, 'ban'])->name('doctors.ban');
+    Route::patch('/doctors/unban/{doctor}', [BanController::class, 'unban'])->name('doctors.unban');
     Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 

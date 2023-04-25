@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Models\Governorate;
+use Illuminate\Contracts\Support\ValidatedData;
 
 
 class UserAdressController extends Controller
@@ -31,11 +32,14 @@ class UserAdressController extends Controller
             'flat_number' => 'required|max:255',
             'floor_number' => 'required|max:255',
             'building_number' => 'required|max:255',
+            'area_id' => 'required|max:255',
             'street_name' => 'required|max:255',
             'governorate_id' => 'required|exists:governorates,id'
         ]);
         $validedAddress["user_id"] = $user_id;
 
+
+        // dd($validedAddress);
         UserAddress::create($validedAddress);
 
         return redirect()->route('admin.users.addresses.index', $user_id)->with('success', 'Address Added successfully.');
@@ -58,6 +62,7 @@ class UserAdressController extends Controller
             'flat_number' => 'required|max:255',
             'floor_number' => 'required|max:255',
             'building_number' => 'required|max:255',
+            'area_id' => 'required|max:255',
             'street_name' => 'required|max:255',
             'governorate_id' => 'required|exists:governorates,id'
         ]);
@@ -65,6 +70,7 @@ class UserAdressController extends Controller
         $address->flat_number = $validedAddress["flat_number"];
         $address->floor_number = $validedAddress["floor_number"];
         $address->building_number = $validedAddress["building_number"];
+        $address->area_id = $validedAddress["area_id"];
         $address->street_name = $validedAddress["street_name"];
         $address->governorate_id = $validedAddress["governorate_id"];
         $address->save();

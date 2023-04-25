@@ -31,7 +31,11 @@
                                 <td>{{$order->user->name}}</td>
                                 <td>{{$order['delivery_address']}}</td>
                                 <td>{{$order['created_at']}}</td>
-                                <td>{{$order['doctor_name']}}</td>
+                                @if($order->doctor)
+                                    <td>{{$order->doctor->name}}</td>
+                                @else
+                                    <td></td>
+                                @endif
                                 <td>{{$order['is_insured']==1 ? 'True' : 'False' }}</td>
                                 <td>
                                     <span class="badge badge-{{$order['status'] == 'New' ? 'primary' :
