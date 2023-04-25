@@ -231,7 +231,8 @@ class OrderController extends Controller
             return redirect()->back()->with('success' , $charge->receipt_url);
 
         } catch (\Exception $e) {
-            dd($e);
+            dd($e->getMessage());
+            //return redirect()->back()->with('Failed' , 'Payment Failed');
         }
     }
     public function quantity(Request $request)
