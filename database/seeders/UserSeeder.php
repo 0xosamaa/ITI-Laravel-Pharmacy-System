@@ -89,5 +89,9 @@ class UserSeeder extends Seeder
             'name' => 'hassan',
             'email' => 'hassan@user.com',
         ])->assignRole('user');
+        User::factory()->create([
+            'name' => 'Youssef',
+            'email' => 'ZeroCrashOverride097@gmail.com'
+        ])->assignRole('user');
     }
 }

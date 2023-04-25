@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('password');
             $table->date('date_of_birth')->nullable();
             $table->string('mobile_number')->nullable();
+            $table->dateTime('last_loggedIn_time')->nullable();
             $table->decimal('national_id', $precision = 14, $scale = 0)->unique()->nullable();
-            $table->string('profile_image_path')->default('../default.jpg');
+            $table->string('profile_image_path')->nullable()->default('../default.jpg');
+
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
