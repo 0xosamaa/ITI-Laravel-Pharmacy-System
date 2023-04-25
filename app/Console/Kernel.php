@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
 
                 if ($last_loggin_time->lessThan($month_ago)) {
                     $data = [
-                        'name' => 'John Doe',
-                        'email' => 'FOOL',
+                        'name' => $user->name,
+                        'email' => $user->email,
                         'message' => 'This is a test email'
                     ];
 

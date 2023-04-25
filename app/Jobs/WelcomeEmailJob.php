@@ -35,8 +35,24 @@ class WelcomeEmailJob implements ShouldQueue
     public function handle()
     {
         if ($this->user->hasVerifiedEmail()) {
-            $email = new WelcomeEmail($this->user);
-            Mail::to($this->user->email)->send($email);
+            // Mail::send(new WelcomeEmail($this->user));
+            $data = [
+                'name' => $this->user->name,
+                'email' => 'FOOL',
+                'message' => 'This is a test email'
+            ];
+
+            $toEmail = $this->user->email;
+            $subject = 'From Pharmacy With Love';
+
+            Mail::send('emails.welcome', $data, function ($message) use ($toEmail, $subject) {
+                $message->to($toEmail);
+                $message->subject($subject);
+                $message->from('Admin@Pharmacy.Co', 'Pharmacy Admin');
+            });
+        }
         }
     }
-}
+
+
+
