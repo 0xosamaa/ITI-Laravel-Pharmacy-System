@@ -45,8 +45,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DoctorSeeder::class);
         $this->command->info('Seeded the Doctors!');
 
-        $this->call(CartSeeder::class);
-        $this->command->info('Seeded the Carts!');
+        // $this->call(CartSeeder::class);
+        // $this->command->info('Seeded the Carts!');
 
         $this->call(OrderDetailsSeeder::class);
         $this->command->info('Seeded the Order Details!');

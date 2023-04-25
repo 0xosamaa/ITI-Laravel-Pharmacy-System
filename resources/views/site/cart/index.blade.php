@@ -13,8 +13,9 @@
     </div>
 @endsection
 @section('content')
-    <div class="site-section">
-        <div class="container">
+<div class="site-section">
+    <div class="container">
+            @if ($cart)
             <div class="row mb-5">
                 <div class="col-md-12" method="post">
                     <div class="site-blocks-table">
@@ -86,18 +87,15 @@
                     </div>
                 </div>
             </div>
-
+            @endif
             <div class="row">
                 <div class="col-md-6">
                     <div class="row mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <button class="btn btn-primary btn-md btn-block">Update Cart</button>
-                        </div>
                         <div class="col-md-6">
-                            <button class="btn btn-outline-primary btn-md btn-block">Continue Shopping</button>
+                            <a href="{{ route('site.shop.index') }}" class="btn btn-outline-primary btn-md btn-block">Continue Shopping</a>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-12">
                             <label class="text-black h4" for="coupon">Coupon</label>
                             <p>Enter your coupon code if you have one.</p>
@@ -108,8 +106,9 @@
                         <div class="col-md-4">
                             <button class="btn btn-primary btn-md px-4">Apply Coupon</button>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
+                @if($cart)
                 <div class="col-md-6 pl-5">
                     <div class="row justify-content-end">
                         <div class="col-md-7">
@@ -146,10 +145,12 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <h1>Your Cart is Empty</h1>
+                @endif
             </div>
         </div>
     </div>
-
     <div class="site-section bg-secondary bg-image" style="background-image: url('images/bg_2.jpg');">
         <div class="container">
             <div class="row align-items-stretch">

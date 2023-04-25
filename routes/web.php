@@ -88,15 +88,17 @@ Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('adm
     Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 });
 
-Route::name('site.')->group(function () {
-    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-    Route::get('/shop/{medicine:slug}', [ShopController::class, 'show'])->name('shop.show');
+Route::middleware('auth')->name('site.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/increase', [CartController::class, 'increase'])->name('cart.increase');
     Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/cart/sub_totals', [CartController::class, 'sub_totals'])->name('cart.sub_totals');
+});
+Route::name('site.')->group(function () {
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/shop/{medicine:slug}', [ShopController::class, 'show'])->name('shop.show');
     Route::get('/about', function () {
         return view('site.about');
     })->name('about');

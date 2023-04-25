@@ -97,7 +97,9 @@
                     let items_no = parseInt($('.cart-number').text())
                     $('.cart-number').text(++items_no)
                 },
-                error: function(xhr, status, error) {}
+                error: function(xhr, status, error) {
+                    window.location.href = '/login';
+                }
             });
 
         });

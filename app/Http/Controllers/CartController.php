@@ -17,8 +17,10 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+
         $medicine = Medicine::where('id', $request->medicine_id)->firstOrFail();
         $cart = Cart::where('user_id', Auth::user()->id)->first();
+        if (!$cart) $cart = Cart::create(['user_id' => Auth::user()->id]);
         $cart->add($medicine);
 
         return redirect()->back()->with(['success' => 'Medicine added to cart successfully!']);

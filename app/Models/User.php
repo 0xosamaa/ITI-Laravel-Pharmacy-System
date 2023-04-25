@@ -36,12 +36,6 @@ class User extends Authenticatable implements BannableInterface, MustVerifyEmail
         'national_id',
         'profile_image_path',
     ];
-
-    public function user_addresses()
-    {
-        return $this->hasMany(UserAddress::class);
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -60,6 +54,14 @@ class User extends Authenticatable implements BannableInterface, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function user_addresses()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
+
+
     public function main_address()
     {
         return $this->user_addresses()->where('is_main', true)->with('governorate')->first();
