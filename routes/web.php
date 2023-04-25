@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserAdressController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\StripeController;
 
 
@@ -65,7 +66,6 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
 
     Route::get('checkOut/{id}', [OrderController::class, 'checkOut'])->name('checkOut');
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
-
 });
 
 
@@ -80,6 +80,12 @@ Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('adm
 Route::name('site.')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/shop/{medicine:slug}', [ShopController::class, 'show'])->name('shop.show');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/increase', [CartController::class, 'increase'])->name('cart.increase');
+    Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/sub_totals', [CartController::class, 'sub_totals'])->name('cart.sub_totals');
 });
 
 Route::middleware('auth')->group(function () {

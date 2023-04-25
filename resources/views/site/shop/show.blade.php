@@ -29,7 +29,6 @@
                     <h2 class="text-black">{{ $medicine->name }}</h2>
                     <small>Category: {{ $medicine->category->name }}</small>
                     <p>{{ $medicine->description }}</p>
-
                     @if ($medicine->hasActiveDiscount())
                         <p><del>{{ $medicine->formatted_price() }}</del> <strong
                                 class="text-primary h4">{{ $medicine->formatted_discount() }}</strong>
@@ -37,23 +36,13 @@
                     @else
                         <p><strong class="text-primary h4"></strong></p>
                     @endif
-
-
-
-                    <div class="mb-5">
-                        <div class="input-group mb-3" style="max-width: 220px;">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
-                            </div>
-                            <input type="text" class="form-control text-center" value="1" placeholder=""
-                                aria-label="Example text with button addon" aria-describedby="button-addon1">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <p><a href="cart.html" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To Cart</a></p>
+                    <p>
+                    <form action="{{ route('site.cart.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="medicine_id" value="{{ $medicine->id }}">
+                        <button type="submit" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To
+                            Cart</button></p>
+                    </form>
                 </div>
             </div>
         </div>
