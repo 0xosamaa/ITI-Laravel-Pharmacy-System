@@ -29,6 +29,7 @@ class Cart extends Model
         foreach ($items as $item) {
             $item->delete();
         }
+        $this->delete();
         return true;
     }
 
@@ -62,6 +63,8 @@ class Cart extends Model
 
         if ($this->has($medicine)) {
             $items->where('medicine_id', $medicine->id)->first()->delete();
+            if ($this->items()->get()->count() <= 0)
+                $this->delete();
             return true;
         }
         return false;
