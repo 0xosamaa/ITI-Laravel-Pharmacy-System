@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+git @extends('admin.layouts.app')
 @section('extra-css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- DataTables -->

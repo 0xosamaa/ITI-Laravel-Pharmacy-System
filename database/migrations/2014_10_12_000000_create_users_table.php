@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('mobile_number')->nullable();
             $table->string('national_id', 14)->unique()->nullable();
             $table->string('profile_image_path')->nullable();
+            $table->dateTime('last_loggedIn_time')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Osama',
             'email' => 'osama@doctor.com',
         ])->assignRole('doctor');
-        
+
         User::factory()->create([
             'name' => 'Amr',
             'email' => 'amr@doctor.com',
@@ -88,6 +88,10 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'hassan',
             'email' => 'hassan@user.com',
+        ])->assignRole('user');
+        User::factory()->create([
+            'name' => 'Youssef',
+            'email' => 'ZeroCrashOverride097@gmail.com'
         ])->assignRole('user');
     }
 }

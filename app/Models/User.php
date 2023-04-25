@@ -30,7 +30,8 @@ class User extends Authenticatable implements BannableInterface
         'password',
     ];
 
-    public function user_addresses(){
+    public function user_addresses()
+    {
         return $this->hasMany(UserAddress::class);
     }
 
@@ -55,7 +56,6 @@ class User extends Authenticatable implements BannableInterface
     public function main_address()
     {
         return $this->user_addresses()->where('is_main', true)->with('governorate')->first();
-
     }
     public function orders()
     {
