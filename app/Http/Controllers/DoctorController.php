@@ -121,26 +121,4 @@ class DoctorController extends Controller
             'message' => 'Doctor deleted successfully.'
         ]);
     }
-
-    public function ban($id)
-    {
-        $doctor = Doctor::find($id);
-        $doctor->user->ban();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Doctor banned successfully.'
-        ]);
-    }
-
-    public function unban($id)
-    {
-        $doctor = Doctor::find($id);
-        $doctor->user->unban();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Doctor unbanned successfully.'
-        ]);
-    }
 }
