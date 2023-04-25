@@ -13,6 +13,11 @@
                 See Invoice
             </a>
         </div>
+    @elseif(session()->has('Failed'))
+        <div class="alert alert-danger">
+            <h3>Error : </h3>
+            <span>{{session()->get('Failed')}}</span>
+        </div>
     @endif
 
     <div class="container-fluid row d-flex justify-content-around p-5 h-75">
