@@ -13,8 +13,6 @@ class Doctor extends Model
 
     protected $fillable = [
         'user_id',
-        'national_id',
-        'avatar_image',
         'pharmacy_id'
     ];
 
@@ -26,10 +24,5 @@ class Doctor extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->diffForHumans();
     }
 }

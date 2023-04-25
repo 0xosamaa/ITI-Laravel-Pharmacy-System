@@ -29,7 +29,7 @@ class UpdateDoctorRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$doctor->user_id],
-            'national_id' => ['required', 'digits:14', 'unique:doctors,national_id,'.$doctor->id],
+            'national_id' => ['required', 'digits:14', 'unique:users,national_id,'.$doctor->user_id],
             'avatar_image' => ['nullable', 'image'],
             'pharmacy_id' => ['required', 'exists:pharmacies,id']
         ];
