@@ -20,11 +20,11 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" id="medicinesCount">
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{ $medicinesCount }}</h3>
+                            <h3></h3>
 
                             <p>Medicines</p>
                         </div>
@@ -36,11 +36,11 @@
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" id="pharmaciesCount">
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{ $pharmaciesCount }}</h3>
+                            <h3></h3>
 
                             <p>Pharmacies</p>
                         </div>
@@ -52,11 +52,11 @@
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" id="doctorsCount">
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>{{ $doctorsCount }}</h3>
+                            <h3></h3>
 
                             <p>Doctors</p>
                         </div>
@@ -68,11 +68,11 @@
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" id="usersCount">
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>{{ $usersCount }}</h3>
+                            <h3></h3>
 
                             <p>Users</p>
                         </div>
@@ -89,34 +89,10 @@
             <!-- Main row -->
             <div class="row">
                 <div class="col-md-6">
-                    <!-- AREA CHART -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Area Chart</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart">
-                                <canvas id="areaChart"
-                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
-
                     <!-- DONUT CHART -->
-                    <div class="card card-danger">
+                    <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Donut Chart</h3>
+                            <h3 class="card-title">Medicines categories</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -160,30 +136,6 @@
                 </div>
                 <!-- /.col (LEFT) -->
                 <div class="col-md-6">
-                    <!-- LINE CHART -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Line Chart</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart">
-                                <canvas id="lineChart"
-                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
-
                     <!-- BAR CHART -->
                     <div class="card card-success">
                         <div class="card-header">
@@ -241,23 +193,65 @@
     <!-- /.content -->
 @endsection
 @section('extra-js')
+    <!-- Chroma JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"
+        integrity="sha512-zInFF17qBFVvvvFpIfeBzo7Tj7+rQxLeTJDmbxjBz5/zIr89YVbTNelNhdTT+/DCrxoVzBeUPVFJsczKbB7sew=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!-- ChartJS -->
     <script src={{ asset('admins/plugins/chart.js/Chart.min.js') }}></script>
 
     <!-- Page specific script -->
     <script>
         $(function() {
-            /* ChartJS
-             * -------
-             * Here we will create a few charts using ChartJS
-             */
-
-            //--------------
-            //- AREA CHART -
-            //--------------
-
-            // Get context with jQuery - using jQuery's .get() method.
-            var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+            // Get statistics
+            $(document).ready(function() {
+                @hasrole('admin')
+                    $.ajax({
+                        url: '{{ route('admin.dashboard.getAdminStats') }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            $('#medicinesCount h3').html(response.medicinesCount);
+                            $('#pharmaciesCount h3').html(response.pharmaciesCount);
+                            $('#doctorsCount h3').html(response.doctorsCount);
+                            $('#usersCount h3').html(response.usersCount);
+                        }
+                    });
+                @endhasrole
+                $.ajax({
+                    url: '{{ route('admin.dashboard.getMedicinesStats') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        const colorScale = chroma.scale(['#4D4D4D', '#5DA5DA', '#FAA43A', '#60BD68', '#F17CB0', '#B2912F', '#B276B2', '#DECF3F', '#F15854'])
+                        .colors(Object.keys(response).length);
+                        //-------------
+                        //- DONUT CHART -
+                        //-------------
+                        // Get context with jQuery - using jQuery's .get() method.
+                        var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+                        var donutData = {
+                            labels: Object.keys(response),
+                            datasets: [{
+                                data: Object.values(response),
+                                backgroundColor: colorScale
+                            }]
+                        }
+                        var donutOptions = {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                        }
+                        //Create pie or douhnut chart
+                        // You can switch between pie and douhnut using the method below.
+                        new Chart(donutChartCanvas, {
+                            type: 'doughnut',
+                            data: donutData,
+                            options: donutOptions
+                        })
+                    }
+                });
+            });
 
             var areaChartData = {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -286,48 +280,6 @@
                 ]
             }
 
-            var areaChartOptions = {
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display: false,
-                        }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: false,
-                        }
-                    }]
-                }
-            }
-
-            // This will get the first returned node in the jQuery collection.
-            new Chart(areaChartCanvas, {
-                type: 'line',
-                data: areaChartData,
-                options: areaChartOptions
-            })
-
-            //-------------
-            //- LINE CHART -
-            //--------------
-            var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-            var lineChartOptions = $.extend(true, {}, areaChartOptions)
-            var lineChartData = $.extend(true, {}, areaChartData)
-            lineChartData.datasets[0].fill = false;
-            lineChartData.datasets[1].fill = false;
-            lineChartOptions.datasetFill = false
-
-            var lineChart = new Chart(lineChartCanvas, {
-                type: 'line',
-                data: lineChartData,
-                options: lineChartOptions
-            })
 
             //-------------
             //- DONUT CHART -
@@ -352,13 +304,6 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or douhnut chart
-            // You can switch between pie and douhnut using the method below.
-            new Chart(donutChartCanvas, {
-                type: 'doughnut',
-                data: donutData,
-                options: donutOptions
-            })
 
             //-------------
             //- PIE CHART -

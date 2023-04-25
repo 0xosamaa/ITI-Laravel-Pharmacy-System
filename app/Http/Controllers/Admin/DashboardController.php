@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Doctor;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
@@ -25,5 +26,37 @@ class DashboardController extends Controller
             'doctorsCount' => $doctorsCount,
             'usersCount' => $usersCount
         ]);
+    }
+
+    public function getAdminStats()
+    {
+        $medicinesCount = Medicine::count();
+        $pharmaciesCount = Pharmacy::count();
+        $doctorsCount = Doctor::count();
+        $usersCount = User::count();
+
+        return response()->json([
+            'medicinesCount' => $medicinesCount,
+            'pharmaciesCount' => $pharmaciesCount,
+            'doctorsCount' => $doctorsCount,
+            'usersCount' => $usersCount
+        ]);
+    }
+
+    public function getMedicinesStats()
+    {
+        $medicinesByCategory = Medicine::selectRaw('category_id, count(*) as medicine_count')
+                            ->groupBy('category_id')
+                            ->get();
+
+        foreach ($medicinesByCategory as $category) {
+            $categoryName = Category::where('id', $category->category_id)
+                        ->first()->name;
+            $medicineCount = $category->medicine_count;
+
+            $medicines[$categoryName] = $medicineCount;
+        }
+
+        return response()->json($medicines);
     }
 }

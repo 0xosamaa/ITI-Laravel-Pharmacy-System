@@ -70,6 +70,11 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
 });
 
+// Dashboard
+Route::middleware(['auth', 'verified', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/dashboard/adminStats', [DashboardController::class, 'getAdminStats'])->name('dashboard.getAdminStats');
+    Route::get('/dashboard/medicinesStats', [DashboardController::class, 'getMedicinesStats'])->name('dashboard.getMedicinesStats');
+});
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
