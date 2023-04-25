@@ -77,7 +77,7 @@
                                 class="icon-search"></span></a>
                         <a href="{{ route('site.cart.index') }}" class="icons-btn d-inline-block bag">
                             <span class="icon-shopping-bag"></span>
-                            <span class="number">2</span>
+                            <span class="number">{{ Auth::user()->cart->items->count() }}</span>
                         </a>
                         <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                                 class="icon-menu"></span></a>

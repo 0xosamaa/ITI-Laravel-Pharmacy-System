@@ -53,7 +53,8 @@
                                                 <div class="input-group-prepend">
                                                     <button
                                                         class="btn btn-outline-primary decrease-quantity-button js-btn-minus"
-                                                        data-medicine_id="{{ $item->medicine_id }}" data-item_id="{{ $item->id }}" type="submit">&minus;
+                                                        data-medicine_id="{{ $item->medicine_id }}"
+                                                        data-item_id="{{ $item->id }}" type="submit">&minus;
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control text-center" placeholder=""
@@ -62,13 +63,15 @@
                                                 <div class="input-group-append">
                                                     <button
                                                         class="btn btn-outline-primary increase-quantity-button js-btn-plus"
-                                                        data-medicine_id="{{ $item->medicine_id }}" data-item_id="{{ $item->id }} type="submit">&plus;
+                                                        data-medicine_id="{{ $item->medicine_id }}"
+                                                        data-item_id="{{ $item->id }}" type="submit">&plus;
                                                     </button>
                                                 </div>
                                             </div>
 
                                         </td>
-                                        <td class="sub_total">{{ format_price($item->medicine->actual_price() * $item->quantity) }}</td>
+                                        <td class="sub_total">
+                                            {{ format_price($item->medicine->actual_price() * $item->quantity) }}</td>
                                         <td>
                                             <form action="{{ route('site.cart.remove') }}" method="POST">
                                                 @csrf
@@ -120,7 +123,8 @@
                                     <span class="text-black">Subtotal</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">$230.00</strong>
+                                    <strong
+                                        class="text-black final-sub-total">{{ format_price($cart->sub_total()) }}</strong>
                                 </div>
                             </div>
                             <div class="row mb-5">
@@ -128,7 +132,7 @@
                                     <span class="text-black">Total</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">$230.00</strong>
+                                    <strong class="text-black final-total">{{ format_price($cart->total()) }}</strong>
                                 </div>
                             </div>
 
@@ -176,14 +180,20 @@
 
 @section('extra-js')
     <script>
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        });
+        sub_total = 0
+        total = 0
+
         $('.increase-quantity-button').on('click', function(event) {
-            // prevent default action
+            sub_total = 0
+            total = 0
             event.preventDefault();
 
-            // get current quantity
-            var currentQuantity = parseInt($(this).data('quantity'));
+            let that = $(this);
 
-            // send AJAX request
             $.ajax({
                 type: "POST",
                 url: "/cart/increase",
@@ -196,27 +206,31 @@
                         type: "GET",
                         url: "/cart/sub_totals",
                         success: function(cart) {
-                            console.log(cart);
+                            $(`#item_${that.data('item_id')} .sub_total`).text(formatter
+                                .format(cart[that
+                                    .data('item_id')].item_total / 100))
+                            for (const key in cart) {
+                                console.log();
+                                sub_total += cart[key]['item_total']
+                                total += cart[key]['item_total']
+                            }
+                            $('.final-sub-total').text(formatter.format(sub_total / 100))
+                            $('.final-total').text(formatter.format(total / 100))
                         },
-                        error: function(xhr, status, error) {
-                        }
+                        error: function(xhr, status, error) {}
                     });
                 },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
+                error: function(xhr, status, error) {}
             });
+
         });
-    </script>
-    <script>
         $('.decrease-quantity-button').on('click', function(event) {
-            // prevent default action
+            sub_total = 0
+            total = 0
             event.preventDefault();
 
-            // get current quantity
-            var currentQuantity = parseInt($(this).data('quantity'));
+            let that = $(this);
 
-            // send AJAX request
             $.ajax({
                 type: "POST",
                 url: "/cart/decrease",
@@ -229,18 +243,21 @@
                         type: "GET",
                         url: "/cart/sub_totals",
                         success: function(cart) {
-                            // console.log(cart);
-                            console.log($(`#item_${$(this).data('item_id')} .sub_total`)[0].text());
-                            // $(`#item_${$(this).data('item_id')} .sub_total`).text(cart[$(this).data('item_id')].item_total)
-                            // Handle success response from server
+                            $(`#item_${that.data('item_id')} .sub_total`).text(formatter
+                                .format(cart[that
+                                    .data('item_id')].item_total / 100))
+                            for (const key in cart) {
+                                console.log();
+                                sub_total += cart[key]['item_total']
+                                total += cart[key]['item_total']
+                            }
+                            $('.final-sub-total').text(formatter.format(sub_total / 100))
+                            $('.final-total').text(formatter.format(total / 100))
                         },
-                        error: function(xhr, status, error) {
-                            // Handle error response from server
-                        }
+                        error: function(xhr, status, error) {}
                     });
                 },
-                error: function(xhr, status, error) {
-                }
+                error: function(xhr, status, error) {}
             });
         });
     </script>

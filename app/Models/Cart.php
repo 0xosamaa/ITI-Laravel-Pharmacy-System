@@ -100,4 +100,23 @@ class Cart extends Model
         }
         return $sub_totals;
     }
+
+    public function sub_total()
+    {
+        $sub_total = 0;
+        $items = $this->items()->get();
+        foreach ($items as $item) {
+            $sub_total += $item->quantity * $item->medicine->actual_price();
+        }
+        return $sub_total;
+    }
+    public function total()
+    {
+        $total = 0;
+        $items = $this->items()->get();
+        foreach ($items as $item) {
+            $total += $item->quantity * $item->medicine->actual_price();
+        }
+        return $total;
+    }
 }
