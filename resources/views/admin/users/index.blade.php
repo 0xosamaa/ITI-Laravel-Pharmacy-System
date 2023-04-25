@@ -57,6 +57,9 @@
                                     Name
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                    Role
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
                                     Email
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">
@@ -75,23 +78,27 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                            @if(auth()->user()->hasRole('admin'))
                             <tr id="{{ $user->id }}">
                                 <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }} , {{ $user->role }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>
+                                    @foreach ($user->roles as $role)
+                                        {{ $role->name }}
+                                    @endforeach
+                                </td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->id }}</td>
                                 <td>
                                     {{ $user->mobile_number }}
                                     @if(($user->mobile_number)==null)
-                                        <small class="text-warning">No Mobile Number</small>
+                                        <small class="text-danger">No Mobile Number</small>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     <img src="{{ asset('storage/images/users/' . $user->profile_image_path) }}" class="rounded" style="width:70px;" alt="">
                                     @if(($user->profile_image_path)==null)
                                         <img src="{{ asset('storage/images/doctors/default.jpg') }}" style="width:40px" alt="avatar image">
-                                        <small class="text-warning">Not Updated Yet</small>
+                                        <small class="text-danger">Not Updated Yet</small>
                                     @endif
                                 </td>
 
@@ -121,7 +128,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endif
                             @endforeach
                         </tbody>
                     </table>
