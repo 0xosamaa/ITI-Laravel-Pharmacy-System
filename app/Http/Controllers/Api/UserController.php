@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
@@ -91,6 +92,68 @@ class UserController extends Controller
             return response(['message'=>'Registered successfully.', 'user'=>$user, 'token'=>$token]);
         }catch(Exception $e){
             DB::rollBack();
+            return response(['errors'=>$e->getMessage()], 500);
+        }
+    }
+
+    public function update(Request $request, $id){
+        $user = User::findOrFail($id);
+        $validData = Validator::make($request->all(),[
+            'name' => 'required | min:3',
+            'national_id' => 'nullable|digits:14|unique:users,national_id,'.$user->id.',id',
+            'mobile_number' => 'nullable|digits:11|unique:users,mobile_number,'.$user->id.',id',
+            'gender' => 'in:male,female',
+            'date_of_birth' => ['nullable', 'date'],
+            'avatar_image' => ['file', 'mimes:jpg,png', 'max:2048'],
+            'address_id' => ['exists:user_addresses,id']
+        ]);
+
+        if($validData->fails()){
+            return response(['errors'=>$validData->errors()], 422);
+        }
+
+        // Upload Image...
+        $fileName = '';
+        if($request->file('avatar_image')){
+            $image = $request->file('avatar_image');
+            $fileName = now() . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/storage/images/users'), $fileName);
+
+            $old_img = $user->profile_image_path;
+            if($old_img){
+                File::delete(public_path('/storage/images/users/').$old_img );
+            }
+        }
+
+        // dd($validData);
+        DB::beginTransaction();
+        try{
+            $data = $request->all();
+            $user->name = $data['name'];
+            $user->national_id = $data['national_id'];
+            $user->mobile_number = $data['mobile_number'];
+            $user->gender = $data['gender'];
+            $user->date_of_birth = $data['date_of_birth'];
+            if($fileName != '') $user->profile_image_path = $fileName;
+            $user->save();
+
+            $new_address = UserAddress::findOrFail($data['address_id']);
+            if($new_address->is_main == 0){
+                $oldAddress = $user->user_addresses()->where('is_main', 1)->first();
+                if($oldAddress){
+                    $oldAddress->is_main = 0;
+                    $oldAddress->save();
+                }
+
+                $new_address->is_main = 1;
+                $new_address->save();
+            }
+            
+            DB::commit();
+            return response(['message'=>'Registered successfully.', 'user'=>$user]);
+        }catch(Exception $e){
+            DB::rollBack();
+            // dd($e->getMessage());
             return response(['errors'=>$e->getMessage()], 500);
         }
     }

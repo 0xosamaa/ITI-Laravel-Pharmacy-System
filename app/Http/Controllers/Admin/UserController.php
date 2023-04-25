@@ -104,7 +104,7 @@ class UserController extends Controller
         return view('admin.users.edit', ['userData' => $userData, 'addresses' => $addresses, 'governorates' => $governorates]);
     }
 
-    public function update($id, Request $request){
+    public function update(Request $request, $id){
         $user = User::findOrFail($id);
         $validData = $request->validate([
             'name' => 'required | min:3',
@@ -162,6 +162,12 @@ class UserController extends Controller
     }
 
     public function destroy($id){
+        $user = User::findOrFail($id);
+        $old_img = $user->profile_image_path;
+        if($old_img){
+            File::delete(public_path('/storage/images/users/').$old_img );
+        }
+
         User::destroy($id);
     }
 }
