@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\Jobs\WelcomeEmailJob;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
@@ -22,8 +22,19 @@ class VerifyEmailController extends Controller
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
+            WelcomeEmailJob::dispatch($request->user());
+
         }
 
         return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
     }
+
+    // public function verify(EmailVerificationRequest $request)
+    // {
+    //     $request->fulfill();
+    //     event(new Verified($request->user()));
+
+
+    //     return redirect('/home');
+    // }
 }
