@@ -94,4 +94,36 @@ class DashboardController extends Controller
             'Banned' => $bannedDoctors
         ]);
     }
+
+    public function getUsersStats()
+    {
+        $users = User::all();
+
+        $admins = $pharmacists = $doctors = $customers = 0;
+        foreach ($users as $user) {
+            foreach($user->roles as $role) {
+                switch ($role->name) {
+                    case 'admin':
+                        $admins++;
+                        break;
+                    case 'pharmacist':
+                        $pharmacists++;
+                        break;
+                    case 'doctor':
+                        $doctors++;
+                        break;
+                    case 'user':
+                        $customers++;
+                        break;
+                }
+            }
+        }
+
+        return response()->json([
+            'Admins' => $admins,
+            'Pharmacists' => $pharmacists,
+            'Doctors' => $doctors,
+            'Customers' => $customers
+        ]);
+    }
 }

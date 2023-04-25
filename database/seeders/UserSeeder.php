@@ -72,7 +72,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Amr',
             'email' => 'amr@user.com',
-        ])->assignRole('customer');
+        ])->assignRole('user');
         User::factory()->create([
             'name' => 'Youssef',
             'email' => 'youssef@user.com',
@@ -84,7 +84,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'moustafa',
             'email' => 'moustafa@user.com',
-        ])->assignRole('customer');
+        ])->assignRole('user');
         User::factory()->create([
             'name' => 'hassan',
             'email' => 'hassan@user.com',

@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->name('admin.')->prefix('a
     Route::get('/dashboard/medicinesStats', [DashboardController::class, 'getMedicinesStats'])->name('dashboard.getMedicinesStats');
     Route::get('/dashboard/pharmaciesStats', [DashboardController::class, 'getPharmaciesStats'])->name('dashboard.getPharmaciesStats');
     Route::get('/dashboard/doctorsStats', [DashboardController::class, 'getDoctorsStats'])->name('dashboard.getDoctorsStats');
+    Route::get('/dashboard/usersStats', [DashboardController::class, 'getUsersStats'])->name('dashboard.getUsersStats');
 });
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
