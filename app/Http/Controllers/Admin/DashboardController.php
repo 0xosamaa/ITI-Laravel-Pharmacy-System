@@ -14,18 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $medicinesCount = Medicine::count();
-        $pharmaciesCount = Pharmacy::count();
-        $doctorsCount = Doctor::count();
-        $usersCount = User::count();
-
-
-        return view('admin.dashboard', [
-            'medicinesCount' => $medicinesCount,
-            'pharmaciesCount' => $pharmaciesCount,
-            'doctorsCount' => $doctorsCount,
-            'usersCount' => $usersCount
-        ]);
+        return view('admin.dashboard');
     }
 
     public function getAdminStats()
@@ -75,5 +64,55 @@ class DashboardController extends Controller
         }
 
         return response()->json($pharmacies);
+    }
+
+    public function getDoctorsStats()
+    {
+        $doctors = Doctor::all()->count();
+        // get all doctors who have been banned
+        $bannedDoctors = 0;
+        foreach(Doctor::with('user')->get() as $doctor) {
+            if ($doctor->user->isBanned()) {
+                $bannedDoctors++;
+            }
+        }
+        $unbannedDoctors = $doctors - $bannedDoctors;
+
+        return response()->json([
+            'Unbanned' => $unbannedDoctors,
+            'Banned' => $bannedDoctors
+        ]);
+    }
+
+    public function getUsersStats()
+    {
+        $users = User::with('roles')->get();
+
+        $admins = $pharmacists = $doctors = $customers = 0;
+        foreach ($users as $user) {
+            foreach($user->roles as $role) {
+                switch ($role->name) {
+                    case 'admin':
+                        $admins++;
+                        break;
+                    case 'pharmacist':
+                        $pharmacists++;
+                        break;
+                    case 'doctor':
+                        $doctors++;
+                        break;
+                    case 'user':
+                        $customers++;
+                        break;
+                }
+            }
+        }
+
+        return response()->json([
+            'Admins' => $admins,
+            'Pharmacists' => $pharmacists,
+            'Doctors' => $doctors,
+            'Customers' => $customers
+        ]);
     }
 }

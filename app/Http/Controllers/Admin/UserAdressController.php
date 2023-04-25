@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Governorate;
 use Illuminate\Contracts\Support\ValidatedData;
 
+
 class UserAdressController extends Controller
 {
     //index

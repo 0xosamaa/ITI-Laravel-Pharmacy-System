@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
+use Illuminate\Support\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,6 +30,12 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $user->last_loggedIn_time = Carbon::now()->toDateTimeString();
+
+        $user->save();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

@@ -1,10 +1,13 @@
 @extends('admin.layouts.app')
 @section('extra-css')
     <!-- DataTables -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}>
     <link rel="stylesheet" href={{ asset('admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Toastr -->
+    <link rel="stylesheet" href={{ asset('admins/plugins/toastr/toastr.min.css') }}>
     <style>
         .btnStyle:hover {
             color: red;
@@ -20,7 +23,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div id="user_addresses_table_wrapper" class="dataTables_wrapper dt-bootstrap4">
                 <div class="row">
                 </div>
                 <div class="row">
@@ -35,40 +38,40 @@
                         </a>
                     </div>
                     <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
-                            aria-describedby="example1_info">
+                        <table id="user_addresses_table" class="table table-bordered table-striped dataTable dtr-inline"
+                            aria-describedby="user_addresses_table_info">
                             <thead>
                                 <tr>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-sort="ascending"
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="user_addresses_table"
+                                        rowspan="1" colspan="1" aria-sort="ascending"
                                         aria-label="Rendering engine: activate to sort column descending">
                                         ID
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         Flat Number
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         Floor Number
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         Building Number
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="Engine version: activate to sort column ascending">
                                         Street Name
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="CSS grade: activate to sort column ascending">
                                         Area ID
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="CSS grade: activate to sort column ascending">
                                         Is Main Address
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                    <th class="sorting" tabindex="0" aria-controls="user_addresses_table" rowspan="1"
                                         colspan="1" aria-label="CSS grade: activate to sort column ascending">
                                         Governorate
                                     </th>
@@ -79,7 +82,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($addresses as $address)
-                                    <tr>
+                                    <tr id="{{ $address->id }}">
                                         <td>{{ $address->id }}</td>
                                         <td>{{ $address->flat_number }}</td>
                                         <td>{{ $address->floor_number }}</td>
@@ -131,21 +134,11 @@
                                                     </svg>
                                                 </a>
 
-                                                <form method="POST"
-                                                    action="/admin/users/{{ $id }}/addresses/{{ $address->id }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button
-                                                        class="btn btn-icon btn-light text-danger rounded-pill m-2  shadow bg-body-tertiary rounded">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" fill="currentColor" class="bi bi-trash3"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                                        </svg>
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-danger rounded-lg mx-1"
+                                                    data-toggle="modal" data-target="#deleteModal"
+                                                    data-id="{{ $address->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
 
 
                                             </div>
@@ -161,6 +154,27 @@
             </div>
         </div>
         <!-- /.card-body -->
+    </div>
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Address</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete address ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger delete-btn" data-dismiss="modal" data-url="">Yes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
 @endsection
 
@@ -179,22 +193,58 @@
     <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
     <script src={{ asset('admins/plugins/datatables-buttons/js/buttons.colVis.min.js') }}></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <!-- Toastr -->
+    <script src={{ asset('admins/plugins/toastr/toastr.min.js') }}></script>
     <script>
         $(function() {
-            $("#example1").DataTable({
+            $("#user_addresses_table").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+            }).buttons().container().appendTo('#user_addresses_table_wrapper .col-md-6:eq(0)');
+
+            const toastr_options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            // Delete Modal
+            $(document).on('click', 'button[data-target="#deleteModal"]', function() {
+                let id = $(this).data('id');
+                $('#deleteModal .delete-btn').data('url', 'addresses/' + id);
+            });
+            $(document).on('click', '#deleteModal .delete-btn', function(event) {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: response => {
+                        toastr["success"]("Address deleted successfully");
+                        toastr.options = toastr_options;
+                        const id = $(this).data('url').split('/').pop();
+                        const table = $('#user_addresses_table').DataTable();
+                        const row = table.row('#' + id);
+                        row.remove().draw();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
             });
         });
     </script>
