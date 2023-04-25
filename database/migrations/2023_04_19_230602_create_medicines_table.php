@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('SKU');
             $table->integer('price');
+            $table->integer('stock');
             $table->foreignId('discount_id')->nullable()->constrained('discounts');
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->softDeletes();

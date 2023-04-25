@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->command->info('Seeded the Roles!');
 
-        $this->call(UserSeeder::class);
-        $this->command->info('Seeded the Doctors, Pharmacists and Users!');
-
         $this->call(AdminSeeder::class);
         $this->command->info('Seeded the Admins!');
+
+        $this->call(UserSeeder::class);
+        $this->command->info('Seeded the Doctors, Pharmacists and Users!');
 
         $this->call(CategorySeeder::class);
         $this->command->info('Seeded the Categories!');
@@ -40,10 +40,13 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Seeded the Pharmacies!');
 
         $this->call(UserAddressSeeder::class);
-        $this->command->info('Seeded the User Addresses');
+        $this->command->info('Seeded the User Addresses!');
 
         $this->call(DoctorSeeder::class);
         $this->command->info('Seeded the Doctors!');
+
+        $this->call(CartSeeder::class);
+        $this->command->info('Seeded the Carts!');
 
         $this->call(OrderDetailsSeeder::class);
         $this->command->info('Seeded the Order Details!');

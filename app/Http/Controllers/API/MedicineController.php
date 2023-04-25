@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Medicine;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class ShopController extends Controller
+class MedicineController extends Controller
 {
     public function index()
     {
         $medicines = Medicine::with('discount')->paginate(12);
-        return view('site.shop.index', compact('medicines'));
+        return compact('medicines');
     }
 
     public function show(Medicine $medicine)
     {
-        return view('site.shop.show', compact('medicine'));
+        return compact('medicine');
     }
 }

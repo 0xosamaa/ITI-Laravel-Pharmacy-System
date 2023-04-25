@@ -69,6 +69,10 @@ class User extends Authenticatable implements BannableInterface, MustVerifyEmail
         return $this->hasMany(OrderDetails::class, 'user_id', 'id');
     }
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->diffForHumans();

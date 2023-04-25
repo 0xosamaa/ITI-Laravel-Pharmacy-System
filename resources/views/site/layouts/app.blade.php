@@ -40,10 +40,14 @@
                     <div class="main-nav d-none d-lg-block">
                         <nav class="site-navigation text-right text-md-center" role="navigation">
                             <ul class="site-menu js-clone-nav d-none d-lg-block">
-                                <li class="@if(Route::is('site.landing-page')) active @endif"><a href="{{ route('site.landing-page') }}">Home</a></li>
-                                <li class="@if(Route::is('site.shop.index')) active @endif"><a href="{{ route('site.shop.index') }}">Shop</a></li>
-                                <li class="@if(Route::is('site.about')) active @endif"><a href="about.html">About</a></li>
-                                <li class="@if(Route::is('site.contact')) active @endif"><a href="contact.html">Contact</a></li>
+                                <li class="@if (Route::is('site.landing-page')) active @endif"><a
+                                        href="{{ route('site.landing-page') }}">Home</a></li>
+                                <li class="@if (Route::is('site.shop.index')) active @endif"><a
+                                        href="{{ route('site.shop.index') }}">Shop</a></li>
+                                <li class="@if (Route::is('site.about')) active @endif"><a
+                                        href="about.html">About</a></li>
+                                <li class="@if (Route::is('site.contact')) active @endif"><a
+                                        href="contact.html">Contact</a></li>
                                 @if (Auth::user())
                                     <li class="has-children text-right">
                                         <a href="#">{{ Auth::user()->name }}</a>
@@ -71,7 +75,7 @@
                     <div class="icons">
                         <a href="#" class="icons-btn d-inline-block js-search-open"><span
                                 class="icon-search"></span></a>
-                        <a href="cart.html" class="icons-btn d-inline-block bag">
+                        <a href="{{ route('site.cart.index') }}" class="icons-btn d-inline-block bag">
                             <span class="icon-shopping-bag"></span>
                             <span class="number">2</span>
                         </a>

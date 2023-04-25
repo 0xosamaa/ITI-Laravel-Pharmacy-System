@@ -87,7 +87,7 @@ class UserController extends Controller
             $address->governorate_id = $validData['governorate_id'];
             $address->user_id = $user->id;
             $address->save();
-            
+
             DB::commit();
             return redirect()->route('admin.users.index')->with('success', 'User Added Successfully.');
         }catch(Exception $e){
@@ -151,7 +151,7 @@ class UserController extends Controller
                 $new_address->is_main = 1;
                 $new_address->save();
             }
-            
+
             DB::commit();
             return redirect()->route('admin.users.index')->with('success', 'User Updated Successfully.');
         }catch(Exception $e){

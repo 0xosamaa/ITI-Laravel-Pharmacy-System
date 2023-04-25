@@ -26,24 +26,12 @@
                             aria-describedby="example1_info">
                             <thead>
                                 <tr>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-sort="ascending"
-                                        aria-label="Rendering engine: activate to sort column descending">ID</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Name
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
-                                        Address</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
-                                        Priority</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="1" aria-label="Engine version: activate to sort column ascending">Owner
-                                    </th>
-                                    <th class="sorting text-center" tabindex="0" aria-controls="example1" rowspan="1"
-                                        colspan="2" aria-label="CSS grade: activate to sort column ascending">Actions
-                                    </th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Priority</th>
+                                    <th>Owner</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,47 +44,54 @@
                                         <td>{{ $pharmacy->owner_name }}</td>
 
                                         <td>
-                                            <div class="btn-container">
-                                                <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}" class="btn btn-lg btn-info w-100">
-                                                    <i class="fa fa-edit"></i>
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.pharmacies.edit', $pharmacy->id) }}"
+                                                    class="btn btn-info">
+                                                    <i class="fas fa-pen"></i>
                                                 </a>
-                                            </div>
-                                        </td>
 
-                                        <td>
-                                            <div class="btn-container">
-                                                <form method="POST" action="{{ route('admin.pharmacies.destroy', $pharmacy->id ) }}" style="display: inline">
+                                            </div>
+                                            <div class="btn-group">
+                                                <form method="POST"
+                                                    action="{{ route('admin.pharmacies.destroy', $pharmacy->id) }}"
+                                                    style="display: inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-lg btn-danger w-100" data-toggle="modal" data-target="#confirm-delete-{{$pharmacy->id}}">
-                                                        <i class="fa fa-trash"></i>
+                                                    <button type="button" class="btn btn-danger rounded-lg mx-1"
+                                                        data-toggle="modal"
+                                                        data-target="#confirm-delete-{{ $pharmacy->id }}">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="confirm-delete-{{$pharmacy->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirmDeleteLabel">Confirm Delete</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="confirm-delete-{{ $pharmacy->id }}"
+                                                        tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="confirmDeleteLabel">Confirm
+                                                                        Delete</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Are you sure you want to delete this item?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cancel</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Delete</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to delete this item?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                                 </form>
                                             </div>
                                         </td>
-
-
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -102,7 +102,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.doctors.edit', $doctor->id) }}"
-                                                    class="btn btn-primary rounded-lg mx-1">
+                                                    class="btn btn-info rounded-lg mx-1">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-danger rounded-lg mx-1"

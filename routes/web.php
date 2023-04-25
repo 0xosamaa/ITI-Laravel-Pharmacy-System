@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\GovernorateController;
 use App\Http\Controllers\Admin\MedicineController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserAdressController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\BanController;
 use App\Http\Controllers\StripeController;
 
@@ -70,6 +71,13 @@ Route::middleware(['auth', 'verified', 'role:admin|doctor|pharmacist', 'logs-out
     Route::post('quantity', [OrderController::class, 'quantity'])->name('quantity');
 });
 
+// Dashboard
+Route::middleware(['auth', 'verified', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/dashboard/adminStats', [DashboardController::class, 'getAdminStats'])->name('dashboard.getAdminStats');
+    Route::get('/dashboard/medicinesStats', [DashboardController::class, 'getMedicinesStats'])->name('dashboard.getMedicinesStats');
+    Route::get('/dashboard/pharmaciesStats', [DashboardController::class, 'getPharmaciesStats'])->name('dashboard.getPharmaciesStats');
+    Route::get('/dashboard/doctorsStats', [DashboardController::class, 'getDoctorsStats'])->name('dashboard.getDoctorsStats');
+});
 
 Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('admin.')->group(function () {
     // //doctors
@@ -82,6 +90,12 @@ Route::middleware(['auth', 'role:admin|pharmacist'])->prefix('admin')->name('adm
 Route::name('site.')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/shop/{medicine:slug}', [ShopController::class, 'show'])->name('shop.show');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/increase', [CartController::class, 'increase'])->name('cart.increase');
+    Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/sub_totals', [CartController::class, 'sub_totals'])->name('cart.sub_totals');
 });
 
 Route::middleware('auth')->group(function () {
