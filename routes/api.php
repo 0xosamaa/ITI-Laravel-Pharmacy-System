@@ -5,8 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Validation\ValidationException;
 
+use App\Http\Controllers\API\OrderController;
+use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Protected API routes
     Route::get('/', [UserController::class, 'index']);
     Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::post('/order', [OrderController::class, 'AddNewOrder']);
 });
 
 
@@ -51,3 +53,5 @@ Route::post('/login', function (Request $request) {
  
     return $user->createToken($request->device_name)->plainTextToken;
 });
+
+
