@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('building_number')->nullable();
             $table->string('street_name')->nullable();
             $table->string('area_id')->nullable();
-            $table->boolean('is_main')->nullable();
+            $table->boolean('is_main')->default(false)->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('governorate_id')->constrained('governorates');
             $table->softDeletes();

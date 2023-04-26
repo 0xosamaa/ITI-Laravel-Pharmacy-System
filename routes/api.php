@@ -1,17 +1,17 @@
 <?php
+use App\Models\User;
 
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\MedicineController;
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
 
 use App\Http\Controllers\API\OrderController;
 use Illuminate\Validation\ValidationException;
-use App\Http\Controllers\Api\VerificationController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,21 +27,19 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/api/medicines');
-    Route::get('/api/medicines', [MedicineController::class, 'index']);
-    Route::get('/api/medicines/{medicine}', [MedicineController::class, 'show']);
-    Route::get('/api/cart', [CartController::class, 'index']);
-});
-
 
 Route::post('/register', [UserController::class, 'register']);
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Protected API routes
     Route::get('/', [UserController::class, 'index']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::get('/orders', [OrderController::class, 'getOrdersByUser']);
     Route::post('/orders', [OrderController::class, 'AddNewOrder']);
+    Route::get('/medicines', [MedicineController::class, 'index']);
+    Route::get('/medicines/{medicine}', [MedicineController::class, 'show']);
+    Route::get('/cart', [CartController::class, 'index']);
+
+    Route::resource('/user/{id}/addresses', AddressController::class);
 });
 
 
