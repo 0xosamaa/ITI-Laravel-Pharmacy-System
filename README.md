@@ -23,7 +23,7 @@ To install the application, please follow these steps:
 3. Run `npm install` to install all JavaScript dependencies.
 4. Run `npm run dev` to compile all JavaScript and CSS files.
 5. Create a `.env` file in the root directory of the application and add the necessary environment variables. You can use the `.env.example` file as a template.
-6. Run `php artisan migrate` to create the necessary database tables.
+6. Run `php artisan migrate:fresh --seed` to create the necessary database tables and data.
 7. Run `php artisan serve` to start the local development server.
 
 ## Features
@@ -53,7 +53,7 @@ Future plans for the application include:
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## Contributors
-- [Mohamed Osama](https://github.com/0xosamaa)
+- [Mohammad Osama](https://github.com/0xosamaa)
 - [Hassan Osama](https://github.com/hassanOsama720)
 - [Youssef Abdullah](https://github.com/Youssef-Abdullahx09)
 - [Amr Basiony](https://github.com/amrbasiony97)
