@@ -1,17 +1,17 @@
 <?php
+use App\Models\User;
 
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\MedicineController;
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
 
 use App\Http\Controllers\API\OrderController;
 use Illuminate\Validation\ValidationException;
-use App\Http\Controllers\Api\VerificationController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +38,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/medicines', [MedicineController::class, 'index']);
     Route::get('/medicines/{medicine}', [MedicineController::class, 'show']);
     Route::get('/cart', [CartController::class, 'index']);
+
+    Route::resource('/user/{id}/addresses', AddressController::class);
 });
 
 
