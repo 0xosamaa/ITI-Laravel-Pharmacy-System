@@ -25,6 +25,7 @@ To install the application, please follow these steps:
 5. Create a `.env` file in the root directory of the application and add the necessary environment variables. You can use the `.env.example` file as a template.
 6. Run `php artisan migrate:fresh --seed` to create the necessary database tables and data.
 7. Run `php artisan serve` to start the local development server.
+8. Go to `http://localhost:8000/admin` to access the dashboard.
 
 ## Features
 
